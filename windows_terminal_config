@@ -1,0 +1,318 @@
+
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "actions": [
+    {
+      "command": {
+        "action": "copy",
+        "singleLine": false
+      },
+      "id": "User.copy.644BA8F2"
+    },
+    {
+      "command": "paste",
+      "id": "User.paste"
+    },
+    {
+      "command": "duplicateTab",
+      "id": "User.duplicateTab"
+    },
+    {
+      "command": "find",
+      "id": "User.find"
+    },
+    {
+      "command": {
+        "action": "globalSummon",
+        "desktop": "toCurrent",
+        "dropdownDuration": 200,
+        "monitor": "any",
+        "name": "_quake",
+        "toggleVisibility": true
+      },
+      "id": "User.globalSummon.A21F2F9B"
+    }
+  ],
+  "copyFormatting": "none",
+  "copyOnSelect": false,
+  "defaultProfile": "{a8ec6708-a98c-4328-8859-789e15d2e694}",
+  "firstWindowPreference": "defaultProfile",
+  "keybindings": [
+    {
+      "id": "User.copy.644BA8F2",
+      "keys": "ctrl+c"
+    },
+    {
+      "id": "User.paste",
+      "keys": "ctrl+v"
+    },
+    {
+      "id": "User.find",
+      "keys": "ctrl+shift+f"
+    },
+    {
+      "id": "User.globalSummon.A21F2F9B",
+      "keys": "win+`"
+    },
+    {
+      "id": "User.duplicateTab",
+      "keys": "alt+shift+d"
+    }
+  ],
+  "newTabMenu": [
+    {
+      "type": "remainingProfiles"
+    }
+  ],
+  "profiles": {
+    "defaults": {
+      "bellStyle": "none",
+      "colorScheme": "Night Owl",
+      "experimental.retroTerminalEffect": false,
+      "font": {
+        "face": "JetBrains Mono"
+      },
+      "opacity": 100,
+      "useAcrylic": true
+    },
+    "list": [
+      {
+        "backgroundImage": "C:\\Users\\user\\Pictures\\Wallpapers\\owlsr.jpg",
+        "backgroundImageOpacity": 0.2,
+        "colorScheme": "One Half Dark",
+        "tabColor": "#4CAF50", // Green color
+        "font": {
+          "face": "Envy Code R",
+          "size": 13
+        },
+        "guid": "{d8e96812-b789-5068-a5ae-10b2fb53e95f}",
+        "hidden": false,
+        "name": "Ubuntu 24.04.1 LTS",
+        "opacity": 100,
+        "source": "CanonicalGroupLimited.Ubuntu24.04LTS_79rhkp1fndgsc"
+      },
+      {
+        "backgroundImage": "C:\\Users\\user\\Pictures\\Wallpapers\\owlsr.jpg",
+        "backgroundImageAlignment": "center",
+        "backgroundImageOpacity": 0.2,
+        "backgroundImageStretchMode": "uniformToFill",
+        "colorScheme": "One Half Dark",
+        "tabColor": "#F44336", // Red color
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "axes": {
+            "ital": 1
+          },
+          "face": "JetBrainsMono Nerd Font Mono",
+          "features": {
+            "calt": 1,
+            "ss01": 1
+          },
+          "size": 11,
+          "weight": "normal"
+        },
+        "guid": "{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}",
+        "hidden": false,
+        "name": "Ubuntu 22.04.5 LTS",
+        "opacity": 100,
+        "padding": "12",
+        "source": "CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc",
+        "useAcrylic": false
+      },
+      {
+        "guid": "{17bf3de4-5353-5709-bcf9-835bd952a95e}",
+        "hidden": true,
+        "name": "Ubuntu-22.04",
+        "source": "Windows.Terminal.Wsl"
+      },
+      {
+        "guid": "{dacf788c-a982-5eb0-93a3-351171cf1286}",
+        "hidden": false,
+        "name": "Ubuntu-24.04",
+        "source": "Microsoft.WSL"
+      },
+      {
+        "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+        "hidden": false,
+        "name": "Windows PowerShell"
+      },
+      {
+        "commandline": "%SystemRoot%\\System32\\cmd.exe",
+        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+        "hidden": false,
+        "name": "Command Prompt"
+      },
+      {
+        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+        "hidden": false,
+        "name": "Azure Cloud Shell",
+        "source": "Windows.Terminal.Azure"
+      },
+      {
+        "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
+        "hidden": false,
+        "name": "Git Bash",
+        "source": "Git"
+      },
+      {
+        "guid": "{644da6e5-c9cc-5f94-bb85-5204ea2b7e00}",
+        "hidden": false,
+        "name": "Developer Command Prompt for VS 2022",
+        "source": "Windows.Terminal.VisualStudio"
+      },
+      {
+        "guid": "{baa9d3a7-bd87-5871-877a-04f24e84dd58}",
+        "hidden": false,
+        "name": "Developer PowerShell for VS 2022",
+        "source": "Windows.Terminal.VisualStudio"
+      },
+      {
+        "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
+        "hidden": true,
+        "name": "Visual Studio Debug Console",
+        "opacity": 39,
+        "source": "VSDebugConsole"
+      },
+      {
+        "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
+        "hidden": false,
+        "name": "Ubuntu",
+        "opacity": 25,
+        "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc"
+      },
+      {
+        "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+        "hidden": true,
+        "name": "Ubuntu",
+        "opacity": 25,
+        "source": "Windows.Terminal.Wsl"
+      },
+      {
+        "commandline": "C:/Program Files/Git/bin/bash.exe -i -l",
+        "cursorShape": "vintage",
+        "guid": "{a8ec6708-a98c-4328-8859-789e15d2e694}",
+        "hidden": false,
+        "icon": "C:/Program Files/Git/mingw64/share/git/git-for-windows.ico",
+        "name": "Git Bash WORK",
+        "opacity": 80,
+        "padding": "10",
+        "startingDirectory": "C:\\Users\\user\\Documents\\Coding\\Work\\REDACTED\\REDACTED",
+        "tabTitle": "Client"
+      },
+      {
+        "commandline": "C:/Program Files/Git/bin/bash.exe -i -l",
+        "cursorShape": "vintage",
+        "elevate": true,
+        "guid": "{ecd08f51-4752-430f-a840-9f8e6c44924a}",
+        "hidden": false,
+        "icon": "C:/Program Files/Git/mingw64/share/git/git-for-windows.ico",
+        "name": "Git Bash PERSONAL",
+        "opacity": 80,
+        "padding": "10",
+        "startingDirectory": "C:\\Users\\user\\Documents\\Coding\\Personal\\GymNation",
+        "tabTitle": "Client"
+      },
+      {
+        "guid": "{e5a83caa-4c73-52b3-ae6b-bc438d721ef9}",
+        "hidden": false,
+        "name": "Ubuntu 22.04.3 LTS",
+        "opacity": 27,
+        "source": "CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc"
+      },
+      {
+        "guid": "{acbafd15-cbbb-5bb3-8a61-bed446ff4b83}",
+        "hidden": false,
+        "name": "Ubuntu 24.04 LTS",
+        "padding": "51",
+        "source": "CanonicalGroupLimited.Ubuntu24.04LTS_79rhkp1fndgsc"
+      },
+      {
+        "guid": "{963ff2f7-6aed-5ce3-9d91-90d99571f53a}",
+        "hidden": true,
+        "name": "Ubuntu-24.04",
+        "opacity": 40,
+        "source": "Windows.Terminal.Wsl"
+      },
+      {
+        "guid": "{46ca431a-3a87-5fb3-83cd-11ececc031d2}",
+        "hidden": false,
+        "name": "kali-linux",
+        "source": "Windows.Terminal.Wsl"
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "background": "#011627",
+      "black": "#011627",
+      "blue": "#82AAFF",
+      "brightBlack": "#575656",
+      "brightBlue": "#82AAFF",
+      "brightCyan": "#7FDBCA",
+      "brightGreen": "#22DA6E",
+      "brightPurple": "#C792EA",
+      "brightRed": "#EF5350",
+      "brightWhite": "#FFFFFF",
+      "brightYellow": "#FFEB95",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#21C7A8",
+      "foreground": "#D6DEEB",
+      "green": "#22DA6E",
+      "name": "Night Owl",
+      "purple": "#C792EA",
+      "red": "#EF5350",
+      "selectionBackground": "#FFFFFF",
+      "white": "#FFFFFF",
+      "yellow": "#ADDB67"
+    },
+    {
+      "background": "#1A1A1A",
+      "black": "#000000",
+      "blue": "#579BD5",
+      "brightBlack": "#797979",
+      "brightBlue": "#9CDCFE",
+      "brightCyan": "#2BC4E2",
+      "brightGreen": "#1AD69C",
+      "brightPurple": "#975EAB",
+      "brightRed": "#EB2A88",
+      "brightWhite": "#EAEAEA",
+      "brightYellow": "#E9AD95",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#00B6D6",
+      "foreground": "#EA549F",
+      "green": "#4EC9B0",
+      "name": "SAM_PERSONAL",
+      "purple": "#714896",
+      "red": "#E92888",
+      "selectionBackground": "#FFFFFF",
+      "white": "#EAEAEA",
+      "yellow": "#CE9178"
+    },
+    {
+      "background": "#300A24",
+      "black": "#171421",
+      "blue": "#0037DA",
+      "brightBlack": "#767676",
+      "brightBlue": "#08458F",
+      "brightCyan": "#2C9FB3",
+      "brightGreen": "#26A269",
+      "brightPurple": "#A347BA",
+      "brightRed": "#C01C28",
+      "brightWhite": "#F2F2F2",
+      "brightYellow": "#A2734C",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#3A96DD",
+      "foreground": "#FFFFFF",
+      "green": "#26A269",
+      "name": "Ubuntu-ColorScheme",
+      "purple": "#881798",
+      "red": "#C21A23",
+      "selectionBackground": "#FFFFFF",
+      "white": "#CCCCCC",
+      "yellow": "#A2734C"
+    }
+  ],
+  "theme": "system",
+  "themes": []
+}
