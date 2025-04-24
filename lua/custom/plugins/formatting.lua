@@ -18,6 +18,7 @@ return {
 					sass = { "prettier" },
 					go = { "goimports" },
 					lua = { "stylua" },
+					python = { "black", "isort" },
 				},
 				format_on_save = {
 					timeout_ms = 2000,
@@ -45,6 +46,7 @@ return {
 				javascriptreact = { "eslint" },
 				typescript = { "eslint" },
 				typescriptreact = { "eslint" },
+				python = { "pylint" },
 			}
 
 			-- Set up lint on save

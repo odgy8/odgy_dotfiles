@@ -4,6 +4,7 @@ return {
 		dependencies = {
 			"williamboman/mason-lspconfig.nvim",
 			"neovim/nvim-lspconfig",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			"hrsh7th/nvim-cmp", -- Completion plugin
 			"hrsh7th/cmp-nvim-lsp", -- LSP completion
@@ -33,8 +34,26 @@ return {
 					"cssls", -- CSS
 					"html", -- HTML
 					"pyright", -- Python
+					"eslint", --Like... Everything...
 				},
 				automatic_installation = true,
+			})
+
+			require("mason-tool-installer").setup({
+				ensure_installed = {
+					-- Formatters
+					"prettier", -- JavaScript/TypeScript/CSS/HTML formatter
+					"stylua", -- Lua formatter
+					"black", -- Python formatter
+					"isort", -- Python import organizer
+					"goimports", -- Go formatter and import organizer
+
+					-- Linters
+					"eslint_d", -- JavaScript/TypeScript linter (faster daemon version)
+					"pylint", -- Python linter
+				},
+				auto_update = true,
+				run_on_start = true, -- Install tools when Neovim starts
 			})
 
 			-- Set up LSP servers
