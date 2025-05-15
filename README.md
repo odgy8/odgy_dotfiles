@@ -26,11 +26,15 @@ Before installing this custom configuration, make sure you have:
 ```bash
 # Ubuntu/Debian
 sudo apt update
-sudo apt install neovim fzf ripgrep python3 golang npm
+sudo apt install neovim fzf ripgrep python3 golang npm gcc clang
 # For clipboard support
 sudo apt install xclip # X11
 # OR
 sudo apt install wl-clipboard # Wayland
+
+nvim # Start, allow all installs, then quit nvim and continue this tutorial
+cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ 
+make
 
 # Arch Linux
 sudo pacman -S neovim fzf ripgrep python go npm
@@ -39,12 +43,20 @@ sudo pacman -S xclip # X11
 # OR
 sudo pacman -S wl-clipboard # Wayland
 
+nvim # Start, allow all installs, then quit nvim and continue this tutorial
+cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ 
+make
+
 # Fedora
 sudo dnf install neovim fzf ripgrep python3 golang npm
 # For clipboard support
 sudo dnf install xclip # X11
 # OR
 sudo dnf install wl-clipboard # Wayland
+
+nvim # Start, allow all installs, then quit nvim and continue this tutorial
+cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ 
+make
 ```
 
 #### macOS
@@ -63,31 +75,6 @@ scoop install neovim fzf ripgrep python go nodejs
 # Windows has clipboard support built-in
 ```
 
-#### Linux
-```bash
-# Ubuntu/Debian
-sudo apt install neovim
-
-# Arch Linux
-sudo pacman -S neovim
-
-# Fedora
-sudo dnf install neovim
-```
-
-#### macOS
-```bash
-brew install neovim
-```
-
-#### Windows
-```powershell
-# Using Chocolatey
-choco install neovim
-
-# Using Scoop
-scoop install neovim
-```
 
 ### 2. Backup Existing Configuration (if any)
 
