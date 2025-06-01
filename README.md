@@ -15,7 +15,7 @@ Before installing this custom configuration, make sure you have:
    - ripgrep (faster grep)
    - xclip or wl-clipboard (clipboard support)
    - python3
-   - golang
+   - golang (see golang installation section below)
    - npm (Node.js package manager)
 
 ## Installation Steps
@@ -26,55 +26,46 @@ Before installing this custom configuration, make sure you have:
 ```bash
 # Ubuntu/Debian
 sudo apt update
-sudo apt install neovim fzf ripgrep python3 golang npm gcc clang
+sudo apt install neovim fzf ripgrep python3 npm gcc clang
 # For clipboard support
 sudo apt install xclip # X11
 # OR
 sudo apt install wl-clipboard # Wayland
 
-nvim # Start, allow all installs, then quit nvim and continue this tutorial
-cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ 
-make
-
 # Arch Linux
-sudo pacman -S neovim fzf ripgrep python go npm
+sudo pacman -S neovim fzf ripgrep python npm
 # For clipboard support
 sudo pacman -S xclip # X11
 # OR
 sudo pacman -S wl-clipboard # Wayland
 
-nvim # Start, allow all installs, then quit nvim and continue this tutorial
-cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ 
-make
-
 # Fedora
-sudo dnf install neovim fzf ripgrep python3 golang npm
+sudo dnf install neovim fzf ripgrep python3 npm
 # For clipboard support
 sudo dnf install xclip # X11
 # OR
 sudo dnf install wl-clipboard # Wayland
-
-nvim # Start, allow all installs, then quit nvim and continue this tutorial
-cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ 
-make
 ```
 
 #### macOS
 ```bash
-brew install neovim fzf ripgrep python go node
+brew install neovim fzf ripgrep python node
 # macOS has clipboard support built-in
 ```
 
 #### Windows
 ```powershell
 # Using Chocolatey
-choco install neovim fzf ripgrep python golang nodejs
+choco install neovim fzf ripgrep python nodejs
 
 # Using Scoop
-scoop install neovim fzf ripgrep python go nodejs
+scoop install neovim fzf ripgrep python nodejs
 # Windows has clipboard support built-in
 ```
 
+### 1.1 Install Golang
+
+For Golang installation, it's recommended to follow the official installation instructions from the [Go website](https://golang.org/doc/install) as package managers may not provide the latest version.
 
 ### 2. Backup Existing Configuration (if any)
 
@@ -108,6 +99,16 @@ nvim
 
 The first launch may take a moment as plugins are installed automatically.
 
+### 6. Complete Telescope FZF Native Setup
+
+After the initial plugin installation completes, exit Neovim and run:
+
+```bash
+# Linux/macOS/Windows
+cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ 
+make
+```
+
 ## Troubleshooting
 
 - If you encounter any issues, check the repository's README or issues page for common problems and solutions.
@@ -128,3 +129,4 @@ git pull
 ```
 
 Then restart Neovim to apply any updates.
+
