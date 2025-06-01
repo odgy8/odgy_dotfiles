@@ -48,9 +48,20 @@ sudo dnf install wl-clipboard # Wayland
 ```
 
 #### macOS
-```bash
-brew install neovim fzf ripgrep python node
+```zsh
+# Install Homebrew if not already installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install dependencies
+brew install neovim fzf ripgrep python node gcc
 # macOS has clipboard support built-in
+
+# Install a Nerd Font (optional but recommended for icons)
+brew tap homebrew/cask-fonts
+brew install --cask font-hack-nerd-font
+
+# Add fzf to your shell (for zsh)
+$(brew --prefix)/opt/fzf/install
 ```
 
 #### Windows
