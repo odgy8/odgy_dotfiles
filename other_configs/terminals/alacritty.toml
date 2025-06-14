@@ -1,123 +1,104 @@
-[colors.bright]
-black = "#656565"
-blue = "#22c3a1"
-cyan = "#84edb9"
-green = "#8fee96"
-magenta = "#775759"
-red = "#d75f5f"
-white = "#d8d8d8"
-yellow = "#cd950c"
-
-[colors.cursor]
-cursor = "#8fee96"
-text = "#2f2f2f"
-
-[colors.normal]
-black = "#2f2f2f"
-blue = "#22c3a1"
-cyan = "#84edb9"
-green = "#d4d232"
-magenta = "#775759"
-red = "#d75f5f"
-white = "#c0b18b"
-yellow = "#af865a"
-
-[colors.primary]
-background = "#262626"
-foreground = "#c0b18b"
-
-[colors.selection]
-background = "#d75f5f"
-text = "#2f2f2f"
-
-[cursor]
-blink_interval = 500
-unfocused_hollow = true
-
-[cursor.style]
-shape = "Block"
+# Alacritty config - adding features back gradually
+# Save as ~/.config/alacritty/alacritty.toml
 
 [font]
-size = 11.0
+normal = { family = "VictorMono Nerd Font" }
+bold = { family = "VictorMono Nerd Font", style = "Bold" }
+italic = { family = "VictorMono Nerd Font", style = "Italic" }
+size = 12.0
 
-[font.normal]
-family = "Iosevka NF"
-style = "Bold Italic"
+[window]
+opacity = 0.85
+blur = true
+padding = { x = 12, y = 12 }
+dimensions = { columns = 120, lines = 40 }
+decorations = "buttonless"
 
-[[keyboard.bindings]]
-action = "Paste"
-key = "V"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "C"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "PasteSelection"
-key = "Insert"
-mods = "Shift"
-
-[[keyboard.bindings]]
-action = "ScrollPageUp"
-key = "PageUp"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "ScrollPageDown"
-key = "PageDown"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "ScrollToTop"
-key = "Home"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "ScrollToBottom"
-key = "End"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "CreateNewWindow"
-key = "T"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Quit"
-key = "W"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "IncreaseFontSize"
-key = "Equals"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "DecreaseFontSize"
-key = "Minus"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "ResetFontSize"
-key = "Key0"
-mods = "Control"
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
 
 [mouse]
 hide_when_typing = true
 
+[selection]
+save_to_clipboard = true
+
+# Basic keyboard shortcuts
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "Plus"
+mods = "Control|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Back"
+mods = "Control|Shift"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+[colors.primary]
+foreground = "#e1e3e4"
+background = "#0d1117"
+
+[colors.cursor]
+text = "#0d1117"
+cursor = "#58a6ff"
+
+[colors.selection]
+text = "#0d1117"
+background = "#58a6ff"
+
+[colors.hints]
+start = { foreground = "#0d1117", background = "#73daca" }
+end = { foreground = "#0d1117", background = "#73daca" }
+
+[colors.normal]
+black = "#484f58"
+red = "#ff7b72"
+green = "#3fb950"
+yellow = "#d29922"
+blue = "#58a6ff"
+magenta = "#bc8cff"
+cyan = "#39c5cf"
+white = "#b1bac4"
+
+[colors.bright]
+black = "#6e7681"
+red = "#ffa198"
+green = "#56d364"
+yellow = "#e3b341"
+blue = "#79c0ff"
+magenta = "#d2a8ff"
+cyan = "#56d4dd"
+white = "#f0f6fc"
+
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+
 [scrolling]
-history = 2000
-multiplier = 5
+history = 10000
+multiplier = 3
 
-[window]
-decorations = "buttonless" # Options are full, none, transparent, buttonless
-opacity = 0.9
-
-[window.dimensions]
-columns = 180
-lines = 50
-
-[window.padding]
-x = 15
+# [url]
+# launcher = { program = "open" }  # Change to "xdg-open" on Linux
+# modifiers = "None"
