@@ -39,5 +39,10 @@ return {
 
 		-- If you want to add a keybind for viewing diff with specific commit
 		keymap("n", "<leader>ml", ":DiffviewOpen HEAD~1<CR>", { desc = "DiffviewOpen last commit" })
+
+		-- If you want to add a keybind for viewing diff with main
+		keymap("n", "<leader>mm", ":DiffviewOpen main<CR>", { desc = "Diff with main branch" })
+		keymap("n", "<leader>mM", ":DiffviewOpen origin/main<CR>", { desc = "Diff with origin/main" })
+		keymap("n", "<leader>mb", ":DiffviewOpen main...HEAD<CR>", { desc = "Diff branch changes from main" })
 	end,
 }
