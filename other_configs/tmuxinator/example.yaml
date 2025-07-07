@@ -1,0 +1,32 @@
+name: work
+root: ~/coding
+
+# Optional: Commands to run before starting the session
+# pre_window: source ~/.env
+
+# Optional: Commands to run when starting the session
+# pre: docker-compose up -d
+
+# Optional: Commands to run when stopping the session  
+# post: docker-compose down
+
+windows:
+  - frontend:
+      root: ~/coding
+      panes:
+        - nvim
+        
+  - backend:
+      root: ~/coding
+      panes:
+        - nvim
+        
+  - runners:
+      root: ~/projects
+      layout: "e13f,291x59,0,0{145x59,0,0[145x19,0,0,0,145x19,0,20,2,145x19,0,40,3],145x59,146,0[145x29,146,0,1,145x29,146,30,4]}"
+      panes: 
+        - echo "Left top"
+        - echo "Left bottom" 
+        - echo "Right top"
+        - echo "Right middle"
+        - echo "Right bottom"
