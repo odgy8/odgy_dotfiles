@@ -37,6 +37,7 @@ function M.setup()
 	vim.keymap.set({ "n", "v" }, "<leader>ap", ":PrtChatNew popup<CR>", { desc = "Create a new parrot ai chat popup" })
 	vim.keymap.set({ "n", "v" }, "<leader>ai", ":PrtImplement<CR>", { desc = "Parrot ai implement comment as prompt" })
 	vim.keymap.set({ "n", "v" }, "<leader>aa", ":PrtAsk<CR>", { desc = "Parrot ai ask question" })
+	vim.keymap.set({ "n", "v" }, "<leader>am", ":PrtModel<CR>", { desc = "Launch parrot select model window" })
 
 	-- Diagnostic keybindings
 	vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show diagnostics under cursor" })
