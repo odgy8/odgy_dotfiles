@@ -58,8 +58,8 @@ automatically-unhide-macos-hidden-apps = true
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 
 [workspace-to-monitor-force-assignment]
-1 = '2'                    # Middle monitor gets workspace 1
-2 = '1'                    # Left monitor gets workspace 2  
+1 = '1'                    # Middle monitor gets workspace 1
+2 = '2'                    # Left monitor gets workspace 2  
 3 = '3'                   # Right monitor gets workspace 3
 
 [gaps]
