@@ -24,6 +24,9 @@ return {
 				},
 			})
 
+			-- Capabilities for better completion
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+
 			-- Set up Mason LSP config
 			require("mason-lspconfig").setup({
 				-- List of LSP servers to automatically install
@@ -35,8 +38,46 @@ return {
 					"html", -- HTML
 					"pyright", -- Python
 					"eslint", --Like... Everything...
+					"emmet_language_server", -- JSX/TSX emmet auto complete functionality
 				},
 				automatic_installation = true,
+				handlers = {
+					-- Default handler for all servers
+					function(server_name)
+						require("lspconfig")[server_name].setup({
+							capabilities = capabilities,
+						})
+					end,
+					-- Custom handler for emmet with your specific config
+					["emmet_language_server"] = function()
+						require("lspconfig").emmet_language_server.setup({
+							capabilities = capabilities,
+							filetypes = {
+								"css",
+								"eruby",
+								"html",
+								"javascript",
+								"javascriptreact",
+								"less",
+								"sass",
+								"scss",
+								"pug",
+								"typescriptreact",
+							},
+							init_options = {
+								includeLanguages = {},
+								excludeLanguages = {},
+								extensionsPath = {},
+								preferences = {},
+								showAbbreviationSuggestions = true,
+								showExpandedAbbreviation = "always",
+								showSuggestionsAsSnippets = false,
+								syntaxProfiles = {},
+								variables = {},
+							},
+						})
+					end,
+				},
 			})
 
 			require("mason-tool-installer").setup({
@@ -58,71 +99,6 @@ return {
 
 			-- Set up LSP servers
 			local lspconfig = require("lspconfig")
-
-			-- Capabilities for better completion
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-			-- Set up each LSP server
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-			})
-
-			lspconfig.ts_ls.setup({
-				capabilities = capabilities,
-			})
-
-			lspconfig.gopls.setup({
-				capabilities = capabilities,
-			})
-
-			lspconfig.cssls.setup({
-				capabilities = capabilities,
-			})
-
-			lspconfig.html.setup({
-				capabilities = capabilities,
-			})
-
-			lspconfig.pyright.setup({
-				capabilities = capabilities,
-			})
-
-			lspconfig.emmet_language_server.setup({
-				filetypes = {
-					"css",
-					"eruby",
-					"html",
-					"javascript",
-					"javascriptreact",
-					"less",
-					"sass",
-					"scss",
-					"pug",
-					"typescriptreact",
-				},
-				-- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
-				-- **Note:** only the options listed in the table are supported.
-				init_options = {
-					---@type table<string, string>
-					includeLanguages = {},
-					--- @type string[]
-					excludeLanguages = {},
-					--- @type string[]
-					extensionsPath = {},
-					--- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
-					preferences = {},
-					--- @type boolean Defaults to `true`
-					showAbbreviationSuggestions = true,
-					--- @type "always" | "never" Defaults to `"always"`
-					showExpandedAbbreviation = "always",
-					--- @type boolean Defaults to `false`
-					showSuggestionsAsSnippets = false,
-					--- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
-					syntaxProfiles = {},
-					--- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
-					variables = {},
-				},
-			})
 
 			-- Global LSP keybindings
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
