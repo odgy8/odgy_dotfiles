@@ -39,6 +39,9 @@ function M.setup()
 	vim.keymap.set({ "n", "v" }, "<leader>aa", ":PrtAsk<CR>", { desc = "Parrot ai ask question" })
 	vim.keymap.set({ "n", "v" }, "<leader>am", ":PrtModel<CR>", { desc = "Launch parrot select model window" })
 
+	-- File operations
+	vim.keymap.set("c", "W", "w", { desc = "Save file with capital W" })
+
 	-- Diagnostic keybindings
 	vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show diagnostics under cursor" })
 	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
