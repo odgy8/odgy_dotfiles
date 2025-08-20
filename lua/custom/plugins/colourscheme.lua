@@ -8,7 +8,10 @@ return {
 				-- bg = "#282A36",
 				-- fg = "#F8F8F2",
 				-- selection = "#44475A",
-				comment = "#C49A6C",
+				-- comment = "#C49A6C",
+				-- comment = "#6A9955", -- VS Code green
+				-- comment = "#ABB2BF", -- Light blue-gray
+				comment = "#7AAA66", -- Slightly lighter
 				-- red = "#FF5555",
 				-- orange = "#FFB86C",
 				-- yellow = "#F1FA8C",
