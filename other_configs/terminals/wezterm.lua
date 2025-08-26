@@ -6,7 +6,8 @@ config.font = wezterm.font("VictorMono Nerd Font")
 config.font_size = 14
 
 -- Window configuration
-config.window_background_opacity = 0.85
+-- Moved this to the bottom of the file next to the wallpaper stuff
+-- config.window_background_opacity = 0.85
 config.macos_window_background_blur = 20 -- macOS blur
 config.window_padding = {
 	left = 12,
@@ -139,5 +140,7 @@ config.window_background_image_hsb = {
 	hue = 1.0,
 	saturation = 1.0,
 }
+
+config.window_background_opacity = 1 -- Adjust to taste (0.0 to 1.0)
 
 return config
