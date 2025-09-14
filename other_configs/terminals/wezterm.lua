@@ -3,7 +3,14 @@ local config = {}
 
 -- Font configuration
 config.font = wezterm.font("VictorMono Nerd Font")
-config.font_size = 14
+config.font_size = 11
+
+-- -- Wayland and scaling configuration (ADD THESE LINES)
+-- config.enable_wayland = true
+-- config.front_end = "WebGpu"
+-- config.dpi = 144 -- 96 * 1.5 for your 1.5x scaled monitor
+-- -- Prevent WezTerm from auto-adjusting when it detects scaling issues
+-- config.adjust_window_size_when_changing_font_size = false
 
 -- Window configuration
 -- Moved this to the bottom of the file next to the wallpaper stuff
