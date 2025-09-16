@@ -12,12 +12,12 @@ root: ~/coding
 
 windows:
   - frontend:
-      root: ~/coding
+      root: ~/coding/frontend
       panes:
         - nvim
         
   - backend:
-      root: ~/coding
+      root: ~/coding/backend
       panes:
         - nvim
         
