@@ -1,7 +1,17 @@
 return {
 	"mg979/vim-visual-multi",
 	event = "VeryLazy",
+	init = function()
+		-- Set keybinds in init (runs before plugin loads)
+		vim.g.VM_maps = {
+			["Find Under"] = "<F8>",           -- Next occurrence
+			["Find Subword Under"] = "<F8>",   -- Next occurrence for subwords
+			["Add Cursor Up"] = "<F9>",        -- Up cursor
+			["Add Cursor Down"] = "<F10>",     -- Down cursor
+		}
+	end,
 	config = function()
+		
 		--[[
     VIM-VISUAL-MULTI KEYBINDS REFERENCE (UPDATED 2024/2025)
     
@@ -84,12 +94,6 @@ return {
     \\\\<Space>       - Toggle VM mappings
     --]]
 
-		-- Optional: Customize some keybinds
-		vim.g.VM_maps = {
-			-- Uncomment to use Ctrl+d instead of Ctrl+n
-			-- ["Find Under"] = "<C-d>",
-			-- ["Find Subword Under"] = "<C-d>",
-		}
 
 		-- Optional: Set custom VM leader (default is \\\\)
 		-- vim.g.VM_leader = '\\\\'
