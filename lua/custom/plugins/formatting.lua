@@ -27,6 +27,18 @@ return {
 				},
 			})
 
+			-- Organize imports on save for TS/JS files (same as VSCode)
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+				callback = function()
+					local params = {
+						command = "_typescript.organizeImports",
+						arguments = { vim.api.nvim_buf_get_name(0) },
+					}
+					vim.lsp.buf.execute_command(params)
+				end,
+			})
+
 			-- Optional: Add key mappings for manual formatting
 			vim.keymap.set("n", "<leader>ff", function()
 				require("conform").format({ timeout_ms = 2000 })
