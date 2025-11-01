@@ -14,12 +14,16 @@ windows:
   - frontend:
       root: ~/coding/frontend
       panes:
-        - nvim
+        - npm run dev
+        - focus: true # This just ensures this pane is the focussed one on startup
+          nvim
         
   - backend:
       root: ~/coding/backend
       panes:
-        - nvim
+        - nodemon index.ts
+        - focus: true # This just ensures this pane is the focussed one on startup
+          nvim
         
   - runners:
       root: ~/projects

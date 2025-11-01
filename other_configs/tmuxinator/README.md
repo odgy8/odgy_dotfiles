@@ -89,7 +89,8 @@ windows:
   - backend:
       root: ~/coding/work/backend
       panes:
-        - nvim
+        - focus: true # This just ensures this pane is the focussed one on startup
+          nvim
         
   - runners:
       root: ~/coding/work
