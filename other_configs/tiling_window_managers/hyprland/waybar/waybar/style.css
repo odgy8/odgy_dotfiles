@@ -1,0 +1,7 @@
+@import "mocha.css";
+
+window#waybar {
+  background-color: shade(#1e1e2e, 0.9);
+  border: 2px solid alpha(#11111b, 0.3);
+  color: white;
+}
