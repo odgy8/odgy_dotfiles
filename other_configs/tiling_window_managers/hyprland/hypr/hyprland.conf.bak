@@ -1,4 +1,5 @@
-# This is an example Hyprland config file. Refer to the wiki for more information.
+# This is an example Hyprland config file.
+# Refer to the wiki for more information.
 # https://wiki.hyprland.org/Configuring/
 
 # Please note not all available settings / options are set here.
@@ -52,9 +53,6 @@ $menu = ulauncher
 # exec-once = $terminal
 # exec-once = nm-applet &
 exec-once = waybar & hyprpaper 
-
-
-exec = gsettings set org.gnome.desktop.interface gtk-theme "prefer-dark"
 # Start surfshark on login
 exec-once = surfshark
 
@@ -67,12 +65,6 @@ exec-once = surfshark
 
 env = XCURSOR_SIZE,24
 env = HYPRCURSOR_SIZE,24
-
-# Dark theme settings
-env = GTK_THEME,Adwaita:dark
-env = QT_QPA_PLATFORMTHEME,qt5ct
-env = QT_STYLE_OVERRIDE,Adwaita-Dark
-env = GTK_APPLICATION_PREFER_DARK_THEME,1
 
 
 ###################
@@ -144,28 +136,6 @@ decoration {
     }
 }
 
-# https://wiki.hyprland.org/Configuring/Variables/#group
-group {
-    # Group border colors
-    col.border_active = rgba(33ccffee)
-    col.border_inactive = rgba(595959aa)
-    
-    # Groupbar (the tabs/titles)
-    groupbar {
-        enabled = true
-        font_size = 12
-        gradients = true
-        render_titles = true
-        scrolling = true
-        
-        # Tab colors
-        col.active = rgba(33ccffaa)
-        col.inactive = rgba(00000000)
-        
-        text_color = rgba(ffffffff)
-    }
-}
-
 # https://wiki.hyprland.org/Configuring/Variables/#animations
 animations {
     enabled = yes, please :)
@@ -214,10 +184,10 @@ dwindle {
 
 # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
 master {
-    new_status = slave
-    orientation = center
-    mfact = 0.5
-    # new_on_top = true
+    new_status = master
+    orientation = top
+    mfact = 0.0
+    new_on_top = true
 }
 
 # https://wiki.hyprland.org/Configuring/Variables/#misc
@@ -302,13 +272,6 @@ bind = $mainMod SHIFT, l, movewindow, r
 bind = $mainMod CONTROL, j, layoutmsg, cyclenext
 bind = $mainMod CONTROL, k, layoutmsg, cycleprev
 
-# Navigate between grouped/tabbed windows
-# bind = $mainMod, bracketleft, changegroupactive, b
-# bind = $mainMod, bracketright, changegroupactive, f
-# I know that these are in the wrong order, but it feels better
-bind = $mainMod, k, changegroupactive, b
-bind = $mainMod, j, changegroupactive, f
-
 # Switch workspaces with mainMod + [0-9]
 bind = $mainMod, 1, workspace, 1
 bind = $mainMod, 2, workspace, 2
@@ -344,13 +307,6 @@ bind = $mainMod SHIFT, S, movetoworkspace, special:magic
 bind = $mainMod, mouse_down, workspace, e+1
 bind = $mainMod, mouse_up, workspace, e-1
 
-# Add a window to a togglegroup
-bind = $mainMod SHIFT, G, togglegroup
-bind = $mainMod CTRL, h, moveintogroup, l
-bind = $mainMod CTRL, j, moveintogroup, d
-bind = $mainMod CTRL, k, moveintogroup, u
-bind = $mainMod CTRL, l, moveintogroup, r
-
 # Move/resize windows with mainMod + LMB/RMB and dragging
 bindm = $mainMod, mouse:272, movewindow
 bindm = $mainMod, mouse:273, resizewindow
@@ -376,12 +332,10 @@ bind = $mainMod SHIFT, semicolon, submap, layout
 submap = layout
 
 # Layout options
-# bind = , a, exec, hyprctl keyword general:layout dwindle
-bind = , a, togglegroup
+bind = , a, exec, hyprctl keyword general:layout dwindle
 bind = , a, submap, reset
 
-# bind = , s, exec, hyprctl keyword general:layout master
-bind = , s, togglegroup
+bind = , s, exec, hyprctl keyword general:layout master
 bind = , s, submap, reset
 
 bind = , g, togglefloating  # Changed to g for floating (like Pop Shell)
