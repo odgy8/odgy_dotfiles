@@ -1,7 +1,31 @@
-@import "mocha.css";
-
 window#waybar {
-  background-color: shade(#1e1e2e, 0.9);
+  background-color: rgba(0, 0, 0, 0);
   border: 2px solid alpha(#11111b, 0.3);
   color: white;
+}
+
+#workspaces button {
+  padding: 0 5px;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+#pulseaudio {
+  padding-right: 1rem;
+}
+
+#power-profiles-daemon {
+  padding-right: 1rem;
+}
+
+#cpu {
+  padding-right: 1rem;
+}
+
+#memory {
+  padding-right: 1rem;
+}
+
+#tray {
+  padding-right: 1rem;
 }
