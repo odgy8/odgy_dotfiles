@@ -36,10 +36,15 @@ vim.opt.smartindent = true
 vim.opt.scrolloff = 12
 vim.opt.colorcolumn = "120"
 
+-- This is for comments.
+-- There is additional config in after/ftpluigin/python.lua too. If there are issues with python files, then check there
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
 	callback = function()
-		vim.opt.formatoptions:remove({ "r", "o" })
+		-- o is for starting a NEW comment block when pressing O or o from normal mode
+		vim.opt.formatoptions:remove({ "o" })
+		-- r is for staying in comment "mode" when pressing enter while in a comment block
+		-- vim.opt.formatoptions:remove({ "r" })
 	end,
 })
 

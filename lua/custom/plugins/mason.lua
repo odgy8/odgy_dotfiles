@@ -5,7 +5,6 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			"neovim/nvim-lspconfig",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-
 			"hrsh7th/nvim-cmp", -- Completion plugin
 			"hrsh7th/cmp-nvim-lsp", -- LSP completion
 			"L3MON4D3/LuaSnip", -- Snippet engine
@@ -26,7 +25,6 @@ return {
 
 			-- Capabilities for better completion
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-
 			-- Set up Mason LSP config
 			require("mason-lspconfig").setup({
 				-- List of LSP servers to automatically install
@@ -36,7 +34,8 @@ return {
 					"gopls", -- Go
 					"cssls", -- CSS
 					"html", -- HTML
-					"pyright", -- Python
+					-- "pyright", -- Python -- Disabled in favor of python-lsp-server
+					"pylsp", -- Python LSP Server
 					"eslint", --Like... Everything...
 					"emmet_language_server", -- JSX/TSX emmet auto complete functionality
 				},
@@ -46,6 +45,34 @@ return {
 					function(server_name)
 						require("lspconfig")[server_name].setup({
 							capabilities = capabilities,
+						})
+					end,
+					-- Custom handler for python-lsp-server
+					["pylsp"] = function()
+						require("lspconfig").pylsp.setup({
+							capabilities = capabilities,
+							settings = {
+								pylsp = {
+									plugins = {
+										pycodestyle = {
+											enabled = true,
+											maxLineLength = 127,
+										},
+										flake8 = {
+											enabled = false,
+										},
+										autopep8 = {
+											enabled = false,
+										},
+										yapf = {
+											enabled = false,
+										},
+										pylint = {
+											enabled = false,
+										},
+									},
+								},
+							},
 						})
 					end,
 					-- Custom handler for emmet with your specific config
@@ -79,7 +106,6 @@ return {
 					end,
 				},
 			})
-
 			require("mason-tool-installer").setup({
 				ensure_installed = {
 					-- Formatters
@@ -88,7 +114,6 @@ return {
 					"black", -- Python formatter
 					"isort", -- Python import organizer
 					"goimports", -- Go formatter and import organizer
-
 					-- Linters
 					"eslint_d", -- JavaScript/TypeScript linter (faster daemon version)
 					"pylint", -- Python linter
@@ -96,10 +121,8 @@ return {
 				auto_update = true,
 				run_on_start = true, -- Install tools when Neovim starts
 			})
-
 			-- Set up LSP servers
 			local lspconfig = require("lspconfig")
-
 			-- Global LSP keybindings
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
