@@ -1,0 +1,26 @@
+#!/bin/bash
+# Usage: app-volume <app-name> <+5%|-5%>
+# Example: app-volume Brave +5%
+
+APP_NAME="$1"
+VOLUME_CHANGE="$2"
+
+if [ -z "$APP_NAME" ] || [ -z "$VOLUME_CHANGE" ]; then
+    echo "Usage: app-volume <app-name> <volume-change>"
+    echo "Example: app-volume Brave +5%"
+    exit 1
+fi
+
+# Find all sink inputs matching the app name
+SINK_INPUTS=$(pactl list sink-inputs | grep -B 20 "application.name = \"$APP_NAME\"" | grep "Sink Input #" | sed 's/Sink Input #//')
+
+if [ -z "$SINK_INPUTS" ]; then
+    echo "No audio stream found for: $APP_NAME"
+    exit 1
+fi
+
+# Adjust volume for all matching streams
+for INPUT in $SINK_INPUTS; do
+    pactl set-sink-input-volume "$INPUT" "$VOLUME_CHANGE"
+    echo "Adjusted volume for $APP_NAME (Sink Input #$INPUT) by $VOLUME_CHANGE"
+done

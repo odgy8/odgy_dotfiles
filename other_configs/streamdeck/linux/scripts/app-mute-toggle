@@ -1,0 +1,31 @@
+#!/bin/bash
+# Usage: app-mute-toggle <app-name>
+# Example: app-mute-toggle Brave
+
+APP_NAME="$1"
+
+if [ -z "$APP_NAME" ]; then
+    echo "Usage: app-mute-toggle <app-name>"
+    echo "Example: app-mute-toggle Brave"
+    exit 1
+fi
+
+# Find all sink inputs matching the app name
+SINK_INPUTS=$(pactl list sink-inputs | grep -B 20 "application.name = \"$APP_NAME\"" | grep "Sink Input #" | sed 's/Sink Input #//')
+
+if [ -z "$SINK_INPUTS" ]; then
+    echo "No audio stream found for: $APP_NAME"
+    exit 1
+fi
+
+# Toggle mute for all matching streams
+for INPUT in $SINK_INPUTS; do
+    pactl set-sink-input-mute "$INPUT" toggle
+    # Check current mute state to provide feedback
+    MUTED=$(pactl list sink-inputs | grep -A 20 "Sink Input #$INPUT" | grep "Mute:" | awk '{print $2}')
+    if [ "$MUTED" = "yes" ]; then
+        echo "$APP_NAME (Sink Input #$INPUT) is now MUTED"
+    else
+        echo "$APP_NAME (Sink Input #$INPUT) is now UNMUTED"
+    fi
+done
