@@ -28,20 +28,36 @@
                         "state": 0,
                         "states": {
                             "0": {
-                                "text": "brave mute",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/volume-off.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "/home/sam/.local/bin/app-mute-toggle Brave",
                                 "brightness_change": 0,
                                 "switch_page": 0,
-                                "switch_state": 0,
+                                "switch_state": 2,
                                 "text_vertical_align": "middle",
                                 "text_horizontal_align": "",
                                 "font": "",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": ""
+                                "background_color": "#ff631c"
+                            },
+                            "1": {
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/volume-mute.svg",
+                                "keys": "",
+                                "write": "",
+                                "command": "/home/sam/.local/bin/app-mute-toggle Brave",
+                                "brightness_change": 0,
+                                "switch_page": 0,
+                                "switch_state": 1,
+                                "text_vertical_align": "",
+                                "text_horizontal_align": "",
+                                "font": "",
+                                "font_color": "",
+                                "font_size": 0,
+                                "background_color": "#ff0004"
                             }
                         }
                     },
@@ -67,11 +83,11 @@
                         }
                     },
                     "3": {
-                        "state": 1,
+                        "state": 0,
                         "states": {
                             "0": {
-                                "text": "mic mute",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/microphone-lines.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
@@ -83,11 +99,11 @@
                                 "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": ""
+                                "background_color": "#00ca00"
                             },
                             "1": {
-                                "text": "muted",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/microphone-lines-slash.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
@@ -99,16 +115,16 @@
                                 "font": "",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": ""
+                                "background_color": "#d10000"
                             }
                         }
                     },
                     "4": {
-                        "state": 1,
+                        "state": 0,
                         "states": {
                             "0": {
-                                "text": "SPEAKER",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/ear-listen.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "pactl set-default-sink alsa_output.usb-SteelSeries_Arctis_Pro_Wireless-00.stereo-game",
@@ -120,11 +136,11 @@
                                 "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": "#00ff00"
+                                "background_color": "#00ca00"
                             },
                             "1": {
-                                "text": "HEADSET",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/headphones.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "pactl set-default-sink alsa_output.pci-0000_0c_00.4.analog-stereo",
@@ -165,8 +181,8 @@
                         "state": 0,
                         "states": {
                             "0": {
-                                "text": "brave up",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/arrow-up.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "/home/sam/.local/bin/app-volume Brave +5%",
@@ -178,7 +194,7 @@
                                 "font": "",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": ""
+                                "background_color": "#ff631c"
                             }
                         }
                     },
@@ -187,10 +203,10 @@
                         "states": {
                             "0": {
                                 "text": "",
-                                "icon": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/forward.svg",
                                 "keys": "",
                                 "write": "",
-                                "command": "",
+                                "command": "playerctl next",
                                 "brightness_change": 0,
                                 "switch_page": 0,
                                 "switch_state": 0,
@@ -199,7 +215,7 @@
                                 "font": "",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": ""
+                                "background_color": "#00c4ff"
                             }
                         }
                     },
@@ -207,20 +223,36 @@
                         "state": 0,
                         "states": {
                             "0": {
-                                "text": "MUTE",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/volume-up.svg",
                                 "keys": "",
                                 "write": "",
-                                "command": "pactl set-sink-volume @DEFAULT_SINK@ 0%",
+                                "command": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
                                 "brightness_change": 0,
                                 "switch_page": 0,
-                                "switch_state": 0,
+                                "switch_state": 2,
                                 "text_vertical_align": "middle",
                                 "text_horizontal_align": "",
                                 "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": "#ff5500"
+                                "background_color": "#00ca00"
+                            },
+                            "1": {
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/volume-mute.svg",
+                                "keys": "",
+                                "write": "",
+                                "command": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+                                "brightness_change": 0,
+                                "switch_page": 0,
+                                "switch_state": 1,
+                                "text_vertical_align": "middle",
+                                "text_horizontal_align": "",
+                                "font": "",
+                                "font_color": "",
+                                "font_size": 0,
+                                "background_color": "#d10000"
                             }
                         }
                     },
@@ -228,8 +260,8 @@
                         "state": 0,
                         "states": {
                             "0": {
-                                "text": "+",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/plus.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
@@ -270,8 +302,8 @@
                         "state": 0,
                         "states": {
                             "0": {
-                                "text": "brave down ",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/arrow-down.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "/home/sam/.local/bin/app-volume Brave -5%",
@@ -283,7 +315,7 @@
                                 "font": "",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": ""
+                                "background_color": "#ff631c"
                             }
                         }
                     },
@@ -292,10 +324,10 @@
                         "states": {
                             "0": {
                                 "text": "",
-                                "icon": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/backward.svg",
                                 "keys": "",
                                 "write": "",
-                                "command": "",
+                                "command": "playerctl previous",
                                 "brightness_change": 0,
                                 "switch_page": 0,
                                 "switch_state": 0,
@@ -304,7 +336,7 @@
                                 "font": "",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": ""
+                                "background_color": "#00c4ff"
                             }
                         }
                     },
@@ -312,8 +344,8 @@
                         "state": 0,
                         "states": {
                             "0": {
-                                "text": "PLAY",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/play.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "playerctl play-pause",
@@ -325,11 +357,11 @@
                                 "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": "#ffff00"
+                                "background_color": "#00ca00"
                             },
                             "1": {
-                                "text": "PAUSE",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/pause.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "playerctl play-pause",
@@ -341,7 +373,7 @@
                                 "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
                                 "font_color": "",
                                 "font_size": 0,
-                                "background_color": "#ff0000"
+                                "background_color": "#d10000"
                             }
                         }
                     },
@@ -349,16 +381,16 @@
                         "state": 0,
                         "states": {
                             "0": {
-                                "text": "-",
-                                "icon": "",
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/minus.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
                                 "brightness_change": 0,
                                 "switch_page": 0,
                                 "switch_state": 0,
-                                "text_vertical_align": "middle",
-                                "text_horizontal_align": "",
+                                "text_vertical_align": "middle-bottom",
+                                "text_horizontal_align": "right",
                                 "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
                                 "font_color": "",
                                 "font_size": 0,
