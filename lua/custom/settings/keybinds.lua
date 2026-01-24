@@ -1,3 +1,4 @@
+local FT = require("custom.scripts.format-text")
 local M = {}
 
 function M.setup()
@@ -49,6 +50,20 @@ function M.setup()
 	vim.keymap.set("n", "<leader>dl", function()
 		vim.diagnostic.setloclist()
 	end, { desc = "Add diagnostics to location list" })
+
+	-- Text formatting custom scripts
+	vim.keymap.set("v", "<leader>ts", function()
+		FT.handleStringFormat("camel2snake")
+	end, { desc = "Format hightlighted string from camelCase to snake_case." })
+	vim.keymap.set("v", "<leader>tc", function()
+		FT.handleStringFormat("snake2camel")
+	end, { desc = "Format hightlighted string from snake_case to camelCase." })
+	vim.keymap.set("x", "<leader>ts", function()
+		FT.handleStringFormatBlock("camel2snake")
+	end, { desc = "Format hightlighted string from camelCase to snake_case." })
+	vim.keymap.set("x", "<leader>tc", function()
+		FT.handleStringFormatBlock("snake2camel")
+	end, { desc = "Format hightlighted string from snake_case to camelCase." })
 end
 
 return M
