@@ -1,7 +1,6 @@
 #!/bin/bash
-# Wallpaper setup script - workaround for hyprpaper config loading bug
 
-# Wait for hyprpaper to initialize
+# Wait for hyprpaper to start
 sleep 2
 
 # Set wallpapers for all monitors

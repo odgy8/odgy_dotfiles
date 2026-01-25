@@ -1,3 +1,5 @@
+@import "colours/colours.css";
+
 * {
   font-family: monospace;
   font-size: 14px;
@@ -66,4 +68,11 @@ window#waybar {
 
 #pulseaudio {
   color: #89dceb;
+}
+
+#custom-notifications {
+  background-color: rgba(30, 30, 46, 0.8);
+  font-family: "NotoSansMono Nerd Font";
+  min-width: 1.5rem;
+  padding: 0 10px;
 }
