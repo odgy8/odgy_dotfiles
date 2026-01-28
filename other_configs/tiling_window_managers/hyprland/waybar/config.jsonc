@@ -6,28 +6,28 @@
     "margin-bottom": 8,
     "margin-left": 8,
     "margin-right": 8,
-    "height": 40,
+    "height": 25,
     "spacing": 8,
-    "modules-left": [
-        "hyprland/workspaces",
-    ],
+    "modules-left": [],
     "modules-center": [
-        "clock"
-    ],
-  "modules-right": [
+        "hyprland/workspaces",
+        "custom/separator1",
+        "clock",
+        "custom/separator2",
         "pulseaudio",
-        "power-profiles-daemon",
-        "cpu",
-        "memory",
+        // "power-profiles-daemon",
+        // "cpu",
+        // "memory",
         "tray",
         "custom/notifications",
         "custom/power"
     ],
+    "modules-right": [],
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
         "warp-on-scroll": false,
-        "format": "{name}: {icon}",
+        "format": "{name}",
         "format-icons": {
            "urgent": "⚠",
             "active": "●",
@@ -113,4 +113,12 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true
   },
+  "custom/separator1": {
+    "format": "|",
+    "tooltip": false
+  },
+  "custom/separator2": {
+    "format": "|",
+    "tooltip": false
+  }
 }
