@@ -2,8 +2,8 @@
 {
     "layer": "top",
     "position": "top",
-    "margin-top": 8,
-    "margin-bottom": 8,
+    "margin-top": 2,
+    "margin-bottom": 2,
     "margin-left": 8,
     "margin-right": 8,
     "height": 25,
