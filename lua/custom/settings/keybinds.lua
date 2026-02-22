@@ -26,7 +26,7 @@ function M.setup()
 	vim.keymap.set("n", "<leader>cls", "0d$", { desc = "Clear lines contents" }) -- Clears current line of all text
 	vim.keymap.set("n", "<leader>nl", "yyp0d$", { desc = "New empty line - no insert mode" }) -- Adds a new empty line below the current, but auto escapes the insert mode
 
-	vim.keymap.set("n", "<Esc>", ":noh<CR>", { silent = true }) -- Allows you to hit escape to stop looking at highlighted text after searching
+	vim.keymap.set("n", "<Esc>", ":noh<CR>", { silent = true, desc = "Clear search highlight" }) -- Allows you to hit escape to stop looking at highlighted text after searching
 
 	vim.keymap.set("x", "p", "pgvy", { desc = "Rebinds the paste to ensure the copied data remains in the clipboard" })
 	vim.keymap.set("v", "<D-v>", "p<Esc>", { desc = "Paste with Cmd+V and exit visual mode" }) -- This is for using command + v on a mac...

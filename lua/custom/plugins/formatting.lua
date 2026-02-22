@@ -19,6 +19,8 @@ return {
 					go = { "goimports" },
 					lua = { "stylua" },
 					python = { "black", "isort" },
+					php = { "pint" },
+					blade = { "blade-formatter" },
 				},
 				format_on_save = {
 					timeout_ms = 2000,

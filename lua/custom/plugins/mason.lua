@@ -38,6 +38,7 @@ return {
 					"pylsp", -- Python LSP Server
 					"eslint", --Like... Everything...
 					"emmet_language_server", -- JSX/TSX emmet auto complete functionality
+					"intelephense", -- PHP
 				},
 				automatic_installation = true,
 				handlers = {
@@ -114,6 +115,8 @@ return {
 					"black", -- Python formatter
 					"isort", -- Python import organizer
 					"goimports", -- Go formatter and import organizer
+					"pint", -- PHP/Laravel formatter
+					"blade-formatter", -- Laravel Blade templates
 					-- Linters
 					"eslint_d", -- JavaScript/TypeScript linter (faster daemon version)
 					"pylint", -- Python linter

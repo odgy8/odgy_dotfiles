@@ -15,10 +15,10 @@ return {
 			local smart_splits = require("smart-splits")
 
 			-- Moving between splits (keep these as they are)
-			vim.keymap.set("n", "<C-h>", smart_splits.move_cursor_left)
-			vim.keymap.set("n", "<C-j>", smart_splits.move_cursor_down)
-			vim.keymap.set("n", "<C-k>", smart_splits.move_cursor_up)
-			vim.keymap.set("n", "<C-l>", smart_splits.move_cursor_right)
+			vim.keymap.set("n", "<C-h>", smart_splits.move_cursor_left, { desc = "Move to left split" })
+			vim.keymap.set("n", "<C-j>", smart_splits.move_cursor_down, { desc = "Move to lower split" })
+			vim.keymap.set("n", "<C-k>", smart_splits.move_cursor_up, { desc = "Move to upper split" })
+			vim.keymap.set("n", "<C-l>", smart_splits.move_cursor_right, { desc = "Move to right split" })
 
 			-- Quick window commands
 			vim.keymap.set("n", "<C-w>z", "<C-w>|<C-w>_", { desc = "Zoom window" })
