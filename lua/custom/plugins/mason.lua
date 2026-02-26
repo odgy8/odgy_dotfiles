@@ -115,7 +115,8 @@ return {
 					"black", -- Python formatter
 					"isort", -- Python import organizer
 					"goimports", -- Go formatter and import organizer
-					"pint", -- PHP/Laravel formatter
+					-- commenting out for local dev, needed for work only
+					--"pint", -- PHP/Laravel formatter
 					"blade-formatter", -- Laravel Blade templates
 					-- Linters
 					"eslint_d", -- JavaScript/TypeScript linter (faster daemon version)
