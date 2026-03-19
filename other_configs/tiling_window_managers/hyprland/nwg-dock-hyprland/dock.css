@@ -1,0 +1,39 @@
+window {
+    background: rgba(15, 15, 20, 0.75);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#box {
+    padding: 4px 8px;
+}
+
+button {
+    border-radius: 10px;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    transition: background 0.15s ease;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+button:focus {
+    background: rgba(51, 204, 255, 0.2);
+    box-shadow: none;
+}
+
+image {
+    -gtk-icon-shadow: none;
+}
+
+/* Active window indicator dot */
+#active-indicator {
+    background: rgba(51, 204, 255, 0.9);
+    border-radius: 50%;
+    min-height: 4px;
+    min-width: 4px;
+    margin-top: 2px;
+}

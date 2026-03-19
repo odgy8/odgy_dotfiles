@@ -3,6 +3,7 @@
   "ignore-gtk-theme": true,
   "positionX": "right",
   "positionY": "top",
+  "output": "DP-2",
   "layer": "overlay",
   "control-center-layer": "top",
   "layer-shell": true,
