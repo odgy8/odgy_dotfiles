@@ -1,0 +1,92 @@
+button.workspace {
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+button.workspace.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.bar-container {
+  background-color: rgba(0, 0, 0, 0.1);
+  min-height: 30px;
+}
+
+.bar-clock-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0 6px;
+}
+
+.bar-clock-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.bar-tray-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 4px;
+}
+
+.bar-tray-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.bar-volume-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 4px;
+}
+
+.bar-volume-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.task-btn {
+  padding: 0 8px;
+  min-height: 22px;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.task-btn:hover {
+  color: #ffffff;
+}
+
+.task-focused {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.tray-item {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 4px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.tray-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

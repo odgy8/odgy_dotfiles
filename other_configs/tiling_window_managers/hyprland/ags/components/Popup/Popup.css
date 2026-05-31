@@ -1,0 +1,294 @@
+/* ── Main window ─────────────────────────────────────────── */
+.popup-outer {
+  background: transparent;
+}
+
+.calendar-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.calendar-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  min-width: 28px;
+  min-height: 28px;
+  margin: 6px 6px 0 0;
+  padding: 0;
+}
+
+.calendar-close-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+}
+
+.popup {
+  background-color: #18181b;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  padding: 6px 12px;
+  min-width: 340px;
+}
+
+.popup-scroll > * {
+  padding: 0;
+}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 12px;
+}
+
+/* ── Typography ──────────────────────────────────────────── */
+.section-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.07em;
+}
+
+.primary-label {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.secondary-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+}
+
+.icon-label {
+  font-size: 1rem;
+  min-width: 22px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pct-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  min-width: 36px;
+}
+
+/* ── Sliders ─────────────────────────────────────────────── */
+slider trough {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  min-height: 4px;
+}
+
+slider highlight {
+  background-color: #4a9eff;
+  border-radius: 4px;
+}
+
+slider slider {
+  background-color: #ffffff;
+  border-radius: 50%;
+  min-width: 14px;
+  min-height: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Player source dropdown ──────────────────────────────── */
+.player-dropdown {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #ffffff;
+  min-height: 28px;
+  font-size: 0.85rem;
+}
+
+.player-dropdown button {
+  background: transparent;
+  border: none;
+  padding: 0 8px;
+}
+
+/* ── Media player ────────────────────────────────────────── */
+.cover-art {
+  border-radius: 8px;
+  min-width: 60px;
+  min-height: 60px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.track-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.track-artist {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+}
+
+.time-label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.78rem;
+  min-width: 32px;
+}
+
+.media-btn {
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.75);
+  min-width: 32px;
+  min-height: 32px;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.media-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.media-btn-play {
+  background-color: rgba(74, 158, 255, 0.2);
+  color: #4a9eff;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 50%;
+}
+
+.media-btn-play:hover {
+  background-color: rgba(74, 158, 255, 0.35);
+}
+
+/* ── Battery / user ──────────────────────────────────────── */
+.battery-pct {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.battery-time {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.8rem;
+}
+
+.mixer-header-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-height: 0;
+}
+
+.mixer-header-btn:hover .section-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.mixer-btn {
+  min-width: 24px;
+  min-height: 24px;
+  font-size: 0.8rem;
+}
+
+.action-btn {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.75);
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  font-size: 0.95rem;
+}
+
+.action-btn:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.action-btn-danger:hover {
+  background-color: rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* ── Sink selector ───────────────────────────────────────── */
+.sink-btn {
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sink-btn-active {
+  background: rgba(74, 158, 255, 0.15);
+  color: #4a9eff;
+}
+
+.sink-btn-active:hover {
+  background: rgba(74, 158, 255, 0.22);
+}
+
+/* ── Notifications ───────────────────────────────────────── */
+.notif-row {
+  border-radius: 8px;
+  padding: 6px 4px;
+}
+
+.notif-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.notif-app {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.notif-time {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.78rem;
+  min-width: 38px;
+}
+
+.notif-dismiss {
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  min-width: 22px;
+  min-height: 22px;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+.notif-dismiss:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.clear-btn {
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(239, 68, 68, 0.7);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  min-height: 24px;
+}
+
+.clear-btn:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.empty-label {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.85rem;
+  padding: 8px 0;
+}
