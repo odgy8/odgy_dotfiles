@@ -10,9 +10,9 @@ export default function Volume() {
     <box orientation={Gtk.Orientation.VERTICAL} spacing={8}>
       <VolumeSliders />
       <SinkSelector />
-      <Bluetooth />
       <AppMixer />
       <MediaPlayer />
+      <Bluetooth />
     </box>
   );
 }
