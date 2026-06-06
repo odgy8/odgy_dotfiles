@@ -3,7 +3,12 @@ import { createState, createMemo, onCleanup, With } from "ags";
 import { Gtk } from "ags/gtk4";
 
 export default function Taskbar() {
-  const hypr = AstalHyprland.get_default();
+  let hypr: AstalHyprland.Hyprland;
+  try {
+    hypr = AstalHyprland.get_default();
+  } catch {
+    return <box />;
+  }
 
   const [clients, setClients] = createState(hypr.get_clients());
   const [focusedAddr, setFocusedAddr] = createState(

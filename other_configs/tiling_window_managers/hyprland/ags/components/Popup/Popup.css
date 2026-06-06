@@ -5,7 +5,6 @@
 
 .calendar-card {
   padding: 0;
-  overflow: hidden;
 }
 
 .calendar-close-btn {
@@ -291,4 +290,54 @@ slider slider {
   color: rgba(255, 255, 255, 0.25);
   font-size: 0.85rem;
   padding: 8px 0;
+}
+
+/* ── Bluetooth ───────────────────────────────────────────── */
+.bt-power-on {
+  color: #4a9eff;
+  background-color: rgba(74, 158, 255, 0.15);
+  border-color: rgba(74, 158, 255, 0.25);
+}
+
+.bt-power-on:hover {
+  background-color: rgba(74, 158, 255, 0.25);
+}
+
+.bt-icon-active {
+  color: #4a9eff;
+}
+
+.bt-device-row {
+  border-radius: 8px;
+  padding: 5px 4px;
+}
+
+.bt-device-row:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.bt-connected-btn {
+  color: #4a9eff;
+  background-color: rgba(74, 158, 255, 0.12);
+  border-color: rgba(74, 158, 255, 0.2);
+}
+
+.bt-connected-btn:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.bt-scan-active {
+  color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.bt-scan-active:hover {
+  background-color: rgba(245, 158, 11, 0.25);
+}
+
+.bt-discovered-row {
+  opacity: 0.75;
 }

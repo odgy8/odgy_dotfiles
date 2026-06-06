@@ -1,6 +1,7 @@
 // Package imports
 import app from "ags/gtk4/app";
 import { createState } from "ags";
+import Adw from "gi://Adw";
 
 // Style imports
 import style from "./sambar.css";
@@ -14,6 +15,8 @@ import Popup from "./components/Popup/Popup";
 import Volume from "./components/Volume/Volume";
 import CalendarPopup from "./components/Calendar/CalendarPopup";
 import Tray from "./components/Tray/Tray";
+
+Adw.StyleManager.get_default().colorScheme = Adw.ColorScheme.PREFER_DARK;
 
 app.start({
   css: style + BarCss + PopupCss + ButtonCss,

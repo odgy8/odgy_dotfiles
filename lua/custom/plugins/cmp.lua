@@ -17,6 +17,9 @@ return {
             -- Load friendly snippets
             require('luasnip.loaders.from_vscode').lazy_load()
 
+            local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+            cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
             cmp.setup({
                 snippet = {
                     expand = function(args)
@@ -32,7 +35,7 @@ return {
                     ['<A-k>'] = cmp.mapping.scroll_docs(4),
                     ['<A-Space>'] = cmp.mapping.complete(),
                     ['<A-e>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item
+                    ['<CR>'] = cmp.mapping.confirm({ select = false }),
                     ['<Tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()

@@ -3,7 +3,12 @@ import GLib from "gi://GLib";
 import { createState, createMemo, onCleanup, With } from "ags";
 
 export default function Minimized() {
-  const hypr = AstalHyprland.get_default();
+  let hypr: AstalHyprland.Hyprland;
+  try {
+    hypr = AstalHyprland.get_default();
+  } catch {
+    return <box />;
+  }
 
   const getCount = () =>
     hypr.get_clients().filter(

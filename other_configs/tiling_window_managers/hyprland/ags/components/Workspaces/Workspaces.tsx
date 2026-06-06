@@ -2,7 +2,12 @@ import AstalHyprland from "gi://AstalHyprland";
 import { createState, createMemo, onCleanup, With } from "ags";
 
 export default function Workspaces() {
-  const hypr = AstalHyprland.get_default();
+  let hypr: AstalHyprland.Hyprland;
+  try {
+    hypr = AstalHyprland.get_default();
+  } catch {
+    return <box />;
+  }
 
   const [workspaces, setWorkspaces] = createState(hypr.get_workspaces());
   const [focusedId, setFocusedId] = createState(
