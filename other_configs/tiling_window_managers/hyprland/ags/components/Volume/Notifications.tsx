@@ -43,7 +43,7 @@ export default function Notifications() {
       listBox.get_first_child()!.unparent();
     }
 
-    const list = [...notifd.get_notifications()].reverse();
+    const list = [...notifd.get_notifications()].sort((a: any, b: any) => (b.time ?? 0) - (a.time ?? 0));
 
     if (list.length === 0) {
       const empty = new Gtk.Label({ label: "No notifications" });
