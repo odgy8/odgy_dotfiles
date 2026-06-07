@@ -242,6 +242,28 @@ slider slider {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
+.notif-row-expanded {
+  background-color: rgba(255, 255, 255, 0.04);
+  padding-bottom: 8px;
+}
+
+.notif-detail {
+  padding: 6px 4px 0 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 4px;
+}
+
+.notif-detail-key {
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 0.75rem;
+  min-width: 38px;
+}
+
+.notif-detail-val {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.82rem;
+}
+
 .notif-app {
   color: rgba(255, 255, 255, 0.75);
   font-size: 0.85rem;
@@ -290,6 +312,55 @@ slider slider {
   color: rgba(255, 255, 255, 0.25);
   font-size: 0.85rem;
   padding: 8px 0;
+}
+
+/* ── Notification toasts ─────────────────────────────────── */
+.npopup-outer {
+  background: transparent;
+}
+
+.npopup-toast {
+  background-color: #18181b;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);
+  padding: 12px 14px;
+  min-width: 340px;
+  max-width: 380px;
+}
+
+.npopup-app {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.npopup-summary {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.npopup-body {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.84rem;
+}
+
+.npopup-dismiss {
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  min-width: 22px;
+  min-height: 22px;
+  padding: 0;
+  font-size: 0.95rem;
+}
+
+.npopup-dismiss:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
 }
 
 /* ── Bluetooth ───────────────────────────────────────────── */

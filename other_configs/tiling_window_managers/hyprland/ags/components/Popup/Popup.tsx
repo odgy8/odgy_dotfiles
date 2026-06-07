@@ -1,4 +1,5 @@
 import { Astal, Gtk } from "ags/gtk4";
+import Gdk from "gi://Gdk";
 import { type Accessor, type Setter } from "ags";
 
 import PopupCss from "./Popup.css";
@@ -18,12 +19,18 @@ export default function Popup({
 }: PopupProps) {
   const anchor = Astal.WindowAnchor;
 
+  // Calculate usable height: monitor height minus bar (30px) minus margins (24px)
+  const gdkMonitors = Gdk.Display.get_default()?.get_monitors();
+  const gdkMonitor = gdkMonitors?.get_item(monitor) as Gdk.Monitor | null;
+  const monitorHeight = gdkMonitor?.get_geometry().height ?? 1080;
+  const maxHeight = monitorHeight - 30 - 24;
+
   // Scroll wrapper so content never overflows off-screen
   const scroll = new Gtk.ScrolledWindow({
     hscrollbarPolicy: Gtk.PolicyType.NEVER,
     vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
     propagateNaturalHeight: true,
-    maxContentHeight: 700,
+    maxContentHeight: maxHeight,
   });
   scroll.set_child(children as unknown as Gtk.Widget);
 

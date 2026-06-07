@@ -4,15 +4,17 @@ import SinkSelector from "./SinkSelector";
 import AppMixer from "./AppMixer";
 import MediaPlayer from "./MediaPlayer";
 import Bluetooth from "./Bluetooth";
+import Notifications from "./Notifications";
 
 export default function Volume() {
   return (
     <box orientation={Gtk.Orientation.VERTICAL} spacing={8}>
       <VolumeSliders />
-      <SinkSelector />
       <AppMixer />
       <MediaPlayer />
       <Bluetooth />
+      <box><SinkSelector /></box>
+      <Notifications />
     </box>
   );
 }
