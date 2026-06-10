@@ -28,6 +28,7 @@ return {
             auto_install = true,
             highlight = {
                 enable = true,
+                disable = { "markdown", "markdown_inline" },
                 additional_vim_regex_highlighting = false,
             },
             indent = { enable = true },
@@ -40,6 +41,13 @@ return {
                     node_decremental = "<bs>",
                 },
             },
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "markdown",
+            callback = function(ev)
+                vim.treesitter.stop(ev.buf)
+            end,
         })
 
         -- Treesitter folding
