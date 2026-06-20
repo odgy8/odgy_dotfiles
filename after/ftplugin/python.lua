@@ -1,3 +1,24 @@
+-- Auto-configure pylsp to use the project venv if one exists
+vim.api.nvim_create_autocmd("LspAttach", {
+	buffer = 0,
+	once = true,
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if not client or client.name ~= "pylsp" then return end
+		local root = client.root_dir or vim.fn.getcwd()
+		local venv = root .. "/venv"
+		if vim.fn.isdirectory(venv) == 1 then
+			client.notify("workspace/didChangeConfiguration", {
+				settings = {
+					pylsp = {
+						plugins = { jedi = { environment = venv } },
+					},
+				},
+			})
+		end
+	end,
+})
+
 -- Force formatoptions for Python files. This is pretty agressive, but seems like pytlsp is blocking the comments
 -- stuff and it's annoying as hell
 -- Directly set the string instead of using append/remove

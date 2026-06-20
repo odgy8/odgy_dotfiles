@@ -60,7 +60,6 @@ return {
 				javascriptreact = { "eslint" },
 				typescript = { "eslint" },
 				typescriptreact = { "eslint" },
-				python = { "pylint" },
 			}
 
 			-- Set up lint on save
