@@ -9,7 +9,7 @@ import Section from "../../widgets/Section";
 import Workspaces from "../Workspaces/Workspaces";
 import Clock from "../../widgets/Clock";
 import Minimized from "../Minimized/Minimized";
-import { sinkMute } from "../Volume/volumeControl";
+import { sourceMute } from "../Volume/volumeControl";
 
 interface BarProps {
   setIsOpen: Setter<boolean>;
@@ -27,18 +27,10 @@ export default function Bar({
   const anchor = Astal.WindowAnchor;
   const exlusivity = Astal.Exclusivity;
 
-  const volumeIcon = sinkMute.as((_muted) => {
-    // if (muted) return "󰖁";
-    // const v = sinkVolumePercent.peek();
-    // if (v < 33) return "󰕿";
-    // if (v < 66) return "󰖀";
-    return "󰕾";
-  });
-
   const Right = () => (
     <box spacing={8}>
       <button class="bar-volume-btn" onClicked={() => setIsOpen(true)}>
-        <label label={volumeIcon} />
+        <label label="󰒓" />
       </button>
       <Minimized />
       <button class="bar-tray-btn" onClicked={() => setIsTrayOpen(true)}>
@@ -61,12 +53,15 @@ export default function Bar({
         centerWidget={
           <Section
             content={
-              <button
-                class="bar-clock-btn"
-                onClicked={() => setIsCalendarOpen(true)}
-              >
-                <Clock />
-              </button>
+              <box spacing={6}>
+                <label label={sourceMute.as((m) => (m ? "󰍭" : "󰍬"))} />
+                <button
+                  class="bar-clock-btn"
+                  onClicked={() => setIsCalendarOpen(true)}
+                >
+                  <Clock />
+                </button>
+              </box>
             }
           />
         }
