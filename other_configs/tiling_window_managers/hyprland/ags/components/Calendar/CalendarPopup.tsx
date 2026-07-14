@@ -32,6 +32,11 @@ function makeWebView(related?: WebKit.WebView): WebKit.WebView {
   settings.set_user_agent(CHROME_UA);
   settings.set_enable_javascript(true);
   settings.set_enable_javascript_markup(true);
+  // Google Calendar's Meet widget probes camera/mic via getUserMedia, which
+  // spins up WebKit's PipeWire capture backend — that backend segfaults on
+  // this system and the crash/respawn/reload cycle looks like a freeze.
+  settings.set_enable_media_stream(false);
+  settings.set_enable_webrtc(false);
 
   return view;
 }
