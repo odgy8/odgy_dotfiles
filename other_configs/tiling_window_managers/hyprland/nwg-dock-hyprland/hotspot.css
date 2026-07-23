@@ -1,0 +1,6 @@
+window {
+  background: rgba(51, 204, 255, 0.6);
+  background-clip: content-box;
+  border-radius: 2px;
+  padding: 6px 90px;
+}
