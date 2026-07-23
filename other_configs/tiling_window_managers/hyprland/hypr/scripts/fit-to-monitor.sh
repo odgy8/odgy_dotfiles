@@ -1,5 +1,6 @@
 #!/bin/bash
-PADDING=10
+PADDING_X=10
+PADDING_Y=2
 
 WIN=$(hyprctl activewindow -j)
 WIN_ADDR=$(echo "$WIN" | jq -r '.address')
@@ -27,10 +28,10 @@ BAR_H=$(hyprctl layers -j | jq --arg mon "$MON_NAME" '
 ' | head -1)
 BAR_H=${BAR_H:-0}
 
-TARGET_W=$((LOG_W - RES_LEFT - RES_RIGHT - PADDING * 2))
-TARGET_H=$((LOG_H - BAR_H - RES_BOTTOM - PADDING * 2 - 30))
-TARGET_X=$((MON_X + RES_LEFT + PADDING))
-TARGET_Y=$((MON_Y + BAR_H + PADDING + 30))
+TARGET_W=$((LOG_W - RES_LEFT - RES_RIGHT - PADDING_X * 2))
+TARGET_H=$((LOG_H - BAR_H - RES_BOTTOM - PADDING_Y * 2 - 10))
+TARGET_X=$((MON_X + RES_LEFT + PADDING_X))
+TARGET_Y=$((MON_Y + BAR_H + PADDING_Y + 25))
 
 if [ "$IS_FLOATING" != "true" ]; then
     hyprctl dispatch togglefloating address:$WIN_ADDR
