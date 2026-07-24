@@ -1,6 +1,10 @@
 import AstalHyprland from "gi://AstalHyprland";
 import { createState, createMemo, onCleanup, With } from "ags";
 
+type INFERRED_WORKSPACE = {
+  id: number;
+};
+
 export default function Workspaces() {
   let hypr: AstalHyprland.Hyprland;
   try {
@@ -26,7 +30,11 @@ export default function Workspaces() {
 
   // createMemo tracks both dependencies so With re-renders on either change
   const state = createMemo(() => ({
-    list: workspaces().sort((a, b) => a.id - b.id),
+    list: workspaces()
+      // There is a ws (-98) which is used by the minimise capability which is why why need to explicitly say over 0
+      .filter((ws: INFERRED_WORKSPACE) => ws.id > 0)
+      .sort((a: INFERRED_WORKSPACE, b: INFERRED_WORKSPACE) => a.id - b.id),
+
     focused: focusedId(),
   }));
 
@@ -35,7 +43,7 @@ export default function Workspaces() {
       <With value={state}>
         {({ list, focused }) => (
           <box spacing={4}>
-            {list.map((ws) => (
+            {list.map((ws: INFERRED_WORKSPACE) => (
               <button
                 class={focused === ws.id ? "workspace active" : "workspace"}
                 widthRequest={28}

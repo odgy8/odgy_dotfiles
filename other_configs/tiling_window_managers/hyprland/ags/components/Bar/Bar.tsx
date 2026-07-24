@@ -27,14 +27,32 @@ export default function Bar({
   const anchor = Astal.WindowAnchor;
   const exlusivity = Astal.Exclusivity;
 
-  const Right = () => (
+  const LeftSection = () => (
+    <box spacing={8}>
+      <Workspaces />
+    </box>
+  );
+
+  const CenterSection = () => (
+    <box spacing={6}>
+      <Minimized />
+
+      <label label={sourceMute.as((m) => (m ? "󰍭" : "󰍬"))} />
+
+      <button class="bar-clock-btn" onClicked={() => setIsCalendarOpen(true)}>
+        <Clock />
+      </button>
+
+      <button class="bar-tray-btn" onClicked={() => setIsTrayOpen(true)}>
+        <label label="󰀻" />
+      </button>
+    </box>
+  );
+
+  const RightSection = () => (
     <box spacing={8}>
       <button class="bar-volume-btn" onClicked={() => setIsOpen(true)}>
         <label label="󰒓" />
-      </button>
-      <Minimized />
-      <button class="bar-tray-btn" onClicked={() => setIsTrayOpen(true)}>
-        <label label="󰀻" />
       </button>
     </box>
   );
@@ -49,23 +67,11 @@ export default function Bar({
       exclusivity={exlusivity.EXCLUSIVE}
     >
       <centerbox
-        startWidget={<Section content={<Workspaces />} />}
-        centerWidget={
-          <Section
-            content={
-              <box spacing={6}>
-                <label label={sourceMute.as((m) => (m ? "󰍭" : "󰍬"))} />
-                <button
-                  class="bar-clock-btn"
-                  onClicked={() => setIsCalendarOpen(true)}
-                >
-                  <Clock />
-                </button>
-              </box>
-            }
-          />
-        }
-        endWidget={<Section content={<Right />} />}
+        startWidget={<Section content={<LeftSection />} />}
+
+        centerWidget={<Section content={<CenterSection />} />}
+
+        endWidget={<Section content={<RightSection />} />}
       />
     </window>
   );

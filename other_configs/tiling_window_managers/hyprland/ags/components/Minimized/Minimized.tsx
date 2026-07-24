@@ -2,6 +2,9 @@ import AstalHyprland from "gi://AstalHyprland";
 import GLib from "gi://GLib";
 import { createState, createMemo, onCleanup, With } from "ags";
 
+// Style imports
+import MinimisedCss from "./Minimized.css";
+
 export default function Minimized() {
   let hypr: AstalHyprland.Hyprland;
   try {
@@ -11,9 +14,8 @@ export default function Minimized() {
   }
 
   const getCount = () =>
-    hypr.get_clients().filter(
-      (c) => c.workspace?.name === "special:minimized"
-    ).length;
+    hypr.get_clients().filter((c) => c.workspace?.name === "special:minimized")
+      .length;
 
   const [count, setCount] = createState(getCount());
 
@@ -32,6 +34,7 @@ export default function Minimized() {
         <button
           visible={n > 0}
           class="minimized-btn"
+          css={MinimisedCss}
           onClicked={() => hypr.dispatch("togglespecialworkspace", "minimized")}
         >
           <label label={`󰖰 ${n}`} />
