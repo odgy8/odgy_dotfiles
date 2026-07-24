@@ -46,7 +46,7 @@ button.workspace.active {
   color: #ffffff;
 }
 
-.bar-volume-btn {
+.bar-icon-btn {
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -57,7 +57,7 @@ button.workspace.active {
   padding: 0 4px;
 }
 
-.bar-volume-btn:hover {
+.bar-icon-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }

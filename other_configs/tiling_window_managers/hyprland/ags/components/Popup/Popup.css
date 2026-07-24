@@ -25,10 +25,7 @@
 }
 
 .popup {
-  background-color: #18181b;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  background-color: transparent;
   padding: 6px 12px;
   min-width: 340px;
 }
@@ -39,9 +36,10 @@
 
 /* ── Cards ───────────────────────────────────────────────── */
 .card {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(24, 24, 27, 0.92);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
   padding: 12px;
 }
 

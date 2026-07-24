@@ -13,6 +13,8 @@ import ButtonCss from "./widgets/Button.css";
 import Bar from "./components/Bar/Bar";
 import Popup from "./components/Popup/Popup";
 import Volume from "./components/Volume/Volume";
+import Connectivity from "./components/Connectivity/Connectivity";
+import System from "./components/System/System";
 import CalendarPopup from "./components/Calendar/CalendarPopup";
 import Tray from "./components/Tray/Tray";
 import NotificationPopup from "./components/Notifications/NotificationPopup";
@@ -22,32 +24,157 @@ Adw.StyleManager.get_default().colorScheme = Adw.ColorScheme.PREFER_DARK;
 app.start({
   css: style + BarCss + PopupCss + ButtonCss,
   main() {
-    const [isOpen0, setIsOpen0] = createState<boolean>(false);
-    const [isOpen1, setIsOpen1] = createState<boolean>(false);
-    const [isOpen2, setIsOpen2] = createState<boolean>(false);
+    const [isVolumeOpen0, setIsVolumeOpen0] = createState<boolean>(false);
+    const [isVolumeOpen1, setIsVolumeOpen1] = createState<boolean>(false);
+    const [isVolumeOpen2, setIsVolumeOpen2] = createState<boolean>(false);
+
+    const [isConnectivityOpen0, setIsConnectivityOpen0] =
+      createState<boolean>(false);
+    const [isConnectivityOpen1, setIsConnectivityOpen1] =
+      createState<boolean>(false);
+    const [isConnectivityOpen2, setIsConnectivityOpen2] =
+      createState<boolean>(false);
+
+    const [isSystemOpen0, setIsSystemOpen0] = createState<boolean>(false);
+    const [isSystemOpen1, setIsSystemOpen1] = createState<boolean>(false);
+    const [isSystemOpen2, setIsSystemOpen2] = createState<boolean>(false);
 
     const [isCalendarOpen0, setIsCalendarOpen0] = createState<boolean>(false);
     const [isCalendarOpen1, setIsCalendarOpen1] = createState<boolean>(false);
     const [isCalendarOpen2, setIsCalendarOpen2] = createState<boolean>(false);
 
-    const [isTrayOpen0, setIsTrayOpen0] = createState<boolean>(false);
-    const [isTrayOpen1, setIsTrayOpen1] = createState<boolean>(false);
-    const [isTrayOpen2, setIsTrayOpen2] = createState<boolean>(false);
+    const [isCenterTrayOpen0, setIsCenterTrayOpen0] =
+      createState<boolean>(false);
+    const [isCenterTrayOpen1, setIsCenterTrayOpen1] =
+      createState<boolean>(false);
+    const [isCenterTrayOpen2, setIsCenterTrayOpen2] =
+      createState<boolean>(false);
 
-    Bar({ monitor: 0, setIsOpen: setIsOpen0, setIsCalendarOpen: setIsCalendarOpen0, setIsTrayOpen: setIsTrayOpen0 });
-    Popup({ monitor: 0, isOpen: isOpen0, setIsOpen: setIsOpen0, children: <Volume /> });
-    Popup({ monitor: 0, isOpen: isTrayOpen0, setIsOpen: setIsTrayOpen0, children: <Tray /> });
-    CalendarPopup({ monitor: 0, isOpen: isCalendarOpen0, setIsOpen: setIsCalendarOpen0 });
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~ Monitor 1 ~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Bar({
+      monitor: 0,
+      setIsVolumeOpen: setIsVolumeOpen0,
+      setIsConnectivityOpen: setIsConnectivityOpen0,
+      setIsSystemOpen: setIsSystemOpen0,
+      setIsCalendarOpen: setIsCalendarOpen0,
+      setIsCenterTrayOpen: setIsCenterTrayOpen0,
+    });
+    Popup({
+      monitor: 0,
+      isOpen: isVolumeOpen0,
+      setIsOpen: setIsVolumeOpen0,
+      children: <Volume />,
+    });
+    Popup({
+      monitor: 0,
+      isOpen: isConnectivityOpen0,
+      setIsOpen: setIsConnectivityOpen0,
+      children: <Connectivity />,
+    });
+    Popup({
+      monitor: 0,
+      isOpen: isSystemOpen0,
+      setIsOpen: setIsSystemOpen0,
+      children: <System />,
+    });
+    Popup({
+      monitor: 0,
+      isOpen: isCenterTrayOpen0,
+      setIsOpen: setIsCenterTrayOpen0,
+      children: <Tray />,
+      halign: "center",
+    });
+    CalendarPopup({
+      monitor: 0,
+      isOpen: isCalendarOpen0,
+      setIsOpen: setIsCalendarOpen0,
+    });
     NotificationPopup({ monitor: 0 });
 
-    Bar({ monitor: 1, setIsOpen: setIsOpen1, setIsCalendarOpen: setIsCalendarOpen1, setIsTrayOpen: setIsTrayOpen1 });
-    Popup({ monitor: 1, isOpen: isOpen1, setIsOpen: setIsOpen1, children: <Volume /> });
-    Popup({ monitor: 1, isOpen: isTrayOpen1, setIsOpen: setIsTrayOpen1, children: <Tray /> });
-    CalendarPopup({ monitor: 1, isOpen: isCalendarOpen1, setIsOpen: setIsCalendarOpen1 });
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~ Monitor 2 ~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Bar({
+      monitor: 1,
+      setIsVolumeOpen: setIsVolumeOpen1,
+      setIsConnectivityOpen: setIsConnectivityOpen1,
+      setIsSystemOpen: setIsSystemOpen1,
+      setIsCalendarOpen: setIsCalendarOpen1,
+      setIsCenterTrayOpen: setIsCenterTrayOpen1,
+    });
+    Popup({
+      monitor: 1,
+      isOpen: isVolumeOpen1,
+      setIsOpen: setIsVolumeOpen1,
+      children: <Volume />,
+    });
+    Popup({
+      monitor: 1,
+      isOpen: isConnectivityOpen1,
+      setIsOpen: setIsConnectivityOpen1,
+      children: <Connectivity />,
+    });
+    Popup({
+      monitor: 1,
+      isOpen: isSystemOpen1,
+      setIsOpen: setIsSystemOpen1,
+      children: <System />,
+    });
+    Popup({
+      monitor: 1,
+      isOpen: isCenterTrayOpen1,
+      setIsOpen: setIsCenterTrayOpen1,
+      children: <Tray />,
+      halign: "center",
+    });
+    CalendarPopup({
+      monitor: 1,
+      isOpen: isCalendarOpen1,
+      setIsOpen: setIsCalendarOpen1,
+    });
 
-    Bar({ monitor: 2, setIsOpen: setIsOpen2, setIsCalendarOpen: setIsCalendarOpen2, setIsTrayOpen: setIsTrayOpen2 });
-    Popup({ monitor: 2, isOpen: isOpen2, setIsOpen: setIsOpen2, children: <Volume /> });
-    Popup({ monitor: 2, isOpen: isTrayOpen2, setIsOpen: setIsTrayOpen2, children: <Tray /> });
-    CalendarPopup({ monitor: 2, isOpen: isCalendarOpen2, setIsOpen: setIsCalendarOpen2 });
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~ Monitor 3 ~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Bar({
+      monitor: 2,
+      setIsVolumeOpen: setIsVolumeOpen2,
+      setIsConnectivityOpen: setIsConnectivityOpen2,
+      setIsSystemOpen: setIsSystemOpen2,
+      setIsCalendarOpen: setIsCalendarOpen2,
+      setIsCenterTrayOpen: setIsCenterTrayOpen2,
+    });
+    Popup({
+      monitor: 2,
+      isOpen: isVolumeOpen2,
+      setIsOpen: setIsVolumeOpen2,
+      children: <Volume />,
+    });
+    Popup({
+      monitor: 2,
+      isOpen: isConnectivityOpen2,
+      setIsOpen: setIsConnectivityOpen2,
+      children: <Connectivity />,
+    });
+    Popup({
+      monitor: 2,
+      isOpen: isSystemOpen2,
+      setIsOpen: setIsSystemOpen2,
+      children: <System />,
+    });
+    Popup({
+      monitor: 2,
+      isOpen: isCenterTrayOpen2,
+      setIsOpen: setIsCenterTrayOpen2,
+      children: <Tray />,
+      halign: "center",
+    });
+    CalendarPopup({
+      monitor: 2,
+      isOpen: isCalendarOpen2,
+      setIsOpen: setIsCalendarOpen2,
+    });
   },
 });

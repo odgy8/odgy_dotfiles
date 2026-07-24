@@ -30,7 +30,10 @@ function TrayItemWidget(item: any): Gtk.Widget {
     if (!item.menu_model) return;
     if (popover) popover.unparent();
     item.about_to_show();
-    popover = new Gtk.PopoverMenu({ menuModel: item.menu_model, hasArrow: false });
+    popover = new Gtk.PopoverMenu({
+      menuModel: item.menu_model,
+      hasArrow: false,
+    });
     popover.set_parent(button);
     button.insert_action_group("dbusmenu", item.action_group);
     popover.popup();
@@ -49,13 +52,16 @@ function TrayItemWidget(item: any): Gtk.Widget {
   rightClick.connect("pressed", showMenu);
   button.add_controller(rightClick);
 
-  onCleanup(() => { if (popover) popover.unparent(); });
+  onCleanup(() => {
+    if (popover) popover.unparent();
+  });
 
   return button;
 }
 
 export default function Tray() {
   const box = new Gtk.Box({ spacing: 4 });
+  box.add_css_class("card");
   if (!AstalTray) return box;
 
   const tray = AstalTray.get_default();
@@ -82,8 +88,12 @@ export default function Tray() {
     addItem(item.item_id);
   }
 
-  const addId = tray.connect("item-added", (_: unknown, itemId: string) => addItem(itemId));
-  const rmId = tray.connect("item-removed", (_: unknown, itemId: string) => removeItem(itemId));
+  const addId = tray.connect("item-added", (_: unknown, itemId: string) =>
+    addItem(itemId),
+  );
+  const rmId = tray.connect("item-removed", (_: unknown, itemId: string) =>
+    removeItem(itemId),
+  );
   onCleanup(() => {
     tray.disconnect(addId);
     tray.disconnect(rmId);

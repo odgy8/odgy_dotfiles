@@ -12,16 +12,20 @@ import Minimized from "../Minimized/Minimized";
 import { sourceMute } from "../Volume/volumeControl";
 
 interface BarProps {
-  setIsOpen: Setter<boolean>;
+  setIsVolumeOpen: Setter<boolean>;
+  setIsConnectivityOpen: Setter<boolean>;
+  setIsSystemOpen: Setter<boolean>;
   setIsCalendarOpen: Setter<boolean>;
-  setIsTrayOpen: Setter<boolean>;
+  setIsCenterTrayOpen: Setter<boolean>;
   monitor: number;
 }
 
 export default function Bar({
-  setIsOpen,
+  setIsVolumeOpen,
+  setIsConnectivityOpen,
+  setIsSystemOpen,
   setIsCalendarOpen,
-  setIsTrayOpen,
+  setIsCenterTrayOpen,
   monitor = 0,
 }: BarProps) {
   const anchor = Astal.WindowAnchor;
@@ -43,7 +47,7 @@ export default function Bar({
         <Clock />
       </button>
 
-      <button class="bar-tray-btn" onClicked={() => setIsTrayOpen(true)}>
+      <button class="bar-tray-btn" onClicked={() => setIsCenterTrayOpen(true)}>
         <label label="󰀻" />
       </button>
     </box>
@@ -51,8 +55,26 @@ export default function Bar({
 
   const RightSection = () => (
     <box spacing={8}>
-      <button class="bar-volume-btn" onClicked={() => setIsOpen(true)}>
-        <label label="󰒓" />
+      <button
+        class="bar-icon-btn"
+        tooltipText="Connectivity"
+        onClicked={() => setIsConnectivityOpen(true)}
+      >
+        <label label="󰤨" />
+      </button>
+      <button
+        class="bar-icon-btn"
+        tooltipText="Volume"
+        onClicked={() => setIsVolumeOpen(true)}
+      >
+        <label label="󰕾" />
+      </button>
+      <button
+        class="bar-icon-btn"
+        tooltipText="System"
+        onClicked={() => setIsSystemOpen(true)}
+      >
+        <label label="󰐥" />
       </button>
     </box>
   );

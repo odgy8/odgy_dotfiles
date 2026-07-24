@@ -4,11 +4,14 @@ import { type Accessor, type Setter } from "ags";
 
 import PopupCss from "./Popup.css";
 
+const BAR_HEIGHT = 30;
+
 interface PopupProps {
   isOpen: Accessor<boolean>;
   setIsOpen: Setter<boolean>;
   monitor: number;
   children: JSX.Element;
+  halign?: "start" | "center" | "end";
 }
 
 export default function Popup({
@@ -16,14 +19,20 @@ export default function Popup({
   setIsOpen,
   monitor = 0,
   children,
+  halign = "end",
 }: PopupProps) {
   const anchor = Astal.WindowAnchor;
+  const alignMap = {
+    start: Gtk.Align.START,
+    center: Gtk.Align.CENTER,
+    end: Gtk.Align.END,
+  } as const;
 
-  // Calculate usable height: monitor height minus bar (30px) minus margins (24px)
+  // Calculate usable height: monitor height minus bar minus margins (24px)
   const gdkMonitors = Gdk.Display.get_default()?.get_monitors();
   const gdkMonitor = gdkMonitors?.get_item(monitor) as Gdk.Monitor | null;
   const monitorHeight = gdkMonitor?.get_geometry().height ?? 1080;
-  const maxHeight = monitorHeight - 30 - 24;
+  const maxHeight = monitorHeight - BAR_HEIGHT - 24;
 
   // Scroll wrapper so content never overflows off-screen
   const scroll = new Gtk.ScrolledWindow({
@@ -40,9 +49,9 @@ export default function Popup({
       css={PopupCss}
       class="popup"
       orientation={Gtk.Orientation.VERTICAL}
-      halign={Gtk.Align.END}
+      halign={alignMap[halign]}
       valign={Gtk.Align.START}
-      marginTop={8}
+      marginTop={BAR_HEIGHT}
       marginEnd={8}
     >
       {scroll}
