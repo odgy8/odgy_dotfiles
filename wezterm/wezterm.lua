@@ -2,8 +2,8 @@ local wezterm = require("wezterm")
 local config = {}
 
 -- Font configuration
-config.font = wezterm.font("VictorMono Nerd Font")
-config.font_size = 11
+config.font = wezterm.font("VictorMono Nerd Font", { weight = "Medium" })
+config.font_size = 10
 
 -- -- Wayland and scaling configuration (ADD THESE LINES)
 -- config.enable_wayland = true
@@ -83,6 +83,13 @@ config.colors = {
 	},
 }
 
+-- Boost color vividness (wezterm's AA blending mutes colors vs kitty's rasterizer)
+config.foreground_text_hsb = {
+	hue = 1.0,
+	saturation = 1.2,
+	brightness = 2.5,
+}
+
 -- Scrolling
 config.scrollback_lines = 10000
 
@@ -130,6 +137,16 @@ config.keys = {
 	},
 }
 
+-- SUPER+number -> forward as ALT+number, to drive tmux's
+-- `bind-key -n M-1..M-0 select-window -t N` bindings (tmux.conf:125-134)
+for _, digit in ipairs({ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }) do
+	table.insert(config.keys, {
+		key = digit,
+		mods = "SUPER",
+		action = wezterm.action.SendKey({ key = digit, mods = "ALT" }),
+	})
+end
+
 -- Annoying flashing and bell when it can't do something like you press backpace too many times
 config.audible_bell = "Disabled"
 config.visual_bell = {
@@ -141,13 +158,20 @@ config.visual_bell = {
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 -- Background image configuration
-config.window_background_image = "/home/sam/Pictures/github_coding_images/Owl.png"
-config.window_background_image_hsb = {
-	brightness = 0.05, -- Adjust to taste (0.0 to 1.0)
-	hue = 1.0,
-	saturation = 1.0,
-}
+-- config.window_background_image = "/home/sam/Pictures/github_coding_images/Owl.png"
+-- config.window_background_image_hsb = {
+-- 	brightness = 0.05, -- Adjust to taste (0.0 to 1.0)
+-- 	hue = 1.0,
+-- 	saturation = 1.0,
+-- }
 
-config.window_background_opacity = 1 -- Adjust to taste (0.0 to 1.0)
+config.window_background_opacity = 0.8
+
+-- smear like what is on kitty
+config.cursor_smear = true
+-- optional extras from the PR:
+-- config.cursor_smear_gradient = true
+-- config.cursor_animation_length = 0.15
+-- config.cursor_trail_style = "Torpedo"
 
 return config

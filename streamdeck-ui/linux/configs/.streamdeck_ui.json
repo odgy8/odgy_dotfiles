@@ -29,7 +29,7 @@
                         "states": {
                             "0": {
                                 "text": "",
-                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/volume-off.svg",
+                                "icon": "/home/sam/Pictures/icons/brave-browser-icon.svg",
                                 "keys": "",
                                 "write": "",
                                 "command": "/home/sam/.local/bin/app-mute-toggle Brave",
@@ -87,43 +87,6 @@
                         "states": {
                             "0": {
                                 "text": "",
-                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/microphone-lines.svg",
-                                "keys": "",
-                                "write": "",
-                                "command": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
-                                "brightness_change": 0,
-                                "switch_page": 0,
-                                "switch_state": 2,
-                                "text_vertical_align": "middle",
-                                "text_horizontal_align": "",
-                                "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
-                                "font_color": "",
-                                "font_size": 0,
-                                "background_color": "#00ca00"
-                            },
-                            "1": {
-                                "text": "",
-                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/microphone-lines-slash.svg",
-                                "keys": "",
-                                "write": "",
-                                "command": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
-                                "brightness_change": 0,
-                                "switch_page": 0,
-                                "switch_state": 1,
-                                "text_vertical_align": "middle",
-                                "text_horizontal_align": "",
-                                "font": "",
-                                "font_color": "",
-                                "font_size": 0,
-                                "background_color": "#d10000"
-                            }
-                        }
-                    },
-                    "4": {
-                        "state": 0,
-                        "states": {
-                            "0": {
-                                "text": "",
                                 "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/ear-listen.svg",
                                 "keys": "",
                                 "write": "",
@@ -153,6 +116,43 @@
                                 "font_color": "",
                                 "font_size": 0,
                                 "background_color": "#00a4b6"
+                            }
+                        }
+                    },
+                    "4": {
+                        "state": 0,
+                        "states": {
+                            "0": {
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/microphone-lines.svg",
+                                "keys": "",
+                                "write": "",
+                                "command": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+                                "brightness_change": 0,
+                                "switch_page": 0,
+                                "switch_state": 2,
+                                "text_vertical_align": "middle",
+                                "text_horizontal_align": "",
+                                "font": "/usr/share/fonts/TTF/Roboto-Black.ttf",
+                                "font_color": "",
+                                "font_size": 0,
+                                "background_color": "#00ca00"
+                            },
+                            "1": {
+                                "text": "",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/microphone-lines-slash.svg",
+                                "keys": "",
+                                "write": "",
+                                "command": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+                                "brightness_change": 0,
+                                "switch_page": 0,
+                                "switch_state": 1,
+                                "text_vertical_align": "middle",
+                                "text_horizontal_align": "",
+                                "font": "",
+                                "font_color": "",
+                                "font_size": 0,
+                                "background_color": "#d10000"
                             }
                         }
                     },
@@ -203,10 +203,10 @@
                         "states": {
                             "0": {
                                 "text": "",
-                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/forward.svg",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/backward.svg",
                                 "keys": "",
                                 "write": "",
-                                "command": "playerctl next",
+                                "command": "playerctl previous",
                                 "brightness_change": 0,
                                 "switch_page": 0,
                                 "switch_state": 0,
@@ -324,10 +324,10 @@
                         "states": {
                             "0": {
                                 "text": "",
-                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/backward.svg",
+                                "icon": "/home/sam/Pictures/icons/fontawesome/svgs/solid/forward.svg",
                                 "keys": "",
                                 "write": "",
-                                "command": "playerctl previous",
+                                "command": "playerctl next",
                                 "brightness_change": 0,
                                 "switch_page": 0,
                                 "switch_state": 0,

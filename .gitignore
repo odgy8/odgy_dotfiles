@@ -1,3 +1,6 @@
 local_claude_config.lua
 .env
 **/tmux/plugins/
+clipse/clipboard_history.json
+clipse/clipse.log
+clipse/tmp_files/

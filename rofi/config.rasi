@@ -84,7 +84,7 @@ configuration {
 	/*---------- Misc setting ----------*/
 	terminal: "rofi-sensible-terminal";
 	font: "Mono 12";
-	sort: false;
+	sort: true;
 	threads: 0;
 	click-to-exit: true;
 /*	ignored-prefixes: "";*/

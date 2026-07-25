@@ -1,0 +1,155 @@
+# Font Configuration
+[font]
+normal = { family = "VictorMono Nerd Font", style = "Regular" }
+bold = { family = "VictorMono Nerd Font", style = "Bold" }
+italic = { family = "VictorMono Nerd Font", style = "Italic" }
+bold_italic = { family = "VictorMono Nerd Font", style = "Bold Italic" }
+size = 12.0
+
+# Window Configuration
+[window]
+opacity = 0.85
+blur = true
+startup_mode = "Windowed"
+dimensions = { columns = 120, lines = 40 }
+padding = { x = 12, y = 12 }
+decorations = "buttonless"
+resize_increments = true
+
+# Terminal Configuration  
+[terminal]
+shell = { program = "/bin/zsh" }  # Adjust to your preferred shell
+
+# Cursor Configuration
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
+blink_timeout = 15
+
+# Mouse Configuration
+[mouse]
+hide_when_typing = true
+bindings = [
+    { mouse = "Right", action = "PasteSelection" }
+]
+
+# Keyboard bindings
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "Plus"
+mods = "Control|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control|Shift"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Back"
+mods = "Control|Shift"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Control|Shift"
+action = "CreateNewTab"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Control|Shift"
+action = "CloseTab"
+
+[[keyboard.bindings]]
+key = "Right"
+mods = "Control|Shift"
+action = "SelectNextTab"
+
+[[keyboard.bindings]]
+key = "Left"
+mods = "Control|Shift"
+action = "SelectPreviousTab"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+# Opacity controls (requires external tools like yabai/skhd on macOS or similar on Linux)
+# These would need to be handled by your window manager
+# [[keyboard.bindings]]
+# key = "M"
+# mods = "Control|Shift|Alt"
+# command = { program = "sh", args = ["-c", "echo 'Increase opacity'"] }
+
+# Color scheme - Modern Dark (GitHub Dark theme)
+[colors]
+primary = { foreground = "#e1e3e4", background = "#0d1117" }
+cursor = { text = "#0d1117", cursor = "#58a6ff" }
+selection = { text = "#0d1117", background = "#58a6ff" }
+
+# URL colors
+[colors.hints]
+start = { foreground = "#0d1117", background = "#73daca" }
+end = { foreground = "#0d1117", background = "#73daca" }
+
+# Normal colors
+[colors.normal]
+black = "#484f58"
+red = "#ff7b72"
+green = "#3fb950"
+yellow = "#d29922"
+blue = "#58a6ff"
+magenta = "#bc8cff"
+cyan = "#39c5cf"
+white = "#b1bac4"
+
+# Bright colors
+[colors.bright]
+black = "#6e7681"
+red = "#ffa198"
+green = "#56d364"
+yellow = "#e3b341"
+blue = "#79c0ff"
+magenta = "#d2a8ff"
+cyan = "#56d4dd"
+white = "#f0f6fc"
+
+# Bell configuration
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+color = "#ffffff"
+
+# General settings
+[general]
+import = []
+live_config_reload = true
+
+# Scrolling
+[scrolling]
+history = 10000
+multiplier = 3
+
+# Selection
+[selection]
+save_to_clipboard = true
+
+# URL launcher
+[url]
+launcher = { program = "open" }  # macOS - change to "xdg-open" on Linux
+modifiers = "None"

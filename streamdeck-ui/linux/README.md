@@ -2,6 +2,8 @@
 
 Configuration and scripts for streamdeck-linux-gui on Arch Linux.
 
+Lives at `streamdeck-ui/linux/` in [odgy_dotfiles](../../) — see `../README.md` for the full symlink map (this one needs per-file symlinks, not a single directory symlink).
+
 ## Installation
 
 ### Prerequisites
@@ -60,7 +62,7 @@ Stream Deck uses 72x72 pixel icons by default. Font Awesome SVGs can be used dir
 
 ## Custom Scripts
 
-Scripts are located in `~/.local/bin/` and copied to `./scripts/` for backup.
+Scripts live here at `linux/scripts/` and are symlinked individually into `~/.local/bin/`.
 
 ### app-volume
 
@@ -137,8 +139,8 @@ Start the application with audio playing, then run the above command to see its 
 
 ## Configuration Files
 
-- Main config: `~/.streamdeck_ui.json`
-- Backup location: `./configs/.streamdeck_ui.json`
+- Main config: `~/.streamdeck_ui.json` — symlinked to `linux/configs/.streamdeck_ui.json` in this repo (a single-file symlink, see `../README.md`)
+- `~/.config/streamdeck-ui/streamdeck-ui.conf` also exists (Qt window geometry/GUI state) but isn't tracked here — it's regenerated automatically and isn't meaningful config to version
 
 ## Troubleshooting
 
