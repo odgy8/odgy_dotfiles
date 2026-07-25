@@ -1,6 +1,14 @@
 -- hyprland.lua
--- Lua configuration for Hyprland (replaces hyprland.conf since Hyprland 0.55)
+-- Lua port of hyprland.conf (Hyprland >= 0.55)
 -- https://wiki.hypr.land/Configuring/Start/
+--
+-- Engineering note: dispatchers with a confirmed hl.dsp.* signature (from the
+-- official example config and API docs) use the native form. Anything not
+-- clearly documented (moveintogroup, changegroupactive, resizeactive,
+-- movetoworkspacesilent, pseudo, togglegroup) falls back to
+-- hl.dsp.exec_cmd("hyprctl dispatch ...") instead — identical to what
+-- hyprland.conf already does, so it's guaranteed to behave the same rather
+-- than guessing at an unconfirmed Lua table shape.
 
 ------------------
 -- CONSTANTS
@@ -8,7 +16,7 @@
 
 local mainMod       = "ALT"
 local floatingFirst = true
-local terminal      = "kitty"
+local terminal       = "/home/sam/coding/tooling/wezterm/target/release/wezterm-gui"
 
 ------------------
 -- ENVIRONMENT
@@ -39,17 +47,17 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme prefer-dark")
     hl.exec_cmd("/home/sam/.local/bin/streamdeck --no-ui")
     hl.exec_cmd("clipse -listen")
-    hl.exec_cmd("swaync")
     hl.exec_cmd("sleep 5 && surfshark --auto-connect")
     hl.exec_cmd("hyprctl dispatch movecursor 2880 540")
-    hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o HDMI-A-1')
-    hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o DP-1 -m')
-    hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o DP-2 -m')
-    hl.exec_cmd("hyprswitch init")
+    hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o HDMI-A-1')
+    hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o DP-1 -m')
+    hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o DP-2 -m')
+    hl.exec_cmd("hyprswitch init &")
     hl.exec_cmd("~/.local/bin/colorshell")
-    hl.exec_cmd("swaybg -i /home/sam/Pictures/github_coding_images/hyprland_wallpaper_2.png -m fill")
-    -- Temporary fix for workspace/monitor race condition on startup
-    hl.exec_cmd("sleep 3 && hyprctl reload && hyprctl dispatch workspace 1")
+    hl.exec_cmd("swaybg -i /home/sam/Pictures/github_coding_images/jellyfish.png -m fill")
+    -- Startup workspace/monitor race-condition fix (matches hyprland.conf)
+    hl.exec_cmd("sleep 3 && hyprctl dispatch workspace 10 && hyprctl dispatch moveworkspacetomonitor 10 DP-2")
+    hl.exec_cmd("sleep 4 && hyprctl reload && hyprctl dispatch workspace 1 && hyprctl dispatch moveworkspacetomonitor 1 DP-1")
 end)
 
 ------------------
@@ -196,16 +204,17 @@ hl.device({
 --------------------
 
 -- hyprswitch window switcher
-hl.bind("ALT + tab", hl.dsp.exec_cmd("hyprswitch gui --mod-key alt --key tab"))
+hl.bind(mainMod .. " + tab", hl.dsp.exec_cmd("hyprswitch gui --mod-key alt --key tab"))
 
 -- Session
 hl.bind("CTRL + SHIFT + Escape", hl.dsp.exit())
 
 -- Window management
 hl.bind(mainMod .. " + Q",       hl.dsp.window.close())
-hl.bind(mainMod .. " + G",       hl.dsp.window.float())
+hl.bind(mainMod .. " + G",       hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F",       hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("~/.config/hypr/scripts/fit-to-monitor.sh"))
+hl.bind(mainMod .. " + space",   hl.dsp.exec_cmd("~/.config/rofi/launchers/type-2/launcher.sh"))
 hl.bind(mainMod .. " + P",       hl.dsp.window.pin())
 hl.bind(mainMod .. " + J",       hl.dsp.layout("togglesplit"))
 
@@ -213,39 +222,32 @@ hl.bind(mainMod .. " + J",       hl.dsp.layout("togglesplit"))
 local function focus_and_raise(dir)
     return function()
         hl.dispatch(hl.dsp.focus({ direction = dir }))
-        hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+        hl.dispatch(hl.dsp.exec_cmd("hyprctl dispatch bringactivetotop"))
     end
 end
 
-hl.bind(mainMod .. " + left",  focus_and_raise("l"))
-hl.bind(mainMod .. " + right", focus_and_raise("r"))
-hl.bind(mainMod .. " + up",    focus_and_raise("u"))
-hl.bind(mainMod .. " + down",  focus_and_raise("d"))
-hl.bind(mainMod .. " + h",     focus_and_raise("l"))
-hl.bind(mainMod .. " + l",     focus_and_raise("r"))
-hl.bind(mainMod .. " + k",     focus_and_raise("u"))
-hl.bind(mainMod .. " + j",     focus_and_raise("d"))
+hl.bind(mainMod .. " + left",  focus_and_raise("left"))
+hl.bind(mainMod .. " + right", focus_and_raise("right"))
+hl.bind(mainMod .. " + up",    focus_and_raise("up"))
+hl.bind(mainMod .. " + down",  focus_and_raise("down"))
+hl.bind(mainMod .. " + h",     focus_and_raise("left"))
+hl.bind(mainMod .. " + l",     focus_and_raise("right"))
+hl.bind(mainMod .. " + k",     focus_and_raise("up"))
+hl.bind(mainMod .. " + j",     focus_and_raise("down"))
 
--- Move window: nudge 30px if floating, swap direction if tiled
-local function move_float_or_tiled(floatArgs, tiledDir)
-    return hl.dsp.exec_cmd(string.format(
-        [[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch moveactive %s || hyprctl dispatch movewindow %s']],
-        floatArgs, tiledDir
-    ))
-end
-
-hl.bind(mainMod .. " + SHIFT + h", move_float_or_tiled("-30 0", "l"), { repeating = true })
-hl.bind(mainMod .. " + SHIFT + l", move_float_or_tiled("30 0",  "r"), { repeating = true })
-hl.bind(mainMod .. " + SHIFT + k", move_float_or_tiled("0 -30", "u"), { repeating = true })
-hl.bind(mainMod .. " + SHIFT + j", move_float_or_tiled("0 30",  "d"), { repeating = true })
+-- Move floating window or reorder tiled window
+hl.bind(mainMod .. " + SHIFT + h", hl.dsp.exec_cmd([[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch moveactive -30 0 || hyprctl dispatch movewindow l']]), { repeating = true })
+hl.bind(mainMod .. " + SHIFT + l", hl.dsp.exec_cmd([[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch moveactive 30 0 || hyprctl dispatch movewindow r']]),  { repeating = true })
+hl.bind(mainMod .. " + SHIFT + k", hl.dsp.exec_cmd([[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch moveactive 0 -30 || hyprctl dispatch movewindow u']]), { repeating = true })
+hl.bind(mainMod .. " + SHIFT + j", hl.dsp.exec_cmd([[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch moveactive 0 30 || hyprctl dispatch movewindow d']]),  { repeating = true })
 
 -- Cycle windows in master layout
 hl.bind(mainMod .. " + CTRL + j", hl.dsp.layout("cyclenext"))
 hl.bind(mainMod .. " + CTRL + k", hl.dsp.layout("cycleprev"))
 
 -- Group tab switching (same keys as focus — no-op when not in a group)
-hl.bind(mainMod .. " + k", hl.dsp.group.prev())
-hl.bind(mainMod .. " + j", hl.dsp.group.next())
+hl.bind(mainMod .. " + k", hl.dsp.exec_cmd("hyprctl dispatch changegroupactive b"))
+hl.bind(mainMod .. " + j", hl.dsp.exec_cmd("hyprctl dispatch changegroupactive f"))
 
 -- Workspaces
 for i = 1, 10 do
@@ -254,31 +256,40 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
--- Scroll through workspaces
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
+-- Screenshots and recording
+hl.bind("CTRL + SHIFT + SUPER + 4", hl.dsp.exec_cmd("hyprshot -m region -o ~/Pictures/Screenshots"))
+hl.bind("CTRL + SHIFT + SUPER + R", hl.dsp.exec_cmd([[bash -c 'notify-send -u low "Recording started" "Full screen — SUPER+CTRL+SHIFT+E to stop" && wf-recorder -o $(hyprctl monitors -j | jq -r ".[] | select(.focused==true) | .name") -f ~/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4']]))
+hl.bind("CTRL + SHIFT + SUPER + 3", hl.dsp.exec_cmd([[bash -c 'notify-send -u low "Recording started" "Select a region — SUPER+CTRL+SHIFT+E to stop" && wf-recorder -g "$(slurp)" -f ~/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4']]))
+hl.bind("CTRL + SHIFT + SUPER + E", hl.dsp.exec_cmd([[bash -c 'pkill -INT wf-recorder && notify-send "Recording stopped" "Saved to ~/Videos/Recordings"']]))
+
+-- Clipboard manager (hardcoded to kitty in hyprland.conf, not $terminal)
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd('kitty --class "clipse-clipboard" clipse'))
 
 -- Scratchpad
 hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Minimise / unminimise
-hl.bind(mainMod .. " + M",         hl.dsp.window.move({ workspace = "special:minimized", silent = true }))
+hl.bind(mainMod .. " + M",         hl.dsp.exec_cmd("hyprctl dispatch movetoworkspacesilent special:minimized"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.workspace.toggle_special("minimized"))
 hl.bind(mainMod .. " + SHIFT + U", hl.dsp.window.move({ workspace = "e+0" }))
 
+-- Scroll through workspaces
+hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
+
 -- Groups
 hl.bind(mainMod .. " + SHIFT + G", hl.dsp.group.toggle())
-hl.bind(mainMod .. " + CTRL + h",  hl.dsp.group.move_into({ direction = "l" }))
-hl.bind(mainMod .. " + CTRL + j",  hl.dsp.group.move_into({ direction = "d" }))
-hl.bind(mainMod .. " + CTRL + k",  hl.dsp.group.move_into({ direction = "u" }))
-hl.bind(mainMod .. " + CTRL + l",  hl.dsp.group.move_into({ direction = "r" }))
+hl.bind(mainMod .. " + CTRL + h",  hl.dsp.exec_cmd("hyprctl dispatch moveintogroup l"))
+hl.bind(mainMod .. " + CTRL + j",  hl.dsp.exec_cmd("hyprctl dispatch moveintogroup d"))
+hl.bind(mainMod .. " + CTRL + k",  hl.dsp.exec_cmd("hyprctl dispatch moveintogroup u"))
+hl.bind(mainMod .. " + CTRL + l",  hl.dsp.exec_cmd("hyprctl dispatch moveintogroup r"))
 
 -- Resize (direct, no submap)
-hl.bind(mainMod .. " + CTRL + SHIFT + h", hl.dsp.window.resize({ x = -20, y = 0,   relative = true }), { repeating = true })
-hl.bind(mainMod .. " + CTRL + SHIFT + l", hl.dsp.window.resize({ x = 20,  y = 0,   relative = true }), { repeating = true })
-hl.bind(mainMod .. " + CTRL + SHIFT + k", hl.dsp.window.resize({ x = 0,   y = 20,  relative = true }), { repeating = true })
-hl.bind(mainMod .. " + CTRL + SHIFT + j", hl.dsp.window.resize({ x = 0,   y = -20, relative = true }), { repeating = true })
+hl.bind(mainMod .. " + CTRL + SHIFT + h", hl.dsp.exec_cmd("hyprctl dispatch resizeactive -20 0"), { repeating = true })
+hl.bind(mainMod .. " + CTRL + SHIFT + l", hl.dsp.exec_cmd("hyprctl dispatch resizeactive 20 0"),  { repeating = true })
+hl.bind(mainMod .. " + CTRL + SHIFT + k", hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 20"),  { repeating = true })
+hl.bind(mainMod .. " + CTRL + SHIFT + j", hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 -20"), { repeating = true })
 
 -- Mouse drag and resize
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
@@ -300,15 +311,7 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 
 -- Apps
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + space",  hl.dsp.exec_cmd("~/.config/rofi/launchers/type-2/launcher.sh"))
 hl.bind(mainMod .. " + D",      hl.dsp.exec_cmd("wofi --show drun"))
-hl.bind(mainMod .. " + V",      hl.dsp.exec_cmd(terminal .. ' --class "clipse-clipboard" clipse'))
-
--- Screenshots and recording
-hl.bind("CTRL + SHIFT + SUPER + 4", hl.dsp.exec_cmd("hyprshot -m region -o ~/Pictures/Screenshots"))
-hl.bind("CTRL + SHIFT + SUPER + R", hl.dsp.exec_cmd([[bash -c 'notify-send -u low "Recording started" "Full screen — SUPER+CTRL+SHIFT+E to stop" && wf-recorder -o $(hyprctl monitors -j | jq -r ".[] | select(.focused==true) | .name") -f ~/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4']]))
-hl.bind("CTRL + SHIFT + SUPER + 3", hl.dsp.exec_cmd([[bash -c 'notify-send -u low "Recording started" "Select a region — SUPER+CTRL+SHIFT+E to stop" && wf-recorder -g "$(slurp)" -f ~/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4']]))
-hl.bind("CTRL + SHIFT + SUPER + E", hl.dsp.exec_cmd([[bash -c 'pkill -INT wf-recorder && notify-send "Recording stopped" "Saved to ~/Videos/Recordings"']]))
 
 --------------------
 -- SUBMAPS
@@ -316,54 +319,54 @@ hl.bind("CTRL + SHIFT + SUPER + E", hl.dsp.exec_cmd([[bash -c 'pkill -INT wf-rec
 
 -- Resize submap (Alt+R)
 hl.bind(mainMod .. " + R", hl.dsp.submap("resize"))
-hl.define_submap("resize", "reset", function()
-    hl.bind("h",     hl.dsp.window.resize({ x = -20, y = 0,   relative = true }), { repeating = true })
-    hl.bind("l",     hl.dsp.window.resize({ x = 20,  y = 0,   relative = true }), { repeating = true })
-    hl.bind("k",     hl.dsp.window.resize({ x = 0,   y = 20,  relative = true }), { repeating = true })
-    hl.bind("j",     hl.dsp.window.resize({ x = 0,   y = -20, relative = true }), { repeating = true })
-    hl.bind("left",  hl.dsp.window.resize({ x = -20, y = 0,   relative = true }), { repeating = true })
-    hl.bind("right", hl.dsp.window.resize({ x = 20,  y = 0,   relative = true }), { repeating = true })
-    hl.bind("up",    hl.dsp.window.resize({ x = 0,   y = 20,  relative = true }), { repeating = true })
-    hl.bind("down",  hl.dsp.window.resize({ x = 0,   y = -20, relative = true }), { repeating = true })
-    hl.bind("escape", hl.dsp.submap("reset"))
-    hl.bind("return", hl.dsp.submap("reset"))
+hl.define_submap("resize", function()
+    hl.bind("h",     hl.dsp.exec_cmd("hyprctl dispatch resizeactive -20 0"), { repeating = true })
+    hl.bind("l",     hl.dsp.exec_cmd("hyprctl dispatch resizeactive 20 0"),  { repeating = true })
+    hl.bind("k",     hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 20"),  { repeating = true })
+    hl.bind("j",     hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 -20"), { repeating = true })
+    hl.bind("left",  hl.dsp.exec_cmd("hyprctl dispatch resizeactive -20 0"), { repeating = true })
+    hl.bind("right", hl.dsp.exec_cmd("hyprctl dispatch resizeactive 20 0"),  { repeating = true })
+    hl.bind("up",    hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 20"),  { repeating = true })
+    hl.bind("down",  hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 -20"), { repeating = true })
+    hl.bind("Escape", hl.dsp.submap("default"))
+    hl.bind("Return", hl.dsp.submap("default"))
     hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
     hl.bind(mainMod .. " + D",      hl.dsp.exec_cmd("wofi --show drun"))
 end)
 
 -- Layout submap (Alt+Shift+;)
 hl.bind(mainMod .. " + SHIFT + semicolon", hl.dsp.submap("layout"))
-hl.define_submap("layout", "reset", function()
+hl.define_submap("layout", function()
     hl.bind("g", function()  -- toggle floating
-        hl.dispatch(hl.dsp.window.float())
-        hl.dispatch(hl.dsp.submap("reset"))
+        hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+        hl.dispatch(hl.dsp.submap("default"))
     end)
-    hl.bind("f", function()  -- fullscreen (keeps bar)
-        hl.dispatch(hl.dsp.window.fullscreen({ mode = 1 }))
-        hl.dispatch(hl.dsp.submap("reset"))
+    hl.bind("f", function()  -- fullscreen, mode 1 (maximised, keeps bar)
+        hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+        hl.dispatch(hl.dsp.submap("default"))
     end)
     hl.bind("t", function()  -- pseudo-tile
-        hl.dispatch(hl.dsp.window.pseudo())
-        hl.dispatch(hl.dsp.submap("reset"))
+        hl.dispatch(hl.dsp.exec_cmd("hyprctl dispatch pseudo"))
+        hl.dispatch(hl.dsp.submap("default"))
     end)
-    hl.bind("m", function()  -- true fullscreen
-        hl.dispatch(hl.dsp.window.fullscreen())
-        hl.dispatch(hl.dsp.submap("reset"))
+    hl.bind("m", function()  -- true fullscreen, mode 0
+        hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+        hl.dispatch(hl.dsp.submap("default"))
     end)
-    hl.bind("a", function()  -- toggle group
-        hl.dispatch(hl.dsp.group.toggle())
-        hl.dispatch(hl.dsp.submap("reset"))
+    hl.bind("a", function()
+        hl.dispatch(hl.dsp.exec_cmd("hyprctl dispatch togglegroup"))
+        hl.dispatch(hl.dsp.submap("default"))
     end)
     hl.bind("s", function()
-        hl.dispatch(hl.dsp.group.toggle())
-        hl.dispatch(hl.dsp.submap("reset"))
+        hl.dispatch(hl.dsp.exec_cmd("hyprctl dispatch togglegroup"))
+        hl.dispatch(hl.dsp.submap("default"))
     end)
     hl.bind("d", function()
-        hl.dispatch(hl.dsp.group.toggle())
-        hl.dispatch(hl.dsp.submap("reset"))
+        hl.dispatch(hl.dsp.exec_cmd("hyprctl dispatch togglegroup"))
+        hl.dispatch(hl.dsp.submap("default"))
     end)
-    hl.bind("escape", hl.dsp.submap("reset"))
-    hl.bind("return", hl.dsp.submap("reset"))
+    hl.bind("Escape", hl.dsp.submap("default"))
+    hl.bind("Return", hl.dsp.submap("default"))
 end)
 
 --------------------
@@ -374,6 +377,12 @@ hl.window_rule({
     name  = "float by default",
     match = { class = ".*" },
     float = floatingFirst,
+})
+
+hl.window_rule({
+    name  = "Empty-class popups (e.g. Slack link/copy menus)",
+    match = { class = "^$", title = "^$", xwayland = true },
+    float = true,
 })
 
 hl.window_rule({
@@ -393,61 +402,56 @@ hl.window_rule({
 hl.window_rule({
     name      = "Forge",
     match     = { class = "forge-dev-linux-amd64" },
-    float     = true,
-    workspace = 4,
+    float     = floatingFirst,
+    workspace = "4",
     size      = "1500 800",
 })
 
 hl.window_rule({
     name  = "Kitty",
     match = { class = "kitty" },
+    float = floatingFirst,
+    size  = "1900 1000",
+})
+
+hl.window_rule({
+    name  = "DaVinci Resolve",
+    match = { class = "resolve" },
     float = true,
-    size  = "2000 1200",
+    size  = "1900 1000",
+})
+
+hl.window_rule({
+    name  = "Nautilus max height",
+    match = { class = "org.gnome.Nautilus" },
+    float = true,
+    size  = "950 800",
 })
 
 ----------------------
 -- WORKSPACE RULES
 ----------------------
 
-hl.workspace_rule({ workspace = 1,  monitor = "DP-1",     default = true, persistent = true })
-hl.workspace_rule({ workspace = 2,  monitor = "DP-1" })
-hl.workspace_rule({ workspace = 3,  monitor = "DP-1" })
-hl.workspace_rule({ workspace = 4,  monitor = "DP-2",     default = true, persistent = true })
-hl.workspace_rule({ workspace = 5,  monitor = "DP-2" })
-hl.workspace_rule({ workspace = 6,  monitor = "DP-2" })
-hl.workspace_rule({ workspace = 7,  monitor = "HDMI-A-1", default = true, persistent = true })
-hl.workspace_rule({ workspace = 8,  monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = 9,  monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = 10, monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "10", monitor = "DP-2",     default = true, persistent = true })
+hl.workspace_rule({ workspace = "5",  monitor = "DP-2" })
+hl.workspace_rule({ workspace = "6",  monitor = "DP-2" })
+
+hl.workspace_rule({ workspace = "1",  monitor = "DP-1",     default = true, persistent = true })
+hl.workspace_rule({ workspace = "2",  monitor = "DP-1" })
+hl.workspace_rule({ workspace = "3",  monitor = "DP-1" })
+hl.workspace_rule({ workspace = "4",  monitor = "DP-1" })
+
+hl.workspace_rule({ workspace = "7",  monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "8",  monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "9",  monitor = "HDMI-A-1", default = true, persistent = true })
 
 -------------
 -- PLUGINS
 -------------
 
-hl.config({
-    plugin = {
-        hyprbars = {
-            bar_height = 20,
-            ["hyprbars-button"] = {
-                {
-                    color  = "rgb(ff4040)",
-                    size   = 10,
-                    icon   = "󰖭",
-                    action = "hyprctl dispatch killactive",
-                },
-                {
-                    color  = "rgb(eeee11)",
-                    size   = 10,
-                    icon   = "󰖰",
-                    action = [[if [ "$(hyprctl activewindow -j | jq -r '.workspace.name')" = "special:minimized" ]; then hyprctl dispatch movetoworkspace e+0; else hyprctl dispatch movetoworkspacesilent special:minimized; fi]],
-                },
-                {
-                    color  = "rgb(00ff7f)",
-                    size   = 10,
-                    icon   = "",
-                    action = "hyprctl dispatch fullscreen 1",
-                },
-            },
-        },
-    },
-})
+-- hyprbars (titlebar buttons) intentionally omitted: hl.config() validates
+-- plugin keys live at parse time, but hyprbars only registers later via the
+-- "hyprpm reload -n" exec command, so this errors as an unknown config key.
+-- .conf's declarative plugin{} block doesn't have that restriction. Needs a
+-- real fix (likely deferred hyprctl keyword calls after hyprpm reload
+-- finishes) before it can come back — not worth guessing at blind.
