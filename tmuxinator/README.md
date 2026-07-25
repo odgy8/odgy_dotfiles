@@ -1,5 +1,7 @@
 # Tmuxinator Setup
 
+Lives at `tmuxinator/` in [odgy_dotfiles](../), symlinked to `~/.config/tmuxinator`.
+
 ## Install 
 
 **Arch**

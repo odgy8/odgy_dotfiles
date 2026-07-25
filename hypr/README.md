@@ -182,15 +182,17 @@ Volume, brightness, and media controls are mapped to the standard XF86 keys. Med
 
 ## Deployment
 
-Copy all subdirectories to `~/.config/`:
+These directories live in [odgy_dotfiles](../). Symlink each one into `~/.config/` rather than copying, so edits here take effect immediately:
 
 ```bash
-cp -r hypr    ~/.config/hypr
-cp -r ags     ~/.config/ags
-cp -r rofi    ~/.config/rofi
-cp -r clipse  ~/.config/clipse
-cp -r nwg-dock-hyprland ~/.config/nwg-dock-hyprland
+ln -s ~/coding/personal/odgy_dotfiles/hypr    ~/.config/hypr
+ln -s ~/coding/personal/odgy_dotfiles/ags     ~/.config/ags
+ln -s ~/coding/personal/odgy_dotfiles/rofi    ~/.config/rofi
+ln -s ~/coding/personal/odgy_dotfiles/clipse  ~/.config/clipse
+ln -s ~/coding/personal/odgy_dotfiles/nwg-dock-hyprland ~/.config/nwg-dock-hyprland
 ```
+
+`waybar/` and `swaync/` are kept for reference only (see directory structure above) and are not symlinked.
 
 Then log into a Hyprland session. On first boot the workspace-to-monitor mapping may land on the wrong monitors — this corrects itself automatically after the 3-second `hyprctl reload` in exec-once.
 

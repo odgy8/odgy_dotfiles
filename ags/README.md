@@ -2,6 +2,8 @@
 
 A Hyprland status bar built with [AGS](https://github.com/Aylur/ags) (Astal/GJS).
 
+Lives at `ags/` in [odgy_dotfiles](../), symlinked to `~/.config/ags` — see `../hypr/README.md` for the full deployment list.
+
 ## Features
 
 - Workspace indicators (circular, active highlighted)
