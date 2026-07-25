@@ -222,16 +222,22 @@ hl.bind(mainMod .. " + space", hl.dsp.exec_cmd("~/.config/rofi/launchers/type-2/
 hl.bind(mainMod .. " + P", hl.dsp.window.pin())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 
--- Focus movement
--- (bringactivetotop dropped: no working native or raw-dispatch equivalent)
-hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
-hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + k", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + j", hl.dsp.focus({ direction = "down" }))
+-- Focus movement + bringactivetotop
+local function focus_and_raise(dir)
+	return function()
+		hl.dispatch(hl.dsp.focus({ direction = dir }))
+		hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+	end
+end
+
+hl.bind(mainMod .. " + left", focus_and_raise("left"))
+hl.bind(mainMod .. " + right", focus_and_raise("right"))
+hl.bind(mainMod .. " + up", focus_and_raise("up"))
+hl.bind(mainMod .. " + down", focus_and_raise("down"))
+hl.bind(mainMod .. " + h", focus_and_raise("left"))
+hl.bind(mainMod .. " + l", focus_and_raise("right"))
+hl.bind(mainMod .. " + k", focus_and_raise("up"))
+hl.bind(mainMod .. " + j", focus_and_raise("down"))
 
 -- Move floating window or reorder tiled window
 hl.bind(
