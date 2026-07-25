@@ -34,8 +34,8 @@ TARGET_X=$((MON_X + RES_LEFT + PADDING_X))
 TARGET_Y=$((MON_Y + BAR_H + PADDING_Y + 25))
 
 if [ "$IS_FLOATING" != "true" ]; then
-    hyprctl dispatch togglefloating address:$WIN_ADDR
+    hyprctl dispatch "hl.dsp.window.float({action='set'})"
 fi
 
-hyprctl dispatch resizewindowpixel exact ${TARGET_W} ${TARGET_H},address:$WIN_ADDR
-hyprctl dispatch movewindowpixel exact ${TARGET_X} ${TARGET_Y},address:$WIN_ADDR
+hyprctl dispatch "hl.dsp.window.resize({x=${TARGET_W},y=${TARGET_H}})"
+hyprctl dispatch "hl.dsp.window.move({x=${TARGET_X},y=${TARGET_Y}})"
