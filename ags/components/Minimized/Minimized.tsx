@@ -1,6 +1,7 @@
 import AstalHyprland from "gi://AstalHyprland";
 import GLib from "gi://GLib";
 import { createState, createMemo, onCleanup, With } from "ags";
+import { execAsync } from "ags/process";
 
 // Style imports
 import MinimisedCss from "./Minimized.css";
@@ -35,7 +36,9 @@ export default function Minimized() {
           visible={n > 0}
           class="minimized-btn"
           css={MinimisedCss}
-          onClicked={() => hypr.dispatch("togglespecialworkspace", "minimized")}
+          onClicked={() =>
+            execAsync(["hyprctl", "dispatch", "hl.dsp.workspace.toggle_special('minimized')"])
+          }
         >
           <label label={`󰖰 ${n}`} />
         </button>

@@ -8,6 +8,7 @@ import style from "./sambar.css";
 import BarCss from "./components/Bar/Bar.css";
 import PopupCss from "./components/Popup/Popup.css";
 import ButtonCss from "./widgets/Button.css";
+import FootingCss from "./components/Footing/Footing.css";
 
 // Component imports
 import Bar from "./components/Bar/Bar";
@@ -18,11 +19,12 @@ import System from "./components/System/System";
 import CalendarPopup from "./components/Calendar/CalendarPopup";
 import Tray from "./components/Tray/Tray";
 import NotificationPopup from "./components/Notifications/NotificationPopup";
+import Footing from "./components/Footing/Footing";
 
 Adw.StyleManager.get_default().colorScheme = Adw.ColorScheme.PREFER_DARK;
 
 app.start({
-  css: style + BarCss + PopupCss + ButtonCss,
+  css: style + BarCss + PopupCss + ButtonCss + FootingCss,
   main() {
     const [isVolumeOpen0, setIsVolumeOpen0] = createState<boolean>(false);
     const [isVolumeOpen1, setIsVolumeOpen1] = createState<boolean>(false);
@@ -92,6 +94,7 @@ app.start({
       setIsOpen: setIsCalendarOpen0,
     });
     NotificationPopup({ monitor: 0 });
+    Footing({ monitor: 0 });
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~ Monitor 2 ~~~~~~~~~~~~~~~
@@ -134,6 +137,7 @@ app.start({
       isOpen: isCalendarOpen1,
       setIsOpen: setIsCalendarOpen1,
     });
+    Footing({ monitor: 1 });
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~ Monitor 3 ~~~~~~~~~~~~~~~
@@ -176,5 +180,6 @@ app.start({
       isOpen: isCalendarOpen2,
       setIsOpen: setIsCalendarOpen2,
     });
+    Footing({ monitor: 2 });
   },
 });

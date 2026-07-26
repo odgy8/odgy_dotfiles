@@ -12,7 +12,11 @@ function formatTime(seconds: number): string {
 
 // Cancel is both the default and the escape action, so an accidental
 // Enter/Escape while the dialog is up can never trigger the real action.
-async function confirm(message: string, actionLabel: string): Promise<boolean> {
+async function confirm(
+  parent: Gtk.Window | null,
+  message: string,
+  actionLabel: string,
+): Promise<boolean> {
   const dialog = new Gtk.AlertDialog({
     modal: true,
     message,
@@ -20,8 +24,18 @@ async function confirm(message: string, actionLabel: string): Promise<boolean> {
     cancelButton: 0,
     defaultButton: 0,
   });
-  const choice = await dialog.choose(null, null);
-  return choice === 1;
+  try {
+    // A null parent means the dialog has no window to stack itself against
+    // in this Wayland layer-shell context — it never actually presents,
+    // just hangs waiting for a response that can't come. Needs the button's
+    // own top-level window.
+    const choice = await dialog.choose(parent, null);
+    return choice === 1;
+  } catch {
+    // Dismissed without choosing a button (Escape, clicking outside, etc.)
+    // rejects rather than resolving — treat that the same as Cancel.
+    return false;
+  }
 }
 
 export default function BatteryInfo() {
@@ -101,9 +115,12 @@ export default function BatteryInfo() {
         <button
           class="action-btn"
           tooltipText="Log out"
-          onClicked={async () => {
-            if (await confirm("Log out?", "Log Out")) {
-              execAsync(["hyprctl", "dispatch", "exit"]).catch(console.error);
+          onClicked={async (self: Gtk.Button) => {
+            if (await confirm(self.get_root() as Gtk.Window, "Log out?", "Log Out")) {
+              // same hypr.dispatch()-family bug as the rest of tonight —
+              // "exit" needs to be a Lua dispatcher expression now, not a
+              // bare dispatcher name.
+              execAsync(["hyprctl", "dispatch", "hl.dsp.exit()"]).catch(console.error);
             }
           }}
         >
@@ -112,8 +129,8 @@ export default function BatteryInfo() {
         <button
           class="action-btn"
           tooltipText="Restart"
-          onClicked={async () => {
-            if (await confirm("Restart the computer?", "Restart")) {
+          onClicked={async (self: Gtk.Button) => {
+            if (await confirm(self.get_root() as Gtk.Window, "Restart the computer?", "Restart")) {
               execAsync(["systemctl", "reboot"]).catch(console.error);
             }
           }}
@@ -123,8 +140,8 @@ export default function BatteryInfo() {
         <button
           class="action-btn action-btn-danger"
           tooltipText="Power off"
-          onClicked={async () => {
-            if (await confirm("Power off the computer?", "Power Off")) {
+          onClicked={async (self: Gtk.Button) => {
+            if (await confirm(self.get_root() as Gtk.Window, "Power off the computer?", "Power Off")) {
               execAsync(["systemctl", "poweroff"]).catch(console.error);
             }
           }}

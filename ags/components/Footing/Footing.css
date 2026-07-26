@@ -1,0 +1,11 @@
+.pill-window {
+  background: transparent;
+}
+
+.pill-bar {
+  background-color: #33ccffee;
+  border-radius: 16px;
+  min-width: 200px;
+  min-height: 4px;
+  margin-bottom: 0px;
+}

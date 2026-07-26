@@ -57,18 +57,20 @@ export default function Bar({
     <box spacing={8}>
       <button
         class="bar-icon-btn"
-        tooltipText="Connectivity"
-        onClicked={() => setIsConnectivityOpen(true)}
-      >
-        <label label="󰤨" />
-      </button>
-      <button
-        class="bar-icon-btn"
         tooltipText="Volume"
         onClicked={() => setIsVolumeOpen(true)}
       >
         <label label="󰕾" />
       </button>
+
+      <button
+        class="bar-icon-btn"
+        tooltipText="Connectivity"
+        onClicked={() => setIsConnectivityOpen(true)}
+      >
+        <label label="󰤨" />
+      </button>
+
       <button
         class="bar-icon-btn"
         tooltipText="System"

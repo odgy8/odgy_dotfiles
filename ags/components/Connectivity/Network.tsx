@@ -5,22 +5,28 @@ import { execAsync } from "ags/process";
 
 function WiredRow({ wired }: { wired: AstalNetwork.Wired }) {
   const [iconName, setIconName] = createState(wired.iconName ?? "");
-  const [internet, setInternet] = createState(wired.internet);
+  const [state, setState] = createState(wired.state);
   const [speed, setSpeed] = createState(wired.speed);
 
   const ids = [
     wired.connect("notify::icon-name", () => setIconName(wired.iconName ?? "")),
-    wired.connect("notify::internet", () => setInternet(wired.internet)),
+    wired.connect("notify::state", () => setState(wired.state)),
     wired.connect("notify::speed", () => setSpeed(wired.speed)),
   ];
   onCleanup(() => ids.forEach((id) => wired.disconnect(id)));
 
+  // Astal's own `.internet` reachability check reports not-connected even
+  // when genuinely online (confirmed live: wired.internet was 0 while
+  // NetworkManager itself reported "connected:full"). NetworkManager's raw
+  // device state is reliable — 100 = NM_DEVICE_STATE_ACTIVATED,
+  // 40-90 = various in-progress activation stages.
   const statusLabel = () => {
     const s = speed();
-    if (internet() === AstalNetwork.Internet.connected) {
+    const st = state();
+    if (st === 100) {
       return s > 0 ? `Connected · ${s} Mbps` : "Connected";
     }
-    if (internet() === AstalNetwork.Internet.connecting) return "Connecting…";
+    if (st >= 40 && st < 100) return "Connecting…";
     return "Not connected";
   };
 
@@ -31,7 +37,7 @@ function WiredRow({ wired }: { wired: AstalNetwork.Wired }) {
         class="primary-label"
         hexpand
         xalign={0}
-        label={internet.as(statusLabel)}
+        label={state.as(statusLabel)}
       />
     </box>
   );

@@ -1,6 +1,7 @@
 import AstalHyprland from "gi://AstalHyprland";
 import { createState, createMemo, onCleanup, With } from "ags";
 import { Gtk } from "ags/gtk4";
+import { execAsync } from "ags/process";
 
 export default function Taskbar() {
   let hypr: AstalHyprland.Hyprland;
@@ -36,7 +37,15 @@ export default function Taskbar() {
             <button
               class={`task-btn${focused === client.address ? " task-focused" : ""}`}
               onClicked={() =>
-                hypr.dispatch("focuswindow", `address:${client.address}`)
+                // same hypr.dispatch() bug as Workspaces.tsx — Hyprland
+                // reinterprets the classic dispatch format as Lua code and
+                // silently ignores it. Focusing by address needs an actual
+                // window object, not a raw address string.
+                execAsync([
+                  "hyprctl",
+                  "dispatch",
+                  `hl.dsp.focus({window = hl.get_window('address:${client.address}')})`,
+                ])
               }
               tooltipText={client.title}
             >

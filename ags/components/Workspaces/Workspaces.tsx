@@ -1,5 +1,6 @@
 import AstalHyprland from "gi://AstalHyprland";
 import { createState, createMemo, onCleanup, With } from "ags";
+import { execAsync } from "ags/process";
 
 type INFERRED_WORKSPACE = {
   id: number;
@@ -48,7 +49,18 @@ export default function Workspaces() {
                 class={focused === ws.id ? "workspace active" : "workspace"}
                 widthRequest={28}
                 heightRequest={28}
-                onClicked={() => hypr.dispatch("workspace", String(ws.id))}
+                onClicked={() =>
+                  // hypr.dispatch() sends the classic "dispatch <name> <args>"
+                  // format over Hyprland's socket, which Hyprland now
+                  // reinterprets as Lua code under lua-config and silently
+                  // ignores — shelling out with the new required syntax
+                  // instead (same fix as fit-to-monitor.sh).
+                  execAsync([
+                    "hyprctl",
+                    "dispatch",
+                    `hl.dsp.focus({workspace='${ws.id}'})`,
+                  ])
+                }
               >
                 <label label={String(ws.id)} />
               </button>

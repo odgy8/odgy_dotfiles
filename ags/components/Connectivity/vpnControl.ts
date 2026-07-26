@@ -7,7 +7,11 @@ import { execAsync } from "ags/process";
 export const vpnConnected = createPoll(false, 3000, async () => {
   try {
     const out = await execAsync(["ip", "-o", "link", "show"]);
-    return /\b(tun|wg)\d+[:@]/.test(out);
+    // Widened from requiring an exact "tun0"/"wg0"-style digit suffix —
+    // Surfshark's own client may name its tunnel differently, and that
+    // stricter pattern couldn't be verified against a live connection
+    // (Surfshark's GUI currently fails to render at all — separate bug).
+    return /\b(tun|wg|surfshark)\w*[:@]/.test(out);
   } catch {
     return false;
   }

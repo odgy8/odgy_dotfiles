@@ -1,7 +1,7 @@
 -- hyprland.lua
 -- Lua port of hyprland.conf (Hyprland >= 0.55)
 -- https://wiki.hypr.land/Configuring/Start/
---
+
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~~~ CONSTANTS ~~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
@@ -329,10 +329,26 @@ hl.bind(mainMod .. " + CTRL + k", hl.dsp.window.move({ into_group = "u" }))
 hl.bind(mainMod .. " + CTRL + l", hl.dsp.window.move({ into_group = "r" }))
 
 -- Resize (direct, no submap)
-hl.bind(mainMod .. " + CTRL + SHIFT + h", hl.dsp.window.resize({ x = -20, y = 0, relative = true }), { repeating = true })
-hl.bind(mainMod .. " + CTRL + SHIFT + l", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
-hl.bind(mainMod .. " + CTRL + SHIFT + k", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true })
-hl.bind(mainMod .. " + CTRL + SHIFT + j", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true })
+hl.bind(
+	mainMod .. " + CTRL + SHIFT + h",
+	hl.dsp.window.resize({ x = -20, y = 0, relative = true }),
+	{ repeating = true }
+)
+hl.bind(
+	mainMod .. " + CTRL + SHIFT + l",
+	hl.dsp.window.resize({ x = 20, y = 0, relative = true }),
+	{ repeating = true }
+)
+hl.bind(
+	mainMod .. " + CTRL + SHIFT + k",
+	hl.dsp.window.resize({ x = 0, y = 20, relative = true }),
+	{ repeating = true }
+)
+hl.bind(
+	mainMod .. " + CTRL + SHIFT + j",
+	hl.dsp.window.resize({ x = 0, y = -20, relative = true }),
+	{ repeating = true }
+)
 
 -- Mouse drag and resize
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -387,8 +403,8 @@ hl.define_submap("resize", function()
 	hl.bind("right", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
 	hl.bind("up", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true })
 	hl.bind("down", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true })
-	hl.bind("Escape", hl.dsp.submap("default"))
-	hl.bind("Return", hl.dsp.submap("default"))
+	hl.bind("Escape", hl.dsp.submap(""))
+	hl.bind("Return", hl.dsp.submap(""))
 	hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 	hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("wofi --show drun"))
 end)
@@ -398,34 +414,34 @@ hl.bind(mainMod .. " + SHIFT + semicolon", hl.dsp.submap("layout"))
 hl.define_submap("layout", function()
 	hl.bind("g", function() -- toggle floating
 		hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
-		hl.dispatch(hl.dsp.submap("default"))
+		hl.dispatch(hl.dsp.submap(""))
 	end)
 	hl.bind("f", function() -- fullscreen, mode 1 (maximised, keeps bar)
 		hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
-		hl.dispatch(hl.dsp.submap("default"))
+		hl.dispatch(hl.dsp.submap(""))
 	end)
 	hl.bind("t", function() -- pseudo-tile
 		hl.dispatch(hl.dsp.window.pseudo())
-		hl.dispatch(hl.dsp.submap("default"))
+		hl.dispatch(hl.dsp.submap(""))
 	end)
 	hl.bind("m", function() -- true fullscreen, mode 0
 		hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-		hl.dispatch(hl.dsp.submap("default"))
+		hl.dispatch(hl.dsp.submap(""))
 	end)
 	hl.bind("a", function()
 		hl.dispatch(hl.dsp.group.toggle())
-		hl.dispatch(hl.dsp.submap("default"))
+		hl.dispatch(hl.dsp.submap(""))
 	end)
 	hl.bind("s", function()
 		hl.dispatch(hl.dsp.group.toggle())
-		hl.dispatch(hl.dsp.submap("default"))
+		hl.dispatch(hl.dsp.submap(""))
 	end)
 	hl.bind("d", function()
 		hl.dispatch(hl.dsp.group.toggle())
-		hl.dispatch(hl.dsp.submap("default"))
+		hl.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("Escape", hl.dsp.submap("default"))
-	hl.bind("Return", hl.dsp.submap("default"))
+	hl.bind("Escape", hl.dsp.submap(""))
+	hl.bind("Return", hl.dsp.submap(""))
 end)
 
 -- ~~~~~~~~~~~~~~~~~~~~~
@@ -462,7 +478,7 @@ hl.window_rule({
 	name = "Forge",
 	match = { class = "forge-dev-linux-amd64" },
 	float = floatingFirst,
-	workspace = "4",
+	workspace = "10",
 	size = "1500 800",
 })
 
