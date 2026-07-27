@@ -11,7 +11,14 @@ export default function SinkSelector() {
   const outputOptionsToHide = [
     "Arctis Pro Wireless Chat",
     "Navi 48 HDMI/DP Audio Controller Digital Stereo (HDMI)",
+    "Easy Effects Sink",
+    "Starship/Matisse HD Audio Controller Analog Stereo",
   ];
+
+  const renameMap: Record<string, string> = {
+    "Majority Snowdon II": "Speaker",
+    "Arctis Pro Wireless Game": "Headset",
+  };
 
   return (
     <With value={state}>
@@ -44,7 +51,7 @@ export default function SinkSelector() {
                       />
                       <label
                         class="primary-label"
-                        label={sink.description}
+                        label={renameMap[sink.description] ?? sink.description}
                         ellipsize={3}
                         maxWidthChars={28}
                         xalign={0}

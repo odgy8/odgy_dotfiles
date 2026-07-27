@@ -9,7 +9,7 @@ import Section from "../../widgets/Section";
 import Workspaces from "../Workspaces/Workspaces";
 import Clock from "../../widgets/Clock";
 import Minimized from "../Minimized/Minimized";
-import { sourceMute } from "../Volume/volumeControl";
+import { sourceMute, toggleDefaultSourceMute } from "../Volume/volumeControl";
 
 interface BarProps {
   setIsVolumeOpen: Setter<boolean>;
@@ -41,7 +41,13 @@ export default function Bar({
     <box spacing={6}>
       <Minimized />
 
-      <label label={sourceMute.as((m) => (m ? "󰍭" : "󰍬"))} />
+      <button
+        class="bar-icon-btn"
+        tooltipText={sourceMute.as((m) => (m ? "Unmute mic" : "Mute mic"))}
+        onClicked={() => toggleDefaultSourceMute().catch(console.error)}
+      >
+        <label label={sourceMute.as((m) => (m ? "󰍭" : "󰍬"))} />
+      </button>
 
       <button class="bar-clock-btn" onClicked={() => setIsCalendarOpen(true)}>
         <Clock />

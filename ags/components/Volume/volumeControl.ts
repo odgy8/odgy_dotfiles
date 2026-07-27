@@ -178,6 +178,58 @@ export async function setDefaultSink(name: string): Promise<void> {
   await execAsync(["pactl", "set-default-sink", name]);
 }
 
+export interface Source {
+  id: number;
+  name: string;
+  description: string;
+}
+
+function parseSources(stdout: string): Source[] {
+  const sources: Source[] = [];
+  for (const block of stdout.split(/\n(?=Source #\d+)/g)) {
+    const idMatch = block.match(/Source #(\d+)/);
+    if (!idMatch) continue;
+    const nameMatch = block.match(/Name: (.+)/);
+    const descMatch = block.match(/Description: (.+)/);
+    if (!nameMatch) continue;
+    // Skip loopback monitors of sinks - they are not real inputs
+    const monitorMatch = block.match(/Monitor of Sink: (.+)/);
+    if (monitorMatch && monitorMatch[1].trim() !== "n/a") continue;
+    sources.push({
+      id: Number(idMatch[1]),
+      name: nameMatch[1].trim(),
+      description: descMatch?.[1].trim() ?? nameMatch[1].trim(),
+    });
+  }
+  return sources;
+}
+
+export const sources = createPoll([] as Source[], 2000, async () => {
+  try {
+    const stdout = await execAsync(["pactl", "list", "sources"]);
+    return parseSources(stdout);
+  } catch {
+    return [];
+  }
+});
+
+export const defaultSourceName = createPoll("", 1000, async () => {
+  try {
+    const stdout = await execAsync(["pactl", "get-default-source"]);
+    return stdout.trim();
+  } catch {
+    return "";
+  }
+});
+
+export async function setDefaultSource(name: string): Promise<void> {
+  await execAsync(["pactl", "set-default-source", name]);
+}
+
+export async function toggleDefaultSourceMute(): Promise<void> {
+  await execAsync(["pactl", "set-source-mute", "@DEFAULT_SOURCE@", "toggle"]);
+}
+
 export interface SinkInput {
   id: number;
   name: string;
