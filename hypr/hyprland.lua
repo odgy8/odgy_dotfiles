@@ -507,6 +507,18 @@ hl.window_rule({
 	size = "950 800",
 })
 
+hl.window_rule({
+	name = "Vivaldi ideal size",
+	match = { class = "vivaldi-stable" },
+	size = "1900 1000",
+})
+
+hl.window_rule({
+	name = "Brave ideal size",
+	match = { class = "brave-browser" },
+	size = "1900 1000",
+})
+
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~ WORKSPACE RULES ~~
 -- ~~~~~~~~~~~~~~~~~~~~~
@@ -562,7 +574,7 @@ if hl.plugin and hl.plugin.hyprbars then
 			fg_color = "rgb(2a2a2a)",
 			size = 10,
 			icon = "󰖭",
-			action = "hyprctl dispatch \"hl.dsp.window.close()\"",
+			action = 'hyprctl dispatch "hl.dsp.window.close()"',
 		})
 		hl.plugin.hyprbars.add_button({
 			bg_color = "rgb(eeee11)",
