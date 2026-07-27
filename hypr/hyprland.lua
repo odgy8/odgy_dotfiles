@@ -34,7 +34,8 @@ hl.monitor({ output = "HDMI-A-1", mode = "1920x1080", position = "auto-right", s
 -- ~~~~~~~~~~~~~~~~~~~~~
 
 hl.on("hyprland.start", function()
-	hl.exec_cmd("hyprpm reload -n")
+	-- loads hyprbars and applies its config; see the PLUGINS section below
+	hl.exec_cmd("~/.config/hypr/scripts/hyprbars-init.sh")
 	hl.exec_cmd("ags run ~/.config/ags/sambar.tsx")
 	hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme prefer-dark")
 	hl.exec_cmd("/home/sam/.local/bin/streamdeck --no-ui")
@@ -313,7 +314,10 @@ hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Minimise / unminimise
-hl.bind(mainMod .. " + M", hl.dsp.window.move({ workspace = "special:minimized", silent = true }))
+-- via the script rather than a bare move: moving a window into a special
+-- workspace pops that workspace open as an overlay even with silent = true,
+-- so the script shuts it again and the window just disappears instead.
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-minimize.sh"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.workspace.toggle_special("minimized"))
 hl.bind(mainMod .. " + SHIFT + U", hl.dsp.window.move({ workspace = "e+0" }))
 
@@ -524,9 +528,55 @@ hl.workspace_rule({ workspace = "9", monitor = "HDMI-A-1", default = true, persi
 -- ~~~~~~ PLUGINS ~~~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
--- hyprbars (titlebar buttons) intentionally omitted: hl.config() validates
--- plugin keys live at parse time, but hyprbars only registers later via the
--- "hyprpm reload -n" exec command, so this errors as an unknown config key.
--- .conf's declarative plugin{} block doesn't have that restriction. Needs a
--- real fix (likely deferred hyprctl keyword calls after hyprpm reload
--- finishes) before it can come back — not worth guessing at blind.
+-- hyprbars: titlebar close / minimise / fullscreen buttons.
+--
+-- This block is guarded because hl.plugin.hyprbars only exists once hyprpm has
+-- actually loaded the plugin, and on a cold boot that hasn't happened yet at
+-- parse time (hyprpm runs from the autostart block above). So the first parse
+-- skips it, then scripts/hyprbars-init.sh issues a "hyprctl reload" once the
+-- plugin registers, and this second parse applies everything.
+--
+-- Applying it here rather than from the script is what makes it survive: a
+-- reload clears plugin runtime state, and Hyprland auto-reloads whenever this
+-- file is edited, so anything set via "hyprctl eval" from outside gets wiped
+-- within seconds. Re-applying on every parse means reloads restore it instead.
+--
+-- pcall'd so a future hyprbars API change degrades to "no buttons" rather than
+-- taking the whole config down with it.
+if hl.plugin and hl.plugin.hyprbars then
+	pcall(function()
+		hl.config({ plugin = { hyprbars = { bar_height = 20 } } })
+
+		local scripts = "/home/sam/.config/hypr/scripts"
+
+		-- Buttons render right to left, so this is close, then minimise, then
+		-- fullscreen — the same order and colours as the pre-migration .conf.
+		-- fg_color has no .conf equivalent; dark glyphs read better on these
+		-- bright fills than white ones do.
+		--
+		-- Actions must use the Lua dispatcher syntax. The .conf-era strings
+		-- ("killactive", "fullscreen 1") get reinterpreted as Lua under this
+		-- parser and silently do nothing — same trap as ags Taskbar.tsx.
+		hl.plugin.hyprbars.add_button({
+			bg_color = "rgb(ff4040)",
+			fg_color = "rgb(2a2a2a)",
+			size = 10,
+			icon = "󰖭",
+			action = "hyprctl dispatch \"hl.dsp.window.close()\"",
+		})
+		hl.plugin.hyprbars.add_button({
+			bg_color = "rgb(eeee11)",
+			fg_color = "rgb(2a2a2a)",
+			size = 10,
+			icon = "󰖰",
+			action = scripts .. "/toggle-minimize.sh",
+		})
+		hl.plugin.hyprbars.add_button({
+			bg_color = "rgb(00ff7f)",
+			fg_color = "rgb(2a2a2a)",
+			size = 10,
+			icon = "",
+			action = "hyprctl dispatch \"hl.dsp.window.fullscreen({mode = 'maximized'})\"",
+		})
+	end)
+end
