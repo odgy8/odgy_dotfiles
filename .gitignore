@@ -4,3 +4,8 @@ local_claude_config.lua
 clipse/clipboard_history.json
 clipse/clipse.log
 clipse/tmp_files/
+
+# tmuxinator projects are per-machine and name real project paths — keep the
+# template only, rebuild the rest by hand on whichever machine needs them.
+tmuxinator/*.yaml
+!tmuxinator/example.yaml

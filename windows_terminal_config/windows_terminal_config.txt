@@ -35,7 +35,7 @@
   ],
   "copyFormatting": "none",
   "copyOnSelect": false,
-  "defaultProfile": "{a8ec6708-a98c-4328-8859-789e15d2e694}",
+  "defaultProfile": "{ecd08f51-4752-430f-a840-9f8e6c44924a}",
   "firstWindowPreference": "defaultProfile",
   "keybindings": [
     {
@@ -77,7 +77,7 @@
     },
     "list": [
       {
-        "backgroundImage": "C:\\Users\\user\\Pictures\\Wallpapers\\owlsr.jpg",
+        "backgroundImage": "%USERPROFILE%\\Pictures\\Wallpapers\\owlsr.jpg",
         "backgroundImageOpacity": 0.2,
         "colorScheme": "One Half Dark",
         "tabColor": "#4CAF50", // Green color
@@ -92,7 +92,7 @@
         "source": "CanonicalGroupLimited.Ubuntu24.04LTS_79rhkp1fndgsc"
       },
       {
-        "backgroundImage": "C:\\Users\\user\\Pictures\\Wallpapers\\owlsr.jpg",
+        "backgroundImage": "%USERPROFILE%\\Pictures\\Wallpapers\\owlsr.jpg",
         "backgroundImageAlignment": "center",
         "backgroundImageOpacity": 0.2,
         "backgroundImageStretchMode": "uniformToFill",
@@ -191,18 +191,6 @@
       {
         "commandline": "C:/Program Files/Git/bin/bash.exe -i -l",
         "cursorShape": "vintage",
-        "guid": "{a8ec6708-a98c-4328-8859-789e15d2e694}",
-        "hidden": false,
-        "icon": "C:/Program Files/Git/mingw64/share/git/git-for-windows.ico",
-        "name": "Git Bash WORK",
-        "opacity": 80,
-        "padding": "10",
-        "startingDirectory": "C:\\Users\\user\\Documents\\Coding\\Work\\REDACTED\\REDACTED",
-        "tabTitle": "Client"
-      },
-      {
-        "commandline": "C:/Program Files/Git/bin/bash.exe -i -l",
-        "cursorShape": "vintage",
         "elevate": true,
         "guid": "{ecd08f51-4752-430f-a840-9f8e6c44924a}",
         "hidden": false,
@@ -210,7 +198,7 @@
         "name": "Git Bash PERSONAL",
         "opacity": 80,
         "padding": "10",
-        "startingDirectory": "C:\\Users\\user\\Documents\\Coding\\Personal\\GymNation",
+        "startingDirectory": "%USERPROFILE%\\Documents\\Coding\\Personal\\GymNation",
         "tabTitle": "Client"
       },
       {
