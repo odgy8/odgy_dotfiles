@@ -519,6 +519,18 @@ hl.window_rule({
 	size = "1900 1000",
 })
 
+hl.window_rule({
+	name = "DBeaver",
+	match = { class = "DBeaver" },
+	size = "1900 1000",
+})
+
+hl.window_rule({
+	name = "Obsidian",
+	match = { class = "obsidian" },
+	size = "2400 1300",
+})
+
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~ WORKSPACE RULES ~~
 -- ~~~~~~~~~~~~~~~~~~~~~
