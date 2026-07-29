@@ -149,6 +149,7 @@ hl.config({
 
 	cursor = {
 		zoom_factor = 1.0,
+		hide_on_key_press = true,
 	},
 
 	input = {
