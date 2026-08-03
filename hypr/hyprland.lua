@@ -221,7 +221,30 @@ hl.bind(mainMod .. " + G", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("~/.config/hypr/scripts/fit-to-monitor.sh"))
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd("~/.config/rofi/launchers/type-2/launcher.sh"))
-hl.bind(mainMod .. " + P", hl.dsp.window.pin())
+-- Always-on-top toggle. Hyprland's pin is floating-only, so float a tiled window
+-- first and drop it back into the layout when it gets unpinned.
+local floatedForPin = {}
+
+hl.bind(mainMod .. " + P", function()
+	local win = hl.get_active_window()
+	if not win then
+		return
+	end
+
+	if win.pinned then
+		hl.dispatch(hl.dsp.window.pin())
+		if floatedForPin[win.address] then
+			hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+			floatedForPin[win.address] = nil
+		end
+	else
+		if not win.floating then
+			hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+			floatedForPin[win.address] = true
+		end
+		hl.dispatch(hl.dsp.window.pin())
+	end
+end)
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 
 -- Focus movement + bringactivetotop
