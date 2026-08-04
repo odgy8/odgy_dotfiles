@@ -170,8 +170,10 @@ config.window_background_opacity = 0.8
 -- smear like what is on kitty
 config.cursor_smear = true
 -- optional extras from the PR:
--- config.cursor_smear_gradient = true
--- config.cursor_animation_length = 0.15
--- config.cursor_trail_style = "Torpedo"
+config.cursor_smear_gradient = true
+config.cursor_animation_length = 0.15
+-- cursor_trail_style options = Torpedo	| PixieDust | Railgun | SonicBoom | Ripple | Wireframe
+-- config.cursor_trail_style = "SonicBoom"
+config.cursor_trail_style = "PixieDust"
 
 return config

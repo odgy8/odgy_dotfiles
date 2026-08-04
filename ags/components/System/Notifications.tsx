@@ -1,5 +1,11 @@
 import AstalNotifd from "gi://AstalNotifd";
+import GLib from "gi://GLib";
 import { Gtk } from "ags/gtk4";
+
+// Rows are rebuilt from scratch, and each one costs ~10 GObjects plus an icon
+// theme lookup and Pango layouts. Cap the rendered list so that cost stays
+// bounded no matter how big the backlog gets.
+const MAX_ROWS = 30;
 
 function formatTime(unixSeconds: number): string {
   const d = new Date(unixSeconds * 1000);
@@ -43,7 +49,9 @@ export default function Notifications() {
       listBox.get_first_child()!.unparent();
     }
 
-    const list = [...notifd.get_notifications()].sort((a: any, b: any) => (b.time ?? 0) - (a.time ?? 0));
+    const all = [...notifd.get_notifications()].sort((a: any, b: any) => (b.time ?? 0) - (a.time ?? 0));
+    const list = all.slice(0, MAX_ROWS);
+    const hidden = all.length - list.length;
 
     if (list.length === 0) {
       const empty = new Gtk.Label({ label: "No notifications" });
@@ -125,11 +133,11 @@ export default function Notifications() {
         const b = gesture.get_current_button();
         if (b === 1) {
           expandedId = expandedId === id ? null : id;
-          renderList();
+          queueRender();
         } else if (b === 3) {
           if (expandedId === id) expandedId = null;
           (n as any).dismiss();
-          renderList();
+          queueRender();
         }
       });
       contentBox.add_controller(gesture);
@@ -142,7 +150,7 @@ export default function Notifications() {
       btn.connect("clicked", () => {
         if (expandedId === id) expandedId = null;
         (n as any).dismiss();
-        renderList();
+        queueRender();
       });
 
       innerRow.append(contentBox);
@@ -150,14 +158,35 @@ export default function Notifications() {
       outerRow.append(innerRow);
       listBox.append(outerRow);
     }
+
+    if (hidden > 0) {
+      const more = new Gtk.Label({ label: `+ ${hidden} older` });
+      more.set_halign(Gtk.Align.CENTER);
+      more.add_css_class("empty-label");
+      listBox.append(more);
+    }
+  };
+
+  // Coalesce renders onto an idle callback. A burst of signals — notably Clear
+  // All, which fires one "resolved" per notification — collapses into a single
+  // rebuild instead of one per signal.
+  let renderQueued = false;
+  const queueRender = () => {
+    if (renderQueued) return;
+    renderQueued = true;
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+      renderQueued = false;
+      renderList();
+      return GLib.SOURCE_REMOVE;
+    });
   };
 
   renderList();
 
-  notifd.connect("notified", renderList);
+  notifd.connect("notified", queueRender);
   notifd.connect("resolved", (_: any, id: number) => {
     if (expandedId === id) expandedId = null;
-    renderList();
+    queueRender();
   });
 
   const clearBtn = new Gtk.Button();
