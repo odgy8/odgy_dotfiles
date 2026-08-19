@@ -26,7 +26,10 @@ yay -S \
   libastal-hyprland-git \
   libastal-mpris-git \
   libastal-tray-git \
-  libastal-wl-git
+  libastal-wl-git \
+  libastal-battery-git \
+  libastal-notifd-git \
+  libastal-network-git
 ```
 
 > **Note:** `libastal-tray-git` has a build dependency (`appmenu-glib-translator-git`) that
@@ -76,8 +79,9 @@ tray apps via `exec-once` in your Hyprland config, make sure the bar's `exec-onc
 
 ## Monitors
 
-`sambar.tsx` creates bar/popup instances for monitors 0, 1, and 2. If you have fewer monitors the
-extras are silently ignored. If you have more, duplicate the relevant blocks in `sambar.tsx`.
+`sambar.tsx` creates one Bar plus its popups for every currently connected monitor — it reads the
+count from `Gdk.Display`, so it works unchanged on a single-monitor laptop or a multi-monitor
+desktop with no per-machine edits needed.
 
 ## Google Calendar
 

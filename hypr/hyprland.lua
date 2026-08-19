@@ -8,7 +8,32 @@
 
 local mainMod = "ALT"
 local floatingFirst = true
-local terminal = "/home/sam/coding/tooling/wezterm/target/release/wezterm-gui"
+
+local function fileExists(path)
+	local f = io.open(path, "r")
+	if f then
+		f:close()
+		return true
+	end
+	return false
+end
+
+local homeDir = os.getenv("HOME")
+
+-- This file is shared across machines (desktop + laptop) via a symlinked
+-- dotfiles repo. Hostname is the only reliable way to tell them apart, since
+-- usernames/paths differ between machines too.
+local hostnameFile = io.open("/etc/hostname", "r")
+local hostname = hostnameFile and hostnameFile:read("l") or ""
+if hostnameFile then
+	hostnameFile:close()
+end
+local isLaptop = hostname == "samh"
+
+-- Falls back to kitty wherever wezterm-gui hasn't been built from source
+-- (e.g. a fresh machine that hasn't set up ~/coding/tooling/wezterm yet).
+local weztermPath = homeDir .. "/coding/tooling/wezterm/target/release/wezterm-gui"
+local terminal = fileExists(weztermPath) and weztermPath or "kitty"
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~~ ENVIRONMENT ~~~~
@@ -25,9 +50,14 @@ hl.env("GTK_APPLICATION_PREFER_DARK_THEME", "1")
 -- ~~~~~ MONITORS ~~~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.monitor({ output = "DP-2", mode = "1920x1080", position = "auto-left", scale = 1 })
-hl.monitor({ output = "DP-1", mode = "3840x2160", position = "0x0", scale = 1.5 })
-hl.monitor({ output = "HDMI-A-1", mode = "1920x1080", position = "auto-right", scale = 1 })
+if isLaptop then
+	-- Uses preferred mode/rate so it works regardless of the laptop's actual panel
+	hl.monitor({ output = "eDP-1", mode = "preferred", position = "0x0", scale = 1 })
+else
+	hl.monitor({ output = "DP-2", mode = "1920x1080", position = "auto-left", scale = 1 })
+	hl.monitor({ output = "DP-1", mode = "3840x2160", position = "0x0", scale = 1.5 })
+	hl.monitor({ output = "HDMI-A-1", mode = "1920x1080", position = "auto-right", scale = 1 })
+end
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~~~ AUTOSTART ~~~~~
@@ -38,24 +68,40 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("~/.config/hypr/scripts/hyprbars-init.sh")
 	hl.exec_cmd("ags run ~/.config/ags/sambar.tsx")
 	hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme prefer-dark")
-	hl.exec_cmd("/home/sam/.local/bin/streamdeck --no-ui")
+	-- Only installed/used on the desktop for now.
+	if fileExists(homeDir .. "/.local/bin/streamdeck") then
+		hl.exec_cmd(homeDir .. "/.local/bin/streamdeck --no-ui")
+	end
 	hl.exec_cmd("clipse -listen")
 	hl.exec_cmd("sleep 5 && surfshark --auto-connect")
 	-- movecursor dropped: no working native or raw-dispatch equivalent found
 	-- (exec_raw doesn't actually apply anything despite returning "ok" —
 	-- confirmed broken as a mechanism, not just this call)
-	hl.exec_cmd(
-		'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o HDMI-A-1'
-	)
-	hl.exec_cmd(
-		'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o DP-1 -m'
-	)
-	hl.exec_cmd(
-		'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "/home/sam/.config/rofi/launchers/type-2/launcher.sh" -o DP-2 -m'
-	)
+	local dockLauncher = homeDir .. "/.config/rofi/launchers/type-2/launcher.sh"
+	if isLaptop then
+		hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -c "' .. dockLauncher .. '"')
+	else
+		hl.exec_cmd(
+			'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "' .. dockLauncher .. '" -o HDMI-A-1'
+		)
+		hl.exec_cmd(
+			'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "' .. dockLauncher .. '" -o DP-1 -m'
+		)
+		hl.exec_cmd(
+			'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "' .. dockLauncher .. '" -o DP-2 -m'
+		)
+	end
 	hl.exec_cmd("hyprswitch init &")
 	hl.exec_cmd("~/.local/bin/colorshell")
-	hl.exec_cmd("swaybg -i /home/sam/Pictures/github_coding_images/jellyfish.png -m fill")
+	-- The wallpaper images themselves are personal assets, not checked into
+	-- git — fall back to a stock background on any machine that doesn't have
+	-- them under ~/Pictures yet, rather than showing nothing.
+	local wallpaperPath = homeDir .. "/Pictures/github_coding_images/jellyfish.png"
+	if fileExists(wallpaperPath) then
+		hl.exec_cmd("swaybg -i " .. wallpaperPath .. " -m fill")
+	else
+		hl.exec_cmd("swaybg -i /usr/share/backgrounds/gnome/balls-d.jxl -m fill")
+	end
 	-- hyprland.conf's startup workspace/monitor race-condition fix (forcing
 	-- workspace 10 -> DP-2 and workspace 1 -> DP-1 a few seconds after boot)
 	-- relied on moveworkspacetomonitor via raw dispatch, which has no working
@@ -163,7 +209,12 @@ hl.config({
 		follow_mouse = 1,
 		sensitivity = 0,
 		accel_profile = "flat",
-		touchpad = {
+		touchpad = isLaptop and {
+			natural_scroll = true,
+			tap_to_click = true,
+			drag_lock = true,
+			disable_while_typing = true,
+		} or {
 			natural_scroll = false,
 		},
 	},
@@ -559,18 +610,24 @@ hl.window_rule({
 -- ~~ WORKSPACE RULES ~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.workspace_rule({ workspace = "10", monitor = "DP-2", default = true, persistent = true })
-hl.workspace_rule({ workspace = "5", monitor = "DP-2" })
-hl.workspace_rule({ workspace = "6", monitor = "DP-2" })
+if isLaptop then
+	-- No monitor pinning needed on a single screen — every workspace lives
+	-- on eDP-1 by default. Workspace 1 is just the landing workspace.
+	hl.workspace_rule({ workspace = "1", monitor = "eDP-1", default = true, persistent = true })
+else
+	hl.workspace_rule({ workspace = "10", monitor = "DP-2", default = true, persistent = true })
+	hl.workspace_rule({ workspace = "5", monitor = "DP-2" })
+	hl.workspace_rule({ workspace = "6", monitor = "DP-2" })
 
-hl.workspace_rule({ workspace = "1", monitor = "DP-1", default = true, persistent = true })
-hl.workspace_rule({ workspace = "2", monitor = "DP-1" })
-hl.workspace_rule({ workspace = "3", monitor = "DP-1" })
-hl.workspace_rule({ workspace = "4", monitor = "DP-1" })
+	hl.workspace_rule({ workspace = "1", monitor = "DP-1", default = true, persistent = true })
+	hl.workspace_rule({ workspace = "2", monitor = "DP-1" })
+	hl.workspace_rule({ workspace = "3", monitor = "DP-1" })
+	hl.workspace_rule({ workspace = "4", monitor = "DP-1" })
 
-hl.workspace_rule({ workspace = "7", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "8", monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "9", monitor = "HDMI-A-1", default = true, persistent = true })
+	hl.workspace_rule({ workspace = "7", monitor = "HDMI-A-1" })
+	hl.workspace_rule({ workspace = "8", monitor = "HDMI-A-1" })
+	hl.workspace_rule({ workspace = "9", monitor = "HDMI-A-1", default = true, persistent = true })
+end
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~~~~ PLUGINS ~~~~~~
@@ -595,7 +652,7 @@ if hl.plugin and hl.plugin.hyprbars then
 	pcall(function()
 		hl.config({ plugin = { hyprbars = { bar_height = 20 } } })
 
-		local scripts = "/home/sam/.config/hypr/scripts"
+		local scripts = homeDir .. "/.config/hypr/scripts"
 
 		-- Buttons render right to left, so this is close, then minimise, then
 		-- fullscreen — the same order and colours as the pre-migration .conf.

@@ -1,7 +1,8 @@
 import { createPoll } from "ags/time";
 import { execAsync } from "ags/process";
+import GLib from "gi://GLib";
 
-const BT_SCRIPT = "/home/sam/.config/ags/scripts/bluetooth.py";
+const BT_SCRIPT = `${GLib.get_home_dir()}/.config/ags/scripts/bluetooth.py`;
 const PYTHON = "/usr/bin/python3";
 
 export interface BtAdapter {
