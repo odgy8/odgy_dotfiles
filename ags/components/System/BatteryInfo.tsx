@@ -10,32 +10,62 @@ function formatTime(seconds: number): string {
   return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 
-// Cancel is both the default and the escape action, so an accidental
-// Enter/Escape while the dialog is up can never trigger the real action.
-async function confirm(
-  parent: Gtk.Window | null,
+// Gtk.AlertDialog is a native top-level window and gtk4-layer-shell doesn't
+// support proper parenting for those from a layer-shell surface, so it never
+// reliably presents. Gtk.Popover is a child surface anchored to the widget
+// itself, which layer-shell does support (same mechanism the rest of this
+// shell's popups already rely on).
+// Cancel is both the default and the escape action (autohide covers Escape
+// and click-outside), so an accidental dismiss can never trigger the action.
+function confirm(
+  anchor: Gtk.Widget,
   message: string,
   actionLabel: string,
 ): Promise<boolean> {
-  const dialog = new Gtk.AlertDialog({
-    modal: true,
-    message,
-    buttons: ["Cancel", actionLabel],
-    cancelButton: 0,
-    defaultButton: 0,
+  return new Promise((resolve) => {
+    const popover = new Gtk.Popover({ autohide: true });
+    popover.set_parent(anchor);
+
+    const cancelBtn = new Gtk.Button({ label: "Cancel" });
+    const confirmBtn = new Gtk.Button({ label: actionLabel });
+    confirmBtn.add_css_class("destructive-action");
+
+    let resolved = false;
+    const finish = (result: boolean) => {
+      if (resolved) return;
+      resolved = true;
+      resolve(result);
+      popover.popdown();
+    };
+
+    cancelBtn.connect("clicked", () => finish(false));
+    confirmBtn.connect("clicked", () => finish(true));
+    // Fires on any dismissal path (autohide, Escape, explicit popdown above)
+    // — cleans up the popover exactly once regardless of how it closed.
+    popover.connect("closed", () => {
+      finish(false);
+      popover.unparent();
+    });
+    popover.connect("show", () => cancelBtn.grab_focus());
+
+    const buttonBox = new Gtk.Box({ spacing: 8, halign: Gtk.Align.END });
+    buttonBox.append(cancelBtn);
+    buttonBox.append(confirmBtn);
+
+    const box = new Gtk.Box({
+      orientation: Gtk.Orientation.VERTICAL,
+      spacing: 8,
+      marginTop: 8,
+      marginBottom: 8,
+      marginStart: 8,
+      marginEnd: 8,
+    });
+    box.append(new Gtk.Label({ label: message }));
+    box.append(buttonBox);
+
+    popover.set_child(box);
+    popover.popup();
   });
-  try {
-    // A null parent means the dialog has no window to stack itself against
-    // in this Wayland layer-shell context — it never actually presents,
-    // just hangs waiting for a response that can't come. Needs the button's
-    // own top-level window.
-    const choice = await dialog.choose(parent, null);
-    return choice === 1;
-  } catch {
-    // Dismissed without choosing a button (Escape, clicking outside, etc.)
-    // rejects rather than resolving — treat that the same as Cancel.
-    return false;
-  }
 }
 
 export default function BatteryInfo() {
@@ -116,11 +146,8 @@ export default function BatteryInfo() {
           class="action-btn"
           tooltipText="Log out"
           onClicked={async (self: Gtk.Button) => {
-            if (await confirm(self.get_root() as Gtk.Window, "Log out?", "Log Out")) {
-              // same hypr.dispatch()-family bug as the rest of tonight —
-              // "exit" needs to be a Lua dispatcher expression now, not a
-              // bare dispatcher name.
-              execAsync(["hyprctl", "dispatch", "hl.dsp.exit()"]).catch(console.error);
+            if (await confirm(self, "Log out?", "Log Out")) {
+              execAsync(["hyprctl", "dispatch", "exit"]).catch(console.error);
             }
           }}
         >
@@ -130,7 +157,7 @@ export default function BatteryInfo() {
           class="action-btn"
           tooltipText="Restart"
           onClicked={async (self: Gtk.Button) => {
-            if (await confirm(self.get_root() as Gtk.Window, "Restart the computer?", "Restart")) {
+            if (await confirm(self, "Restart the computer?", "Restart")) {
               execAsync(["systemctl", "reboot"]).catch(console.error);
             }
           }}
@@ -141,7 +168,7 @@ export default function BatteryInfo() {
           class="action-btn action-btn-danger"
           tooltipText="Power off"
           onClicked={async (self: Gtk.Button) => {
-            if (await confirm(self.get_root() as Gtk.Window, "Power off the computer?", "Power Off")) {
+            if (await confirm(self, "Power off the computer?", "Power Off")) {
               execAsync(["systemctl", "poweroff"]).catch(console.error);
             }
           }}

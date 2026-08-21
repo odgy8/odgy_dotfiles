@@ -57,7 +57,7 @@ return {
 									plugins = {
 										pycodestyle = {
 											enabled = true,
-											maxLineLength = 127,
+											maxLineLength = 120,
 										},
 										flake8 = {
 											enabled = false,

@@ -53,6 +53,7 @@ hl.env("GTK_APPLICATION_PREFER_DARK_THEME", "1")
 if isLaptop then
 	-- Uses preferred mode/rate so it works regardless of the laptop's actual panel
 	hl.monitor({ output = "eDP-1", mode = "preferred", position = "0x0", scale = 1 })
+	hl.monitor({ output = "HDMI-A-2", mode = "3840x2160", position = "auto-right", scale = 1.25 })
 else
 	hl.monitor({ output = "DP-2", mode = "1920x1080", position = "auto-left", scale = 1 })
 	hl.monitor({ output = "DP-1", mode = "3840x2160", position = "0x0", scale = 1.5 })
