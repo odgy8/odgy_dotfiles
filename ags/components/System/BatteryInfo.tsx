@@ -147,7 +147,11 @@ export default function BatteryInfo() {
           tooltipText="Log out"
           onClicked={async (self: Gtk.Button) => {
             if (await confirm(self, "Log out?", "Log Out")) {
-              execAsync(["hyprctl", "dispatch", "exit"]).catch(console.error);
+              // "exit" needs to be a Lua dispatcher expression, not a bare
+              // dispatcher name, now that hyprland.lua is in use.
+              execAsync(["hyprctl", "dispatch", "hl.dsp.exit()"]).catch(
+                console.error,
+              );
             }
           }}
         >
