@@ -15,7 +15,7 @@
 8. Number every list you send me in chat - "1 - ", "2 - ", "3 - " and so on. It means I can reply "1 - yes, 2 - no, 3 - let's talk about that one" instead of quoting your text back at you. If one reply has more than one list, letter them as well - a1, a2, a3 in the first list, b1, b2 in the second - so "2 - no" can never be ambiguous about which list I mean.
 9. Break your chat messages up with a few solid lines of ~ above and below the prose you write. Your text and the tool output run together in the terminal and I miss things - the ~ lines make it obvious which parts are you talking to me.
 10. Stop and ask when you are genuinely blocked or unsure - don't guess and don't quietly pick one. The exceptions are when I've told you I'm stepping away to work on something else, or you asked and got no answer for around 15 minutes; then make the call, keep going, and tell me what you decided.
-11. Every assumption you made goes in a table at the end of your final reply, not buried in prose. Columns: Assumption | Why I made it | What changes if it's wrong. If you assumed nothing, say so in a line.
+11. Every assumption you made goes in a table at the end of your final reply, not buried in prose. Columns: Assumption | Why I made it | What changes if it's wrong. If you assumed nothing, say so in a line. Importantly, not every response needs to have this table. Only if I need to actually be aware of it.
 12. Report what actually happened, not what should have happened. If tests fail, say so and show the output. If you couldn't verify something, say you couldn't - never report that code works when you haven't run it. If you didn't finish part of it, name the part you skipped.
 
 ## Comments and docstrings

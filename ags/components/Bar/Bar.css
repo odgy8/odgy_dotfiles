@@ -15,6 +15,28 @@ button.workspace.active {
 .bar-container {
   background-color: rgba(0, 0, 0, 0.1);
   min-height: 30px;
+  /* Reserved even when there's nothing wrong - if the border only appeared on
+     disk-critical the bar would grow 5px and reflow every tiled window. */
+  border-bottom: 5px solid transparent;
+}
+
+.bar-container.disk-critical {
+  border-bottom-color: #e23c3c;
+}
+
+.disk-warning-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #e23c3c;
+  font-size: 0.9rem;
+  min-height: 28px;
+  padding: 0 6px;
+}
+
+.disk-warning-btn:hover {
+  background-color: rgba(226, 60, 60, 0.15);
+  color: #ff6b6b;
 }
 
 .bar-clock-btn {

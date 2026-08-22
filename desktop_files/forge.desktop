@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Forge
+Exec=/home/sam/.local/bin/forge
+Icon=/home/sam/Pictures/icons/Forge_favicon.png
+Terminal=false
+Categories=Development;ProjectManagement;

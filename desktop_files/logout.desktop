@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Logout
+Comment=Log out of the current user session
+Exec=hyprctl dispatch exit
+Icon=/home/sam/.icons/personal_collection/log-out.png
+Terminal=false
+Categories=System;
+Keywords=Lo;log;logout;exit;quit;signout;sign out;log out;end session;leave;bye;

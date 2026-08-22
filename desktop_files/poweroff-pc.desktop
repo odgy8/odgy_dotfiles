@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Power Off
+Comment=Shut down the computer
+Exec=systemctl poweroff
+Icon=/home/sam/.icons/personal_collection/switch-on-off-button-icon.svg
+Terminal=false
+Categories=System;
+Keywords=Power;power;Po;po;Pow;pow;off;shut;shutdown;Shut;Shutdown;

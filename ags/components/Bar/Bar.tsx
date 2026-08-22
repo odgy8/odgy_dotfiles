@@ -10,6 +10,8 @@ import Workspaces from "../Workspaces/Workspaces";
 import Clock from "../../widgets/Clock";
 import Minimized from "../Minimized/Minimized";
 import { sourceMute, toggleDefaultSourceMute } from "../Volume/volumeControl";
+import DiskWarning from "./DiskWarning";
+import { DISK_CRITICAL_PERCENT, diskUsedPercent } from "./diskUsage";
 
 interface BarProps {
   setIsVolumeOpen: Setter<boolean>;
@@ -61,6 +63,8 @@ export default function Bar({
 
   const RightSection = () => (
     <box spacing={8}>
+      <DiskWarning />
+
       <button
         class="bar-icon-btn"
         tooltipText="Volume"
@@ -93,7 +97,11 @@ export default function Bar({
       visible
       monitor={monitor}
       anchor={anchor.TOP | anchor.LEFT | anchor.RIGHT}
-      class="bar bar-container"
+      class={diskUsedPercent.as((p) =>
+        p >= DISK_CRITICAL_PERCENT
+          ? "bar bar-container disk-critical"
+          : "bar bar-container",
+      )}
       exclusivity={exlusivity.EXCLUSIVE}
     >
       <centerbox

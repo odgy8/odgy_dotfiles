@@ -8,6 +8,8 @@ A Hyprland status bar built with [AGS](https://github.com/Aylur/ags) (Astal/GJS)
 - Clock → opens Google Calendar popup (session persisted across reboots)
 - Volume popup — sliders, per-app mixer, media player controls
 - System tray popup — SNI tray icons (Slack, Discord, SurfShark, etc.)
+- Disk warning — bar grows a red bottom border above 90% usage on `/`, plus a red
+  `󰋊 <pct>%` button that re-checks on click so you can clear it as soon as you've freed space
 
 ## Dependencies
 

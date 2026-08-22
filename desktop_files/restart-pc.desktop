@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Restart
+Comment=Restart the computer
+Exec=systemctl reboot
+Icon=/home/sam/.icons/personal_collection/reboot.svg
+Terminal=false
+Categories=System;
+Keywords=Restart;restart;Re;re;Res;res;
