@@ -214,6 +214,37 @@ slider slider {
   border-color: rgba(239, 68, 68, 0.3);
 }
 
+/* ── In-row confirm ──────────────────────────────────────── */
+/* Echoes the icon that was just clicked, so the armed row still says
+   which action is waiting without spelling it out in words. */
+.confirm-prompt {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.95rem;
+  padding: 0 4px;
+}
+
+.action-btn-confirm {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.action-btn-confirm:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+/* Pre-tinted rather than tinted on hover: a destructive action that is
+   already armed should look armed before the pointer reaches it. */
+.action-btn-confirm-danger {
+  background-color: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.action-btn-confirm-danger:hover {
+  background-color: rgba(239, 68, 68, 0.32);
+  color: #ffffff;
+}
+
 /* ── Sink selector ───────────────────────────────────────── */
 .sink-btn {
   border-radius: 8px;

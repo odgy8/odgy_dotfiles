@@ -126,7 +126,8 @@ return {
 				run_on_start = true, -- Install tools when Neovim starts
 			})
 			-- Set up LSP servers
-			local lspconfig = require("lspconfig")
+			vim.lsp.config("qmlls", {})
+			vim.lsp.enable("qmlls")
 			-- Global LSP keybindings
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })

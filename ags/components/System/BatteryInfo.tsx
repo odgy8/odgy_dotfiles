@@ -10,63 +10,40 @@ function formatTime(seconds: number): string {
   return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 
-// Gtk.AlertDialog is a native top-level window and gtk4-layer-shell doesn't
-// support proper parenting for those from a layer-shell surface, so it never
-// reliably presents. Gtk.Popover is a child surface anchored to the widget
-// itself, which layer-shell does support (same mechanism the rest of this
-// shell's popups already rely on).
-// Cancel is both the default and the escape action (autohide covers Escape
-// and click-outside), so an accidental dismiss can never trigger the action.
-function confirm(
-  anchor: Gtk.Widget,
-  message: string,
-  actionLabel: string,
-): Promise<boolean> {
-  return new Promise((resolve) => {
-    const popover = new Gtk.Popover({ autohide: true });
-    popover.set_parent(anchor);
+// Confirmation happens in the row itself rather than a dialog or popover.
+// Gtk.AlertDialog is a top-level window and gtk4-layer-shell can't parent one
+// from a layer surface, so it never presents; a Popover works but is still a
+// separate surface to manage. Swapping the row's children sidesteps both.
+const ACTIONS = {
+  // Confirmed like the rest: hyprlock tears down network connections, which
+  // is not something to trigger by accident with long-running work attached.
+  lock: {
+    icon: "󰌾",
+    tooltip: "Lock",
+    danger: true,
+    run: () => execAsync(["hyprlock"]),
+  },
+  logout: {
+    icon: "󰍃",
+    tooltip: "Log out",
+    danger: true,
+    run: () => execAsync(["hyprctl", "dispatch", "exit"]),
+  },
+  reboot: {
+    icon: "󰜉",
+    tooltip: "Restart",
+    danger: true,
+    run: () => execAsync(["systemctl", "reboot"]),
+  },
+  poweroff: {
+    icon: "󰐥",
+    tooltip: "Power off",
+    danger: true,
+    run: () => execAsync(["systemctl", "poweroff"]),
+  },
+} as const;
 
-    const cancelBtn = new Gtk.Button({ label: "Cancel" });
-    const confirmBtn = new Gtk.Button({ label: actionLabel });
-    confirmBtn.add_css_class("destructive-action");
-
-    let resolved = false;
-    const finish = (result: boolean) => {
-      if (resolved) return;
-      resolved = true;
-      resolve(result);
-      popover.popdown();
-    };
-
-    cancelBtn.connect("clicked", () => finish(false));
-    confirmBtn.connect("clicked", () => finish(true));
-    // Fires on any dismissal path (autohide, Escape, explicit popdown above)
-    // — cleans up the popover exactly once regardless of how it closed.
-    popover.connect("closed", () => {
-      finish(false);
-      popover.unparent();
-    });
-    popover.connect("show", () => cancelBtn.grab_focus());
-
-    const buttonBox = new Gtk.Box({ spacing: 8, halign: Gtk.Align.END });
-    buttonBox.append(cancelBtn);
-    buttonBox.append(confirmBtn);
-
-    const box = new Gtk.Box({
-      orientation: Gtk.Orientation.VERTICAL,
-      spacing: 8,
-      marginTop: 8,
-      marginBottom: 8,
-      marginStart: 8,
-      marginEnd: 8,
-    });
-    box.append(new Gtk.Label({ label: message }));
-    box.append(buttonBox);
-
-    popover.set_child(box);
-    popover.popup();
-  });
-}
+type ActionKey = keyof typeof ACTIONS;
 
 export default function BatteryInfo() {
   const battery = AstalBattery.Device.get_default();
@@ -90,6 +67,37 @@ export default function BatteryInfo() {
     ),
   ];
   onCleanup(() => ids.forEach((id) => battery.disconnect(id)));
+
+  const [pending, setPending] = createState<ActionKey | null>(null);
+  let revertTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const clearRevert = () => {
+    if (revertTimer) clearTimeout(revertTimer);
+    revertTimer = null;
+  };
+
+  const cancel = () => {
+    clearRevert();
+    setPending(null);
+  };
+
+  // Arming is never sticky -- an armed action the user walks away from drops
+  // back to the normal row instead of sitting there waiting to be hit.
+  const arm = (key: ActionKey) => {
+    clearRevert();
+    setPending(key);
+    revertTimer = setTimeout(() => setPending(null), 5000);
+  };
+
+  const commit = () => {
+    const key = pending();
+    if (!key) return;
+    clearRevert();
+    setPending(null);
+    ACTIONS[key].run().catch(console.error);
+  };
+
+  onCleanup(clearRevert);
 
   const batteryIcon = createMemo(() => {
     const p = pct();
@@ -134,50 +142,65 @@ export default function BatteryInfo() {
         />
       </box>
 
-      <box spacing={4} valign={Gtk.Align.CENTER}>
+      {/* Both rows are always built; only one is ever visible, so the card
+          keeps its height and nothing shifts when an action is armed. */}
+      <box
+        spacing={4}
+        valign={Gtk.Align.CENTER}
+        visible={pending.as((p) => p === null)}
+      >
         <button
           class="action-btn"
-          tooltipText="Lock"
-          onClicked={() => execAsync(["hyprlock"]).catch(console.error)}
+          tooltipText={ACTIONS.lock.tooltip}
+          onClicked={() => arm("lock")}
         >
-          <label label="󰌾" />
+          <label label={ACTIONS.lock.icon} />
         </button>
         <button
           class="action-btn"
-          tooltipText="Log out"
-          onClicked={async (self: Gtk.Button) => {
-            if (await confirm(self, "Log out?", "Log Out")) {
-              // "exit" needs to be a Lua dispatcher expression, not a bare
-              // dispatcher name, now that hyprland.lua is in use.
-              execAsync(["hyprctl", "dispatch", "hl.dsp.exit()"]).catch(
-                console.error,
-              );
-            }
-          }}
+          tooltipText={ACTIONS.logout.tooltip}
+          onClicked={() => arm("logout")}
         >
-          <label label="󰍃" />
+          <label label={ACTIONS.logout.icon} />
         </button>
         <button
           class="action-btn"
-          tooltipText="Restart"
-          onClicked={async (self: Gtk.Button) => {
-            if (await confirm(self, "Restart the computer?", "Restart")) {
-              execAsync(["systemctl", "reboot"]).catch(console.error);
-            }
-          }}
+          tooltipText={ACTIONS.reboot.tooltip}
+          onClicked={() => arm("reboot")}
         >
-          <label label="󰜉" />
+          <label label={ACTIONS.reboot.icon} />
         </button>
         <button
           class="action-btn action-btn-danger"
-          tooltipText="Power off"
-          onClicked={async (self: Gtk.Button) => {
-            if (await confirm(self, "Power off the computer?", "Power Off")) {
-              execAsync(["systemctl", "poweroff"]).catch(console.error);
-            }
-          }}
+          tooltipText={ACTIONS.poweroff.tooltip}
+          onClicked={() => arm("poweroff")}
         >
-          <label label="󰐥" />
+          <label label={ACTIONS.poweroff.icon} />
+        </button>
+      </box>
+
+      <box
+        spacing={4}
+        valign={Gtk.Align.CENTER}
+        visible={pending.as((p) => p !== null)}
+      >
+        <label
+          class="confirm-prompt"
+          label={pending.as((p) => (p ? `${ACTIONS[p].icon}?` : ""))}
+        />
+        <button
+          class={pending.as((p) =>
+            p && ACTIONS[p].danger
+              ? "action-btn action-btn-confirm-danger"
+              : "action-btn action-btn-confirm",
+          )}
+          tooltipText={pending.as((p) => (p ? ACTIONS[p].tooltip : ""))}
+          onClicked={commit}
+        >
+          <label label="󰄬" />
+        </button>
+        <button class="action-btn" tooltipText="Cancel" onClicked={cancel}>
+          <label label="󰅖" />
         </button>
       </box>
     </box>
