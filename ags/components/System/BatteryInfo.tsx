@@ -27,7 +27,9 @@ const ACTIONS = {
     icon: "󰍃",
     tooltip: "Log out",
     danger: true,
-    run: () => execAsync(["hyprctl", "dispatch", "exit"]),
+    // "exit" needs to be a Lua dispatcher expression, not a bare dispatcher
+    // name, now that hyprland.lua is in use.
+    run: () => execAsync(["hyprctl", "dispatch", "hl.dsp.exit()"]),
   },
   reboot: {
     icon: "󰜉",
