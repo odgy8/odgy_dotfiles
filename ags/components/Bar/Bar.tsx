@@ -11,6 +11,7 @@ import Clock from "../../widgets/Clock";
 import Minimized from "../Minimized/Minimized";
 import { sourceMute, toggleDefaultSourceMute } from "../Volume/volumeControl";
 import DiskWarning from "./DiskWarning";
+import MediaButton from "../Media/MediaButton";
 import { DISK_CRITICAL_PERCENT, diskUsedPercent } from "./diskUsage";
 
 interface BarProps {
@@ -19,6 +20,7 @@ interface BarProps {
   setIsSystemOpen: Setter<boolean>;
   setIsCalendarOpen: Setter<boolean>;
   setIsCenterTrayOpen: Setter<boolean>;
+  setIsMediaOpen: Setter<boolean>;
   monitor: number;
 }
 
@@ -28,6 +30,7 @@ export default function Bar({
   setIsSystemOpen,
   setIsCalendarOpen,
   setIsCenterTrayOpen,
+  setIsMediaOpen,
   monitor = 0,
 }: BarProps) {
   const anchor = Astal.WindowAnchor;
@@ -58,6 +61,8 @@ export default function Bar({
       <button class="bar-tray-btn" onClicked={() => setIsCenterTrayOpen(true)}>
         <label label="󰀻" />
       </button>
+
+      <MediaButton onClicked={() => setIsMediaOpen(true)} />
     </box>
   );
 

@@ -1,0 +1,168 @@
+/* ── Bar button ──────────────────────────────────────────── */
+.media-bar-title {
+  font-size: 0.8rem;
+}
+
+.media-bar-strip {
+  background: transparent;
+}
+
+/* Adw fades the edges of a scroller to hint at more content. On a marquee it
+   just makes the text look smudged. */
+.media-bar-strip undershoot.left,
+.media-bar-strip undershoot.right {
+  background: none;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.media-card {
+  padding: 14px;
+}
+
+.media-empty {
+  padding: 12px 0;
+}
+
+.media-empty-icon {
+  font-size: 1.8rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Track info ──────────────────────────────────────────── */
+.media-art {
+  border-radius: 10px;
+  min-width: 64px;
+  min-height: 64px;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.media-art-blank {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.media-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.media-subtitle {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.84rem;
+}
+
+.media-source {
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* ── Seek bar ────────────────────────────────────────────── */
+.media-seek trough {
+  min-height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.media-seek highlight {
+  border-radius: 3px;
+  background: #4a9eff;
+}
+
+/* Adw gives this node a -8px margin, which is what keeps the trough a thin
+   line. Stay at or above 16px or the min size comes out negative and Gtk
+   warns on every layout pass. */
+.media-seek slider {
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.media-seek:disabled highlight {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.media-time {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+}
+
+/* ── Controls ────────────────────────────────────────────── */
+.media-controls {
+  margin-top: 2px;
+}
+
+.media-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.05rem;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0;
+}
+
+.media-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.media-btn:disabled {
+  color: rgba(255, 255, 255, 0.18);
+}
+
+.media-btn-on {
+  color: #4a9eff;
+}
+
+.media-btn-on:hover {
+  background: rgba(74, 158, 255, 0.15);
+  color: #4a9eff;
+}
+
+/* Filled circle, the one obviously primary control in the row. */
+.media-btn-play {
+  background: #4a9eff;
+  box-shadow: none;
+  border-radius: 50%;
+  color: #0b1220;
+  font-size: 1.2rem;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0 6px;
+}
+
+.media-btn-play:hover {
+  background: #6bb0ff;
+  color: #0b1220;
+}
+
+/* ── Player tabs ─────────────────────────────────────────── */
+.media-tabs {
+  padding-bottom: 2px;
+}
+
+.media-tab {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.78rem;
+  min-height: 26px;
+  padding: 0 10px;
+}
+
+.media-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.media-tab-active {
+  background: rgba(74, 158, 255, 0.18);
+  color: #4a9eff;
+}

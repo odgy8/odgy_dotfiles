@@ -10,6 +10,7 @@ import BarCss from "./components/Bar/Bar.css";
 import PopupCss from "./components/Popup/Popup.css";
 import ButtonCss from "./widgets/Button.css";
 import FootingCss from "./components/Footing/Footing.css";
+import MediaCss from "./components/Media/Media.css";
 
 // Component imports
 import Bar from "./components/Bar/Bar";
@@ -21,11 +22,12 @@ import CalendarPopup from "./components/Calendar/CalendarPopup";
 import Tray from "./components/Tray/Tray";
 import NotificationPopup from "./components/Notifications/NotificationPopup";
 import Footing from "./components/Footing/Footing";
+import Media from "./components/Media/Media";
 
 Adw.StyleManager.get_default().colorScheme = Adw.ColorScheme.PREFER_DARK;
 
 app.start({
-  css: style + BarCss + PopupCss + ButtonCss + FootingCss,
+  css: style + BarCss + PopupCss + ButtonCss + FootingCss + MediaCss,
   main() {
     // Build one Bar + set of popups per connected monitor, rather than a
     // fixed count — this file is shared between a 3-monitor desktop and a
@@ -41,6 +43,7 @@ app.start({
       const [isCalendarOpen, setIsCalendarOpen] = createState<boolean>(false);
       const [isCenterTrayOpen, setIsCenterTrayOpen] =
         createState<boolean>(false);
+      const [isMediaOpen, setIsMediaOpen] = createState<boolean>(false);
 
       Bar({
         monitor,
@@ -49,6 +52,7 @@ app.start({
         setIsSystemOpen,
         setIsCalendarOpen,
         setIsCenterTrayOpen,
+        setIsMediaOpen,
       });
       Popup({
         monitor,
@@ -73,6 +77,13 @@ app.start({
         isOpen: isCenterTrayOpen,
         setIsOpen: setIsCenterTrayOpen,
         children: <Tray />,
+        halign: "center",
+      });
+      Popup({
+        monitor,
+        isOpen: isMediaOpen,
+        setIsOpen: setIsMediaOpen,
+        children: <Media />,
         halign: "center",
       });
       CalendarPopup({
