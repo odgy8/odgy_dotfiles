@@ -58,6 +58,15 @@ else
 	hl.monitor({ output = "DP-2", mode = "1920x1080", position = "auto-left", scale = 1 })
 	hl.monitor({ output = "DP-1", mode = "3840x2160", position = "0x0", scale = 1.5 })
 	hl.monitor({ output = "HDMI-A-1", mode = "1920x1080", position = "auto-right", scale = 1 })
+	-- The TV. Mirrors HDMI-A-1 instead of being its own desktop, so it just
+	-- shows whatever is on the left screen whenever it's plugged in.
+	hl.monitor({
+		output = "HDMI-A-2",
+		mode = "1920x1080@60",
+		position = "auto-right",
+		scale = 1,
+		mirror = "DP-2",
+	})
 end
 
 -- ~~~~~~~~~~~~~~~~~~~~~

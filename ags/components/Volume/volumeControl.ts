@@ -233,6 +233,7 @@ export async function toggleDefaultSourceMute(): Promise<void> {
 export interface SinkInput {
   id: number;
   name: string;
+  binary: string;
   iconName: string;
   volume: number;
   mute: boolean;
@@ -252,6 +253,7 @@ function parseSinkInputs(stdout: string): SinkInput[] {
     results.push({
       id: Number(idMatch[1]),
       name: nameMatch[1],
+      binary: binaryMatch?.[1] ?? "",
       iconName: iconMatch?.[1] ?? binaryMatch?.[1] ?? "audio-card",
       volume: Number(volumeMatch?.[1] ?? 0),
       mute: muteMatch?.[1] === "yes",

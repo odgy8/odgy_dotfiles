@@ -9,7 +9,13 @@ import { Gtk } from "ags/gtk4";
 // Style imports
 import MediaCss from "./Media.css";
 
+import {
+  setSinkInputVolume,
+  sinkInputs,
+  toggleSinkInputMute,
+} from "../Volume/volumeControl";
 import { activePlayer, players, preferredBus } from "./mediaState";
+import { matchStream } from "./streamMatch";
 
 const POLL_MS = 500;
 const ART_PX = 64;
@@ -18,11 +24,77 @@ const ART_PX = 64;
 // otherwise the handle snaps back to the old position mid-drag.
 const SEEK_GRACE_MS = 900;
 
+// sinkInputs is polled, so the slider needs the same kind of grace window or it
+// snaps back to the last polled value halfway through a drag.
+const VOLUME_GRACE_MS = 1500;
+const MAX_VOLUME = 150;
+
 function formatTime(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds <= 0) return "0:00";
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+// Volume for the app the player is coming out of, not the system sink - so
+// turning down a video here leaves everything else where it was.
+function StreamVolume({ player }: { player: AstalMpris.Player }) {
+  const stream = createComputed(() => matchStream(player, sinkInputs()));
+
+  const [volume, setVolume] = createState(stream.get()?.volume ?? 0);
+  let heldUntil = 0;
+
+  onCleanup(
+    stream.subscribe(() => {
+      if (Date.now() < heldUntil) return;
+      setVolume(stream.get()?.volume ?? 0);
+    }),
+  );
+
+  const onVolume = (_: unknown, __: unknown, value: number) => {
+    const id = stream.get()?.id;
+    if (id === undefined) return false;
+
+    heldUntil = Date.now() + VOLUME_GRACE_MS;
+    setVolume(Math.round(value));
+    setSinkInputVolume(id, value).catch(console.error);
+    return false;
+  };
+
+  return (
+    <box
+      class="media-volume"
+      spacing={8}
+      valign={Gtk.Align.CENTER}
+      visible={stream.as((s) => s !== null)}
+    >
+      <button
+        class="media-btn media-volume-btn"
+        tooltipText={stream.as((s) => (s?.mute ? "Unmute" : "Mute"))}
+        onClicked={() => {
+          const id = stream.get()?.id;
+          if (id !== undefined) toggleSinkInputMute(id).catch(console.error);
+        }}
+      >
+        <label label={stream.as((s) => (s?.mute ? "󰖁" : "󰕾"))} />
+      </button>
+
+      <slider
+        class="media-volume-slider"
+        hexpand
+        orientation={Gtk.Orientation.HORIZONTAL}
+        drawValue={false}
+        roundDigits={0}
+        digits={0}
+        min={0}
+        max={MAX_VOLUME}
+        value={volume}
+        onChangeValue={onVolume}
+      />
+
+      <label class="media-volume-pct" xalign={1} label={volume.as((v) => `${v}%`)} />
+    </box>
+  );
 }
 
 function PlayerCard({ player }: { player: AstalMpris.Player }) {
@@ -213,6 +285,8 @@ function PlayerCard({ player }: { player: AstalMpris.Player }) {
           />
         </button>
       </box>
+
+      <StreamVolume player={player} />
     </box>
   );
 }

@@ -141,6 +141,44 @@
   color: #0b1220;
 }
 
+/* ── Stream volume ───────────────────────────────────────── */
+.media-volume {
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 10px;
+}
+
+.media-volume-btn {
+  font-size: 0.95rem;
+  min-width: 28px;
+  min-height: 28px;
+}
+
+.media-volume-slider trough {
+  min-height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.media-volume-slider highlight {
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* Same -8px margin trap as the seek bar - stay at or above 16px. */
+.media-volume-slider slider {
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.media-volume-pct {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+  min-width: 36px;
+}
+
 /* ── Player tabs ─────────────────────────────────────────── */
 .media-tabs {
   padding-bottom: 2px;

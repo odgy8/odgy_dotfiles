@@ -8,13 +8,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local root = client.root_dir or vim.fn.getcwd()
 		local venv = root .. "/venv"
 		if vim.fn.isdirectory(venv) == 1 then
-			client.notify("workspace/didChangeConfiguration", {
-				settings = {
-					pylsp = {
-						plugins = { jedi = { environment = venv } },
-					},
+			-- pylsp *replaces* its settings with whatever this notification carries,
+			-- it does not merge. Sending only the jedi environment would drop the
+			-- plugin config from mason.lua and hand back pycodestyle's 79 char E501s
+			-- in every project that happens to have a ./venv, so extend the settings
+			-- the client already has rather than sending a bare jedi table.
+			local settings = vim.tbl_deep_extend("force", client.settings or {}, {
+				pylsp = {
+					plugins = { jedi = { environment = venv } },
 				},
 			})
+			client.settings = settings
+			client:notify("workspace/didChangeConfiguration", { settings = settings })
 		end
 	end,
 })

@@ -1,6 +1,7 @@
 # General agent rules
 
 ## Working style
+The number one thing is - Always try to write in Simplified Technical English. Try wherever possible to not give overwhelming techincal answers and not incomprehensible jargon.
 
 1. The only git commands that you are allowed to run without asking for permission are the read commands - you may not run any write git commands at any time without permission from the user, even if in auto-mode, you should always ask for permission before doing a git write command. This includes commit and push! This task is a human task by default.
 2. You should not run any docker commands unless asked to. Especially around docker compose. Ask first.

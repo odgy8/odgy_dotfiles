@@ -4,7 +4,7 @@ import { createState } from "ags";
 
 // Bar turns red at or above this. 90% of 598G still leaves ~60G, which is enough
 // warning to act before apps start writing truncated files.
-export const DISK_CRITICAL_PERCENT = 90;
+export const DISK_CRITICAL_PERCENT = 92;
 
 const WATCHED_PATH = "/";
 

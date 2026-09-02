@@ -3,14 +3,12 @@ import VolumeSliders from "./VolumeSliders";
 import SinkSelector from "./SinkSelector";
 import SourceSelector from "./SourceSelector";
 import AppMixer from "./AppMixer";
-import MediaPlayer from "./MediaPlayer";
 
 export default function Volume() {
   return (
     <box orientation={Gtk.Orientation.VERTICAL} spacing={8}>
       <VolumeSliders />
       <AppMixer />
-      <MediaPlayer />
       <box><SinkSelector /></box>
       <box><SourceSelector /></box>
     </box>

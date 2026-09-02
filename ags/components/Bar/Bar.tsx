@@ -58,11 +58,11 @@ export default function Bar({
         <Clock />
       </button>
 
+      <MediaButton onClicked={() => setIsMediaOpen(true)} />
+
       <button class="bar-tray-btn" onClicked={() => setIsCenterTrayOpen(true)}>
         <label label="󰀻" />
       </button>
-
-      <MediaButton onClicked={() => setIsMediaOpen(true)} />
     </box>
   );
 
