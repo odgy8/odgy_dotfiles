@@ -1,2 +1,3 @@
-- The only git commands that you are allowed to run without asking for permission are the read commands - you may not run any write git commands at any time without permission from the user, even if in auto-mode, you should always ask for permission before doing a git write command. This includes commit and push! This task is a human task by default.
-- You should read the file at ~/coding/AGENTS.md for general rules also. If this file doesn't exist - warn the human on session start. Do not ask permission for this. Just do it.
+@~/coding/AGENTS.md
+
+- The only git commands you may run without asking are read commands. Never run a git write command (commit, push, rebase, reset, etc.) without my permission, even in auto mode. Git writes are a human task by default.
