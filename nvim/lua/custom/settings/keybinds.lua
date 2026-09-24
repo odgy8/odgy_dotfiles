@@ -1,4 +1,5 @@
 local FT = require("custom.scripts.format-text")
+local CR = require("custom.scripts.claude-response")
 local M = {}
 
 function M.setup()
@@ -39,6 +40,10 @@ function M.setup()
 	vim.keymap.set({ "n", "v" }, "<leader>ai", ":PrtImplement<CR>", { desc = "Parrot ai implement comment as prompt" })
 	vim.keymap.set({ "n", "v" }, "<leader>aa", ":PrtAsk<CR>", { desc = "Parrot ai ask question" })
 	vim.keymap.set({ "n", "v" }, "<leader>am", ":PrtModel<CR>", { desc = "Launch parrot select model window" })
+
+	-- Pull the last reply out of the newest Claude Code session for this cwd
+	vim.keymap.set("n", "<leader>acg", CR.paste, { desc = "Paste last Claude Code response" })
+	vim.keymap.set("n", "<leader>acy", CR.copy, { desc = "Yank last Claude Code response" })
 
 	-- File operations
 	vim.keymap.set("c", "W", "w", { desc = "Save file with capital W" })
