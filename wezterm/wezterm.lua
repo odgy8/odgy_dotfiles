@@ -83,6 +83,44 @@ config.colors = {
 	},
 }
 
+-- Light theme
+-- config.colors = {
+-- 	foreground = "#24292f",
+-- 	background = "#ffffff",
+--
+-- 	cursor_bg = "#0969da",
+-- 	cursor_fg = "#ffffff",
+-- 	cursor_border = "#0969da",
+--
+-- 	selection_fg = "#ffffff",
+-- 	selection_bg = "#0969da",
+--
+-- 	text_foreground = "#24292f",
+-- 	text_background = "#ffffff",
+--
+-- 	ansi = {
+-- 		"#24292f", -- black
+-- 		"#cf222e", -- red
+-- 		"#116329", -- green
+-- 		"#4d2d00", -- yellow
+-- 		"#0969da", -- blue
+-- 		"#8250df", -- magenta
+-- 		"#1b7c83", -- cyan
+-- 		"#6e7781", -- white
+-- 	},
+--
+-- 	brights = {
+-- 		"#57606a", -- bright black
+-- 		"#a40e26", -- bright red
+-- 		"#1a7f37", -- bright green
+-- 		"#633c01", -- bright yellow
+-- 		"#218bff", -- bright blue
+-- 		"#a475f9", -- bright magenta
+-- 		"#3192aa", -- bright cyan
+-- 		"#8c959f", -- bright white
+-- 	},
+-- }
+
 -- Boost color vividness (wezterm's AA blending mutes colors vs kitty's rasterizer)
 config.foreground_text_hsb = {
 	hue = 1.0,

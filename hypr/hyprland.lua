@@ -533,6 +533,21 @@ hl.define_submap("layout", function()
 	hl.bind("Return", hl.dsp.submap(""))
 end)
 
+-- Arrange submap (Alt+W, then 2 = 50/50, 4 = quarters)
+hl.bind(mainMod .. " + W", hl.dsp.submap("arrange"))
+hl.define_submap("arrange", function()
+	hl.bind("2", function()
+		hl.dispatch(hl.dsp.submap(""))
+		hl.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 2")
+	end)
+	hl.bind("4", function()
+		hl.dispatch(hl.dsp.submap(""))
+		hl.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 4")
+	end)
+	hl.bind("Escape", hl.dsp.submap(""))
+	hl.bind("Return", hl.dsp.submap(""))
+end)
+
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~ WINDOW RULES ~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
