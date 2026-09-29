@@ -1,7 +1,7 @@
 #!/bin/bash
-# Tile every window on the active workspace into halves (2) or quarters (4) of its monitor.
-# Windows keep their left-to-right order. More windows than cells wrap round and stack.
-CELLS=${1:-2}
+# Arrange every window on the active workspace: 2 = halves side by side, 2v = halves stacked,
+# 4 = quarters, 1 = overlapping 95% windows in the corners. Extra windows wrap round and stack.
+MODE=${1:-2}
 GAP=3
 TITLE_H=20 # hyprbars bar_height, sits above the window
 
@@ -23,29 +23,52 @@ mapfile -t WINS < <(hyprctl clients -j | jq -r --argjson ws "$WS_ID" '
 
 HALF_W=$((AW / 2))
 HALF_H=$((AH / 2))
+BIG_W=$((AW * 95 / 100))
+BIG_H=$((AH * 95 / 100))
+SLOTS=$([ "$MODE" = 2 ] || [ "$MODE" = 2v ] && echo 2 || echo 4)
 
 i=0
 for line in "${WINS[@]}"; do
 	read -r ADDR FLOATING <<<"$line"
-	CELL=$((i % CELLS))
+	CELL=$((i % SLOTS))
 	i=$((i + 1))
 
-	# Quarters fill column by column so left windows stay on the left
-	if [ "$CELLS" = 4 ]; then
+	case "$MODE" in
+	1)
+		# Overlapping 95% windows pinned to corners: TL, BR, TR, BL
+		CW=$BIG_W
+		CH=$BIG_H
+		CX=$AX
+		CY=$AY
+		if [ "$CELL" = 1 ] || [ "$CELL" = 2 ]; then CX=$((AX + AW - CW)); fi
+		if [ "$CELL" = 1 ] || [ "$CELL" = 3 ]; then CY=$((AY + AH - CH)); fi
+		;;
+	2v)
+		CW=$AW
+		CH=$HALF_H
+		CX=$AX
+		CY=$((AY + CELL * HALF_H))
+		;;
+	4)
+		# Column by column so left windows stay on the left
+		CW=$HALF_W
+		CH=$HALF_H
 		CX=$((AX + (CELL / 2) * HALF_W))
 		CY=$((AY + (CELL % 2) * HALF_H))
-		CH=$HALF_H
-	else
+		;;
+	*)
+		CW=$HALF_W
+		CH=$AH
 		CX=$((AX + CELL * HALF_W))
 		CY=$AY
-		CH=$AH
-	fi
+		;;
+	esac
 
 	hyprctl dispatch "hl.dsp.focus({window = hl.get_window('address:${ADDR}')})" >/dev/null
 	if [ "$FLOATING" != "true" ]; then
 		hyprctl dispatch "hl.dsp.window.float({action='set'})" >/dev/null
 	fi
-	hyprctl dispatch "hl.dsp.window.resize({x=$((HALF_W - GAP * 2)),y=$((CH - GAP * 2 - TITLE_H))})" >/dev/null
+	hyprctl dispatch "hl.dsp.window.resize({x=$((CW - GAP * 2)),y=$((CH - GAP * 2 - TITLE_H))})" >/dev/null
 	hyprctl dispatch "hl.dsp.window.move({x=$((CX + GAP)),y=$((CY + GAP + TITLE_H))})" >/dev/null
 done
 
