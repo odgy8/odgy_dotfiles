@@ -11,6 +11,7 @@ import PopupCss from "./components/Popup/Popup.css";
 import ButtonCss from "./widgets/Button.css";
 import FootingCss from "./components/Footing/Footing.css";
 import MediaCss from "./components/Media/Media.css";
+import CaptureCss from "./components/Capture/Capture.css";
 
 // Component imports
 import Bar from "./components/Bar/Bar";
@@ -23,11 +24,13 @@ import Tray from "./components/Tray/Tray";
 import NotificationPopup from "./components/Notifications/NotificationPopup";
 import Footing from "./components/Footing/Footing";
 import Media from "./components/Media/Media";
+import CaptureToolbar from "./components/Capture/CaptureToolbar";
+import CaptureThumbnail from "./components/Capture/CaptureThumbnail";
 
 Adw.StyleManager.get_default().colorScheme = Adw.ColorScheme.PREFER_DARK;
 
 app.start({
-  css: style + BarCss + PopupCss + ButtonCss + FootingCss + MediaCss,
+  css: style + BarCss + PopupCss + ButtonCss + FootingCss + MediaCss + CaptureCss,
   main() {
     // Build one Bar + set of popups per connected monitor, rather than a
     // fixed count — this file is shared between a 3-monitor desktop and a
@@ -44,6 +47,7 @@ app.start({
       const [isCenterTrayOpen, setIsCenterTrayOpen] =
         createState<boolean>(false);
       const [isMediaOpen, setIsMediaOpen] = createState<boolean>(false);
+      const [isCaptureOpen, setIsCaptureOpen] = createState<boolean>(false);
 
       Bar({
         monitor,
@@ -53,6 +57,7 @@ app.start({
         setIsCalendarOpen,
         setIsCenterTrayOpen,
         setIsMediaOpen,
+        setIsCaptureOpen,
       });
       Popup({
         monitor,
@@ -92,6 +97,12 @@ app.start({
         setIsOpen: setIsCalendarOpen,
       });
       Footing({ monitor });
+      CaptureToolbar({
+        monitor,
+        isOpen: isCaptureOpen,
+        setIsOpen: setIsCaptureOpen,
+      });
+      CaptureThumbnail({ monitor });
 
       // Notifications only need to render once, on the primary monitor.
       if (monitor === 0) NotificationPopup({ monitor });

@@ -1,0 +1,126 @@
+.capture-outer {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.capture-toolbar,
+.capture-options {
+  background-color: rgba(24, 24, 27, 0.92);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  padding: 6px;
+}
+
+.capture-options {
+  padding: 10px 12px;
+  min-width: 280px;
+}
+
+.capture-sep {
+  min-width: 1px;
+  margin: 6px 4px;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.capture-mode,
+.capture-close {
+  min-width: 40px;
+  min-height: 36px;
+  padding: 0;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.capture-close {
+  min-width: 32px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.capture-mode.active {
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.capture-options-btn {
+  font-size: 0.85rem;
+  padding: 0 10px;
+}
+
+.capture-go {
+  background-color: #4a9eff;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0 14px;
+  border-radius: 8px;
+}
+
+.capture-go:hover {
+  background-color: #66adff;
+}
+
+.capture-go:disabled {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.capture-opt-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+}
+
+.capture-chip {
+  background-color: rgba(255, 255, 255, 0.07);
+  font-size: 0.8rem;
+  padding: 2px 10px;
+}
+
+.capture-chip.active {
+  background-color: rgba(74, 158, 255, 0.3);
+  color: #ffffff;
+}
+
+/* ── Thumbnail ───────────────────────────────────────────── */
+.capture-thumb-outer {
+  background: transparent;
+}
+
+.capture-thumb {
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  background-color: rgba(24, 24, 27, 0.92);
+}
+
+.capture-thumb-img {
+  border-radius: 8px;
+}
+
+.capture-thumb-badge {
+  margin: 6px;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.capture-thumb-btn {
+  background-color: rgba(0, 0, 0, 0.55);
+  margin: 4px 4px 0 0;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  border-radius: 6px;
+}
+
+/* ── Bar ─────────────────────────────────────────────────── */
+.bar-recording-btn {
+  color: #ef4444;
+  font-size: 0.85rem;
+  padding: 0 8px;
+}
+
+.bar-recording-btn:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ff6b6b;
+}

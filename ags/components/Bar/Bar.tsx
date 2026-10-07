@@ -13,6 +13,7 @@ import { sourceMute, toggleDefaultSourceMute } from "../Volume/volumeControl";
 import DiskWarning from "./DiskWarning";
 import MediaButton from "../Media/MediaButton";
 import { DISK_CRITICAL_PERCENT, diskUsedPercent } from "./diskUsage";
+import RecordingIndicator from "../Capture/RecordingIndicator";
 
 interface BarProps {
   setIsVolumeOpen: Setter<boolean>;
@@ -21,6 +22,7 @@ interface BarProps {
   setIsCalendarOpen: Setter<boolean>;
   setIsCenterTrayOpen: Setter<boolean>;
   setIsMediaOpen: Setter<boolean>;
+  setIsCaptureOpen: Setter<boolean>;
   monitor: number;
 }
 
@@ -31,6 +33,7 @@ export default function Bar({
   setIsCalendarOpen,
   setIsCenterTrayOpen,
   setIsMediaOpen,
+  setIsCaptureOpen,
   monitor = 0,
 }: BarProps) {
   const anchor = Astal.WindowAnchor;
@@ -69,6 +72,16 @@ export default function Bar({
   const RightSection = () => (
     <box spacing={8}>
       <DiskWarning />
+
+      <RecordingIndicator />
+
+      <button
+        class="bar-icon-btn"
+        tooltipText="Screenshot / record"
+        onClicked={() => setIsCaptureOpen(true)}
+      >
+        <label label="󰄀" />
+      </button>
 
       <button
         class="bar-icon-btn"
