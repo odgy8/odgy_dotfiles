@@ -14,6 +14,7 @@ import DiskWarning from "./DiskWarning";
 import MediaButton from "../Media/MediaButton";
 import { DISK_CRITICAL_PERCENT, diskUsedPercent } from "./diskUsage";
 import RecordingIndicator from "../Capture/RecordingIndicator";
+import PrivacyIndicator from "../Privacy/PrivacyIndicator";
 
 interface BarProps {
   setIsVolumeOpen: Setter<boolean>;
@@ -23,6 +24,8 @@ interface BarProps {
   setIsCenterTrayOpen: Setter<boolean>;
   setIsMediaOpen: Setter<boolean>;
   setIsCaptureOpen: Setter<boolean>;
+  setIsControlCentreOpen: Setter<boolean>;
+  setIsOverviewOpen: Setter<boolean>;
   monitor: number;
 }
 
@@ -34,6 +37,8 @@ export default function Bar({
   setIsCenterTrayOpen,
   setIsMediaOpen,
   setIsCaptureOpen,
+  setIsControlCentreOpen,
+  setIsOverviewOpen,
   monitor = 0,
 }: BarProps) {
   const anchor = Astal.WindowAnchor;
@@ -41,6 +46,13 @@ export default function Bar({
 
   const LeftSection = () => (
     <box spacing={8}>
+      <button
+        class="bar-icon-btn"
+        tooltipText="Mission Control"
+        onClicked={() => setIsOverviewOpen(true)}
+      >
+        <label label="󰕰" />
+      </button>
       <Workspaces />
     </box>
   );
@@ -73,6 +85,8 @@ export default function Bar({
     <box spacing={8}>
       <DiskWarning />
 
+      <PrivacyIndicator />
+
       <RecordingIndicator />
 
       <button
@@ -97,6 +111,14 @@ export default function Bar({
         onClicked={() => setIsConnectivityOpen(true)}
       >
         <label label="󰤨" />
+      </button>
+
+      <button
+        class="bar-icon-btn"
+        tooltipText="Control Centre"
+        onClicked={() => setIsControlCentreOpen(true)}
+      >
+        <label label="󰜬" />
       </button>
 
       <button

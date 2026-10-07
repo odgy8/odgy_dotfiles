@@ -1,0 +1,31 @@
+.cc-tile {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 8px 10px;
+  min-height: 44px;
+}
+
+.cc-tile.active {
+  background-color: rgba(74, 158, 255, 0.25);
+}
+
+.cc-tile.active .cc-tile-icon {
+  color: #4a9eff;
+}
+
+.cc-tile-icon {
+  font-size: 1.2rem;
+  min-width: 24px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cc-tile-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.cc-tile-sub {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+}

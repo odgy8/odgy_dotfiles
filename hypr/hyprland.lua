@@ -557,6 +557,13 @@ hl.define_submap("arrange", function()
 end)
 
 -- ~~~~~~~~~~~~~~~~~~~~~
+-- AGS Mission Control - the default layer fade makes it feel laggy.
+hl.layer_rule({
+	name = "overview no anim",
+	match = { namespace = "^overview$" },
+	no_anim = true,
+})
+
 -- ~~~ WINDOW RULES ~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 

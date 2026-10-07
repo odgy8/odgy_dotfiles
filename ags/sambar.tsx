@@ -1,6 +1,7 @@
 // Package imports
 import app from "ags/gtk4/app";
-import { createState } from "ags";
+import { createState, type Setter } from "ags";
+import AstalHyprland from "gi://AstalHyprland";
 import Adw from "gi://Adw";
 import Gdk from "gi://Gdk";
 
@@ -12,6 +13,8 @@ import ButtonCss from "./widgets/Button.css";
 import FootingCss from "./components/Footing/Footing.css";
 import MediaCss from "./components/Media/Media.css";
 import CaptureCss from "./components/Capture/Capture.css";
+import ControlCentreCss from "./components/ControlCentre/ControlCentre.css";
+import OverviewCss from "./components/Overview/Overview.css";
 
 // Component imports
 import Bar from "./components/Bar/Bar";
@@ -26,11 +29,24 @@ import Footing from "./components/Footing/Footing";
 import Media from "./components/Media/Media";
 import CaptureToolbar from "./components/Capture/CaptureToolbar";
 import CaptureThumbnail from "./components/Capture/CaptureThumbnail";
+import ControlCentre from "./components/ControlCentre/ControlCentre";
+import Overview from "./components/Overview/Overview";
 
 Adw.StyleManager.get_default().colorScheme = Adw.ColorScheme.PREFER_DARK;
 
+// One setter per monitor, so `ags request overview` opens it on the focused one.
+const overviewSetters = new Map<string, Setter<boolean>>();
+
 app.start({
-  css: style + BarCss + PopupCss + ButtonCss + FootingCss + MediaCss + CaptureCss,
+  requestHandler(argv, res) {
+    if (argv[0] !== "overview") return res(`unknown request: ${argv.join(" ")}`);
+    const name = AstalHyprland.get_default().get_focused_monitor()?.name ?? "";
+    const open = overviewSetters.get(name);
+    if (!open) return res(`no overview for monitor ${name}`);
+    open(true);
+    res("ok");
+  },
+  css: style + BarCss + PopupCss + ButtonCss + FootingCss + MediaCss + CaptureCss + ControlCentreCss + OverviewCss,
   main() {
     // Build one Bar + set of popups per connected monitor, rather than a
     // fixed count — this file is shared between a 3-monitor desktop and a
@@ -48,6 +64,14 @@ app.start({
         createState<boolean>(false);
       const [isMediaOpen, setIsMediaOpen] = createState<boolean>(false);
       const [isCaptureOpen, setIsCaptureOpen] = createState<boolean>(false);
+      const [isControlCentreOpen, setIsControlCentreOpen] =
+        createState<boolean>(false);
+      const [isOverviewOpen, setIsOverviewOpen] = createState<boolean>(false);
+
+      const connector = (
+        Gdk.Display.get_default()?.get_monitors().get_item(monitor) as Gdk.Monitor | null
+      )?.get_connector();
+      if (connector) overviewSetters.set(connector, setIsOverviewOpen);
 
       Bar({
         monitor,
@@ -58,6 +82,8 @@ app.start({
         setIsCenterTrayOpen,
         setIsMediaOpen,
         setIsCaptureOpen,
+        setIsControlCentreOpen,
+        setIsOverviewOpen,
       });
       Popup({
         monitor,
@@ -103,6 +129,17 @@ app.start({
         setIsOpen: setIsCaptureOpen,
       });
       CaptureThumbnail({ monitor });
+      Popup({
+        monitor,
+        isOpen: isControlCentreOpen,
+        setIsOpen: setIsControlCentreOpen,
+        children: <ControlCentre />,
+      });
+      Overview({
+        monitor,
+        isOpen: isOverviewOpen,
+        setIsOpen: setIsOverviewOpen,
+      });
 
       // Notifications only need to render once, on the primary monitor.
       if (monitor === 0) NotificationPopup({ monitor });

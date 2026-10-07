@@ -110,7 +110,7 @@ export default function NotificationPopup({ monitor }: { monitor: number }) {
   };
 
   notifd.connect("notified", (_: any, id: number, replaced: boolean) => {
-    if (replaced) return;
+    if (replaced || notifd.dontDisturb) return;
     const n = notifd.get_notification(id);
     if (n) addToast(n);
   });

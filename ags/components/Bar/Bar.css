@@ -112,3 +112,15 @@ button.workspace.active {
 .tray-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+.privacy-indicator {
+  padding: 0 4px;
+}
+
+.privacy-mic {
+  color: #f59e0b;
+}
+
+.privacy-camera {
+  color: #22c55e;
+}

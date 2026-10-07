@@ -1,6 +1,7 @@
 import { Astal, Gtk } from "ags/gtk4";
 import { onCleanup } from "ags";
-import Gio from "gi://Gio";
+import Gdk from "gi://Gdk";
+import GdkPixbuf from "gi://GdkPixbuf";
 
 import {
   lastCapture,
@@ -12,19 +13,39 @@ import {
 const THUMB_W = 240;
 const THUMB_H = 135;
 
+// Scale to cover THUMB_W x THUMB_H, then centre-crop. Picture sizes itself to
+// its texture, so this is what keeps the popup a fixed size.
+function coverTexture(path: string): Gdk.Texture | null {
+  try {
+    const src = GdkPixbuf.Pixbuf.new_from_file(path);
+    const k = Math.max(THUMB_W / src.width, THUMB_H / src.height);
+    const w = Math.max(THUMB_W, Math.round(src.width * k));
+    const h = Math.max(THUMB_H, Math.round(src.height * k));
+    const scaled = src.scale_simple(w, h, GdkPixbuf.InterpType.BILINEAR)!;
+    const crop = scaled.new_subpixbuf(
+      Math.floor((w - THUMB_W) / 2),
+      Math.floor((h - THUMB_H) / 2),
+      THUMB_W,
+      THUMB_H,
+    );
+    return Gdk.Texture.new_for_pixbuf(crop);
+  } catch {
+    return null;
+  }
+}
+
 // Floating preview in the bottom-right after a capture, like macOS.
 export default function CaptureThumbnail({ monitor }: { monitor: number }) {
   const picture = new Gtk.Picture({
-    contentFit: Gtk.ContentFit.COVER,
     widthRequest: THUMB_W,
     heightRequest: THUMB_H,
-    canShrink: true,
+    canShrink: false,
   });
   picture.add_css_class("capture-thumb-img");
 
   const update = () => {
     const c = lastCapture.get();
-    picture.set_file(c?.thumb ? Gio.File.new_for_path(c.thumb) : null);
+    picture.set_paintable(c?.thumb ? coverTexture(c.thumb) : null);
   };
   onCleanup(lastCapture.subscribe(update));
   update();

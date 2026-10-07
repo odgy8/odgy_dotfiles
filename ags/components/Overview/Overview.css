@@ -1,0 +1,50 @@
+.ov-outer {
+  background: transparent;
+}
+
+.ov-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.ov-desktop {
+  background-color: rgba(24, 24, 27, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0;
+}
+
+.ov-desktop:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.ov-desktop.active {
+  border-color: #4a9eff;
+}
+
+.ov-desktop-label {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+}
+
+.ov-window {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ov-window-live {
+  background-color: transparent;
+}
+
+.ov-window:hover {
+  border-color: #4a9eff;
+  background-color: rgba(74, 158, 255, 0.2);
+}
+
+.ov-window-title {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+}
