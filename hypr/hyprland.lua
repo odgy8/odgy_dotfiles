@@ -8,6 +8,7 @@
 
 local mainMod = "ALT"
 local floatingFirst = true
+local hyprlandRunner = hl
 
 local function fileExists(path)
 	local f = io.open(path, "r")
@@ -39,12 +40,12 @@ local terminal = fileExists(weztermPath) and weztermPath or "kitty"
 -- ~~~~ ENVIRONMENT ~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("GTK_THEME", "Adwaita:dark")
-hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
-hl.env("QT_STYLE_OVERRIDE", "Adwaita-Dark")
-hl.env("GTK_APPLICATION_PREFER_DARK_THEME", "1")
+hyprlandRunner.env("XCURSOR_SIZE", "24")
+hyprlandRunner.env("HYPRCURSOR_SIZE", "24")
+hyprlandRunner.env("GTK_THEME", "Adwaita:dark")
+hyprlandRunner.env("QT_QPA_PLATFORMTHEME", "qt5ct")
+hyprlandRunner.env("QT_STYLE_OVERRIDE", "Adwaita-Dark")
+hyprlandRunner.env("GTK_APPLICATION_PREFER_DARK_THEME", "1")
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~~~ MONITORS ~~~~~~
@@ -52,15 +53,15 @@ hl.env("GTK_APPLICATION_PREFER_DARK_THEME", "1")
 
 if isLaptop then
 	-- Uses preferred mode/rate so it works regardless of the laptop's actual panel
-	hl.monitor({ output = "eDP-1", mode = "preferred", position = "0x0", scale = 1 })
-	hl.monitor({ output = "HDMI-A-2", mode = "3840x2160", position = "auto-right", scale = 1.25 })
+	hyprlandRunner.monitor({ output = "eDP-1", mode = "preferred", position = "0x0", scale = 1 })
+	hyprlandRunner.monitor({ output = "HDMI-A-2", mode = "3840x2160", position = "auto-right", scale = 1.25 })
 else
-	hl.monitor({ output = "DP-2", mode = "1920x1080", position = "auto-left", scale = 1 })
-	hl.monitor({ output = "DP-1", mode = "3840x2160", position = "0x0", scale = 1.5 })
-	hl.monitor({ output = "HDMI-A-1", mode = "1920x1080", position = "auto-right", scale = 1 })
+	hyprlandRunner.monitor({ output = "DP-2", mode = "1920x1080", position = "auto-left", scale = 1 })
+	hyprlandRunner.monitor({ output = "DP-1", mode = "3840x2160", position = "0x0", scale = 1.5 })
+	hyprlandRunner.monitor({ output = "HDMI-A-1", mode = "1920x1080", position = "auto-right", scale = 1 })
 	-- The TV. Mirrors HDMI-A-1 instead of being its own desktop, so it just
 	-- shows whatever is on the left screen whenever it's plugged in.
-	hl.monitor({
+	hyprlandRunner.monitor({
 		output = "HDMI-A-2",
 		mode = "1920x1080@60",
 		position = "auto-right",
@@ -73,44 +74,44 @@ end
 -- ~~~~~ AUTOSTART ~~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.on("hyprland.start", function()
+hyprlandRunner.on("hyprland.start", function()
 	-- loads hyprbars and applies its config; see the PLUGINS section below
-	hl.exec_cmd("~/.config/hypr/scripts/hyprbars-init.sh")
-	hl.exec_cmd("ags run ~/.config/ags/sambar.tsx")
-	hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme prefer-dark")
+	hyprlandRunner.exec_cmd("~/.config/hypr/scripts/hyprbars-init.sh")
+	hyprlandRunner.exec_cmd("ags run ~/.config/ags/sambar.tsx")
+	hyprlandRunner.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme prefer-dark")
 	-- Only installed/used on the desktop for now.
 	if fileExists(homeDir .. "/.local/bin/streamdeck") then
-		hl.exec_cmd(homeDir .. "/.local/bin/streamdeck --no-ui")
+		hyprlandRunner.exec_cmd(homeDir .. "/.local/bin/streamdeck --no-ui")
 	end
-	hl.exec_cmd("clipse -listen")
-	hl.exec_cmd("sleep 5 && surfshark --auto-connect")
+	hyprlandRunner.exec_cmd("clipse -listen")
+	hyprlandRunner.exec_cmd("sleep 5 && surfshark --auto-connect")
 	-- movecursor dropped: no working native or raw-dispatch equivalent found
 	-- (exec_raw doesn't actually apply anything despite returning "ok" —
 	-- confirmed broken as a mechanism, not just this call)
 	local dockLauncher = homeDir .. "/.config/rofi/launchers/type-2/launcher.sh"
 	if isLaptop then
-		hl.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -c "' .. dockLauncher .. '"')
+		hyprlandRunner.exec_cmd('nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -c "' .. dockLauncher .. '"')
 	else
-		hl.exec_cmd(
+		hyprlandRunner.exec_cmd(
 			'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "' .. dockLauncher .. '" -o HDMI-A-1'
 		)
-		hl.exec_cmd(
+		hyprlandRunner.exec_cmd(
 			'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "' .. dockLauncher .. '" -o DP-1 -m'
 		)
-		hl.exec_cmd(
+		hyprlandRunner.exec_cmd(
 			'nwg-dock-hyprland -p bottom -i 24 -s dock.css -mb 4 -d -hd 0 -c "' .. dockLauncher .. '" -o DP-2 -m'
 		)
 	end
-	hl.exec_cmd("hyprswitch init &")
-	hl.exec_cmd("~/.local/bin/colorshell")
+	hyprlandRunner.exec_cmd("hyprswitch init &")
+	hyprlandRunner.exec_cmd("~/.local/bin/colorshell")
 	-- The wallpaper images themselves are personal assets, not checked into
 	-- git — fall back to a stock background on any machine that doesn't have
 	-- them under ~/Pictures yet, rather than showing nothing.
 	local wallpaperPath = homeDir .. "/Pictures/github_coding_images/jellyfish.png"
 	if fileExists(wallpaperPath) then
-		hl.exec_cmd("swaybg -i " .. wallpaperPath .. " -m fill")
+		hyprlandRunner.exec_cmd("swaybg -i " .. wallpaperPath .. " -m fill")
 	else
-		hl.exec_cmd("swaybg -i /usr/share/backgrounds/gnome/balls-d.jxl -m fill")
+		hyprlandRunner.exec_cmd("swaybg -i /usr/share/backgrounds/gnome/balls-d.jxl -m fill")
 	end
 	-- hyprland.conf's startup workspace/monitor race-condition fix (forcing
 	-- workspace 10 -> DP-2 and workspace 1 -> DP-1 a few seconds after boot)
@@ -125,13 +126,13 @@ end)
 -- ~~~~ PERMISSIONS ~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
+hyprlandRunner.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~ LOOK AND FEEL ~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.config({
+hyprlandRunner.config({
 	general = {
 		gaps_in = 2,
 		gaps_out = 0,
@@ -234,34 +235,52 @@ hl.config({
 -- ~~~~ ANIMATIONS ~~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.curve("easeOutQuint", { type = "bezier", points = { { 0.23, 1 }, { 0.32, 1 } } })
-hl.curve("easeInOutCubic", { type = "bezier", points = { { 0.65, 0.05 }, { 0.36, 1 } } })
-hl.curve("linear", { type = "bezier", points = { { 0, 0 }, { 1, 1 } } })
-hl.curve("almostLinear", { type = "bezier", points = { { 0.5, 0.5 }, { 0.75, 1.0 } } })
-hl.curve("quick", { type = "bezier", points = { { 0.15, 0 }, { 0.1, 1 } } })
+hyprlandRunner.curve("easeOutQuint", { type = "bezier", points = { { 0.23, 1 }, { 0.32, 1 } } })
+hyprlandRunner.curve("easeInOutCubic", { type = "bezier", points = { { 0.65, 0.05 }, { 0.36, 1 } } })
+hyprlandRunner.curve("linear", { type = "bezier", points = { { 0, 0 }, { 1, 1 } } })
+hyprlandRunner.curve("almostLinear", { type = "bezier", points = { { 0.5, 0.5 }, { 0.75, 1.0 } } })
+hyprlandRunner.curve("quick", { type = "bezier", points = { { 0.15, 0 }, { 0.1, 1 } } })
 
-hl.animation({ leaf = "global", enabled = true, speed = 10, bezier = "default" })
-hl.animation({ leaf = "border", enabled = true, speed = 5.39, bezier = "easeOutQuint" })
-hl.animation({ leaf = "windows", enabled = true, speed = 4.79, bezier = "easeOutQuint" })
-hl.animation({ leaf = "windowsIn", enabled = true, speed = 4.1, bezier = "easeOutQuint", style = "popin 87%" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = 1.49, bezier = "linear", style = "popin 87%" })
-hl.animation({ leaf = "fadeIn", enabled = true, speed = 1.73, bezier = "almostLinear" })
-hl.animation({ leaf = "fadeOut", enabled = true, speed = 1.46, bezier = "almostLinear" })
-hl.animation({ leaf = "fade", enabled = true, speed = 3.03, bezier = "quick" })
-hl.animation({ leaf = "layers", enabled = true, speed = 3.81, bezier = "easeOutQuint" })
-hl.animation({ leaf = "layersIn", enabled = true, speed = 4, bezier = "easeOutQuint", style = "fade" })
-hl.animation({ leaf = "layersOut", enabled = true, speed = 1.5, bezier = "linear", style = "fade" })
-hl.animation({ leaf = "fadeLayersIn", enabled = true, speed = 1.79, bezier = "almostLinear" })
-hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.39, bezier = "almostLinear" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
+hyprlandRunner.animation({ leaf = "global", enabled = true, speed = 10, bezier = "default" })
+hyprlandRunner.animation({ leaf = "border", enabled = true, speed = 5.39, bezier = "easeOutQuint" })
+hyprlandRunner.animation({ leaf = "windows", enabled = true, speed = 4.79, bezier = "easeOutQuint" })
+hyprlandRunner.animation({
+	leaf = "windowsIn",
+	enabled = true,
+	speed = 4.1,
+	bezier = "easeOutQuint",
+	style = "popin 87%",
+})
+hyprlandRunner.animation({ leaf = "windowsOut", enabled = true, speed = 1.49, bezier = "linear", style = "popin 87%" })
+hyprlandRunner.animation({ leaf = "fadeIn", enabled = true, speed = 1.73, bezier = "almostLinear" })
+hyprlandRunner.animation({ leaf = "fadeOut", enabled = true, speed = 1.46, bezier = "almostLinear" })
+hyprlandRunner.animation({ leaf = "fade", enabled = true, speed = 3.03, bezier = "quick" })
+hyprlandRunner.animation({ leaf = "layers", enabled = true, speed = 3.81, bezier = "easeOutQuint" })
+hyprlandRunner.animation({ leaf = "layersIn", enabled = true, speed = 4, bezier = "easeOutQuint", style = "fade" })
+hyprlandRunner.animation({ leaf = "layersOut", enabled = true, speed = 1.5, bezier = "linear", style = "fade" })
+hyprlandRunner.animation({ leaf = "fadeLayersIn", enabled = true, speed = 1.79, bezier = "almostLinear" })
+hyprlandRunner.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.39, bezier = "almostLinear" })
+hyprlandRunner.animation({ leaf = "workspaces", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
+hyprlandRunner.animation({
+	leaf = "workspacesIn",
+	enabled = true,
+	speed = 1.21,
+	bezier = "almostLinear",
+	style = "fade",
+})
+hyprlandRunner.animation({
+	leaf = "workspacesOut",
+	enabled = true,
+	speed = 1.94,
+	bezier = "almostLinear",
+	style = "fade",
+})
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~ INPUT DEVICES ~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.device({
+hyprlandRunner.device({
 	name = "epic-mouse-v1",
 	sensitivity = -0.5,
 })
@@ -271,83 +290,83 @@ hl.device({
 -- ~~~~~~~~~~~~~~~~~~~~~
 
 -- hyprswitch window switcher
-hl.bind(mainMod .. " + tab", hl.dsp.exec_cmd("hyprswitch gui --mod-key alt --key tab"))
+hyprlandRunner.bind(mainMod .. " + tab", hl.dsp.exec_cmd("hyprswitch gui --mod-key alt --key tab"))
 
 -- Session
-hl.bind("CTRL + SHIFT + Escape", hl.dsp.exit())
+hyprlandRunner.bind("CTRL + SHIFT + Escape", hl.dsp.exit())
 
 -- Window management
-hl.bind(mainMod .. " + Q", hl.dsp.window.close())
-hl.bind(mainMod .. " + G", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
-hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("~/.config/hypr/scripts/fit-to-monitor.sh"))
-hl.bind(mainMod .. " + space", hl.dsp.exec_cmd("~/.config/rofi/launchers/type-2/launcher.sh"))
+hyprlandRunner.bind(mainMod .. " + Q", hl.dsp.window.close())
+hyprlandRunner.bind(mainMod .. " + G", hl.dsp.window.float({ action = "toggle" }))
+hyprlandRunner.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
+hyprlandRunner.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("~/.config/hypr/scripts/fit-to-monitor.sh"))
+hyprlandRunner.bind(mainMod .. " + space", hl.dsp.exec_cmd("~/.config/rofi/launchers/type-2/launcher.sh"))
 -- Always-on-top toggle. Hyprland's pin is floating-only, so float a tiled window
 -- first and drop it back into the layout when it gets unpinned.
 local floatedForPin = {}
 
-hl.bind(mainMod .. " + P", function()
-	local win = hl.get_active_window()
+hyprlandRunner.bind(mainMod .. " + P", function()
+	local win = hyprlandRunner.get_active_window()
 	if not win then
 		return
 	end
 
 	if win.pinned then
-		hl.dispatch(hl.dsp.window.pin())
+		hyprlandRunner.dispatch(hl.dsp.window.pin())
 		if floatedForPin[win.address] then
-			hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+			hyprlandRunner.dispatch(hl.dsp.window.float({ action = "toggle" }))
 			floatedForPin[win.address] = nil
 		end
 	else
 		if not win.floating then
-			hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+			hyprlandRunner.dispatch(hl.dsp.window.float({ action = "toggle" }))
 			floatedForPin[win.address] = true
 		end
-		hl.dispatch(hl.dsp.window.pin())
+		hyprlandRunner.dispatch(hl.dsp.window.pin())
 	end
 end)
-hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+hyprlandRunner.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 
 -- Focus movement + bringactivetotop
 local function focus_and_raise(dir)
 	return function()
-		hl.dispatch(hl.dsp.focus({ direction = dir }))
-		hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+		hyprlandRunner.dispatch(hl.dsp.focus({ direction = dir }))
+		hyprlandRunner.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
 	end
 end
 
-hl.bind(mainMod .. " + left", focus_and_raise("left"))
-hl.bind(mainMod .. " + right", focus_and_raise("right"))
-hl.bind(mainMod .. " + up", focus_and_raise("up"))
-hl.bind(mainMod .. " + down", focus_and_raise("down"))
-hl.bind(mainMod .. " + h", focus_and_raise("left"))
-hl.bind(mainMod .. " + l", focus_and_raise("right"))
-hl.bind(mainMod .. " + k", focus_and_raise("up"))
-hl.bind(mainMod .. " + j", focus_and_raise("down"))
+hyprlandRunner.bind(mainMod .. " + left", focus_and_raise("left"))
+hyprlandRunner.bind(mainMod .. " + right", focus_and_raise("right"))
+hyprlandRunner.bind(mainMod .. " + up", focus_and_raise("up"))
+hyprlandRunner.bind(mainMod .. " + down", focus_and_raise("down"))
+hyprlandRunner.bind(mainMod .. " + h", focus_and_raise("left"))
+hyprlandRunner.bind(mainMod .. " + l", focus_and_raise("right"))
+hyprlandRunner.bind(mainMod .. " + k", focus_and_raise("up"))
+hyprlandRunner.bind(mainMod .. " + j", focus_and_raise("down"))
 
 -- Move floating window or reorder tiled window
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + SHIFT + h",
 	hl.dsp.exec_cmd(
 		[[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch "hl.dsp.window.move({x=-30,y=0,relative=true})" || hyprctl dispatch "hl.dsp.window.move({direction=\"l\"})"']]
 	),
 	{ repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + SHIFT + l",
 	hl.dsp.exec_cmd(
 		[[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch "hl.dsp.window.move({x=30,y=0,relative=true})" || hyprctl dispatch "hl.dsp.window.move({direction=\"r\"})"']]
 	),
 	{ repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + SHIFT + k",
 	hl.dsp.exec_cmd(
 		[[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch "hl.dsp.window.move({x=0,y=-30,relative=true})" || hyprctl dispatch "hl.dsp.window.move({direction=\"u\"})"']]
 	),
 	{ repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + SHIFT + j",
 	hl.dsp.exec_cmd(
 		[[bash -c '[ "$(hyprctl activewindow -j | jq -r .floating)" = "true" ] && hyprctl dispatch "hl.dsp.window.move({x=0,y=30,relative=true})" || hyprctl dispatch "hl.dsp.window.move({direction=\"d\"})"']]
@@ -356,35 +375,35 @@ hl.bind(
 )
 
 -- Cycle windows in master layout
-hl.bind(mainMod .. " + CTRL + j", hl.dsp.layout("cyclenext"))
-hl.bind(mainMod .. " + CTRL + k", hl.dsp.layout("cycleprev"))
+hyprlandRunner.bind(mainMod .. " + CTRL + j", hl.dsp.layout("cyclenext"))
+hyprlandRunner.bind(mainMod .. " + CTRL + k", hl.dsp.layout("cycleprev"))
 
 -- Group tab switching (same keys as focus — no-op when not in a group)
-hl.bind(mainMod .. " + k", hl.dsp.group.prev())
-hl.bind(mainMod .. " + j", hl.dsp.group.next())
+hyprlandRunner.bind(mainMod .. " + k", hl.dsp.group.prev())
+hyprlandRunner.bind(mainMod .. " + j", hl.dsp.group.next())
 
 -- Workspaces
 for i = 1, 10 do
 	local key = i % 10 -- key 0 → workspace 10
-	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
-	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+	hyprlandRunner.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+	hyprlandRunner.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
 -- Screenshots and recording
-hl.bind("CTRL + SHIFT + SUPER + 4", hl.dsp.exec_cmd("hyprshot -m region -o ~/Pictures/Screenshots"))
-hl.bind(
+hyprlandRunner.bind("CTRL + SHIFT + SUPER + 4", hl.dsp.exec_cmd("hyprshot -m region -o ~/Pictures/Screenshots"))
+hyprlandRunner.bind(
 	"CTRL + SHIFT + SUPER + R",
 	hl.dsp.exec_cmd(
 		[[bash -c 'notify-send -u low "Recording started" "Full screen — SUPER+CTRL+SHIFT+E to stop" && wf-recorder -o $(hyprctl monitors -j | jq -r ".[] | select(.focused==true) | .name") -f ~/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4']]
 	)
 )
-hl.bind(
+hyprlandRunner.bind(
 	"CTRL + SHIFT + SUPER + 3",
 	hl.dsp.exec_cmd(
 		[[bash -c 'notify-send -u low "Recording started" "Select a region — SUPER+CTRL+SHIFT+E to stop" && wf-recorder -g "$(slurp)" -f ~/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4']]
 	)
 )
-hl.bind(
+hyprlandRunner.bind(
 	"CTRL + SHIFT + SUPER + E",
 	hl.dsp.exec_cmd(
 		[[bash -c 'pkill -INT wf-recorder && notify-send "Recording stopped" "Saved to ~/Videos/Recordings"']]
@@ -392,173 +411,181 @@ hl.bind(
 )
 
 -- Clipboard manager (hardcoded to kitty in hyprland.conf, not $terminal)
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd('kitty --class "clipse-clipboard" clipse'))
+hyprlandRunner.bind(mainMod .. " + V", hl.dsp.exec_cmd('kitty --class "clipse-clipboard" clipse'))
 
 -- Scratchpad
-hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hyprlandRunner.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
+hyprlandRunner.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Minimise / unminimise
 -- via the script rather than a bare move: moving a window into a special
 -- workspace pops that workspace open as an overlay even with silent = true,
 -- so the script shuts it again and the window just disappears instead.
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-minimize.sh"))
-hl.bind(mainMod .. " + SHIFT + M", hl.dsp.workspace.toggle_special("minimized"))
-hl.bind(mainMod .. " + SHIFT + U", hl.dsp.window.move({ workspace = "e+0" }))
+hyprlandRunner.bind(mainMod .. " + M", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-minimize.sh"))
+hyprlandRunner.bind(mainMod .. " + SHIFT + M", hl.dsp.workspace.toggle_special("minimized"))
+hyprlandRunner.bind(mainMod .. " + SHIFT + U", hl.dsp.window.move({ workspace = "e+0" }))
 
 -- Scroll through workspaces
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
+hyprlandRunner.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
+hyprlandRunner.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Groups
-hl.bind(mainMod .. " + SHIFT + G", hl.dsp.group.toggle())
-hl.bind(mainMod .. " + CTRL + h", hl.dsp.window.move({ into_group = "l" }))
-hl.bind(mainMod .. " + CTRL + j", hl.dsp.window.move({ into_group = "d" }))
-hl.bind(mainMod .. " + CTRL + k", hl.dsp.window.move({ into_group = "u" }))
-hl.bind(mainMod .. " + CTRL + l", hl.dsp.window.move({ into_group = "r" }))
+hyprlandRunner.bind(mainMod .. " + SHIFT + G", hl.dsp.group.toggle())
+hyprlandRunner.bind(mainMod .. " + CTRL + h", hl.dsp.window.move({ into_group = "l" }))
+hyprlandRunner.bind(mainMod .. " + CTRL + j", hl.dsp.window.move({ into_group = "d" }))
+hyprlandRunner.bind(mainMod .. " + CTRL + k", hl.dsp.window.move({ into_group = "u" }))
+hyprlandRunner.bind(mainMod .. " + CTRL + l", hl.dsp.window.move({ into_group = "r" }))
 
 -- Resize (direct, no submap)
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + CTRL + SHIFT + h",
 	hl.dsp.window.resize({ x = -20, y = 0, relative = true }),
 	{ repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + CTRL + SHIFT + l",
 	hl.dsp.window.resize({ x = 20, y = 0, relative = true }),
 	{ repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + CTRL + SHIFT + k",
 	hl.dsp.window.resize({ x = 0, y = 20, relative = true }),
 	{ repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	mainMod .. " + CTRL + SHIFT + j",
 	hl.dsp.window.resize({ x = 0, y = -20, relative = true }),
 	{ repeating = true }
 )
 
 -- Mouse drag and resize
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+hyprlandRunner.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+hyprlandRunner.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Volume and brightness (locked + repeating = bindel)
-hl.bind(
+hyprlandRunner.bind(
 	"XF86AudioRaiseVolume",
 	hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
 	{ locked = true, repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	"XF86AudioLowerVolume",
 	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
 	{ locked = true, repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	"XF86AudioMute",
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
 	{ locked = true, repeating = true }
 )
-hl.bind(
+hyprlandRunner.bind(
 	"XF86AudioMicMute",
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
 	{ locked = true, repeating = true }
 )
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
+hyprlandRunner.bind(
+	"XF86MonBrightnessUp",
+	hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),
+	{ locked = true, repeating = true }
+)
+hyprlandRunner.bind(
+	"XF86MonBrightnessDown",
+	hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),
+	{ locked = true, repeating = true }
+)
 
 -- Media playback (locked = bindl)
-hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
+hyprlandRunner.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
+hyprlandRunner.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+hyprlandRunner.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+hyprlandRunner.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
 -- Apps
-hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("wofi --show drun"))
+hyprlandRunner.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+hyprlandRunner.bind(mainMod .. " + D", hl.dsp.exec_cmd("wofi --show drun"))
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- ~~~~~~ SUBMAPS ~~~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
 -- Resize submap (Alt+R)
-hl.bind(mainMod .. " + R", hl.dsp.submap("resize"))
-hl.define_submap("resize", function()
-	hl.bind("h", hl.dsp.window.resize({ x = -20, y = 0, relative = true }), { repeating = true })
-	hl.bind("l", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
-	hl.bind("k", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true })
-	hl.bind("j", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true })
-	hl.bind("left", hl.dsp.window.resize({ x = -20, y = 0, relative = true }), { repeating = true })
-	hl.bind("right", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
-	hl.bind("up", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true })
-	hl.bind("down", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true })
-	hl.bind("Escape", hl.dsp.submap(""))
-	hl.bind("Return", hl.dsp.submap(""))
-	hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-	hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("wofi --show drun"))
+hyprlandRunner.bind(mainMod .. " + R", hl.dsp.submap("resize"))
+hyprlandRunner.define_submap("resize", function()
+	hyprlandRunner.bind("h", hl.dsp.window.resize({ x = -20, y = 0, relative = true }), { repeating = true })
+	hyprlandRunner.bind("l", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
+	hyprlandRunner.bind("k", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true })
+	hyprlandRunner.bind("j", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true })
+	hyprlandRunner.bind("left", hl.dsp.window.resize({ x = -20, y = 0, relative = true }), { repeating = true })
+	hyprlandRunner.bind("right", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
+	hyprlandRunner.bind("up", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true })
+	hyprlandRunner.bind("down", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true })
+	hyprlandRunner.bind("Escape", hl.dsp.submap(""))
+	hyprlandRunner.bind("Return", hl.dsp.submap(""))
+	hyprlandRunner.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+	hyprlandRunner.bind(mainMod .. " + D", hl.dsp.exec_cmd("wofi --show drun"))
 end)
 
 -- Layout submap (Alt+Shift+;)
-hl.bind(mainMod .. " + SHIFT + semicolon", hl.dsp.submap("layout"))
-hl.define_submap("layout", function()
-	hl.bind("g", function() -- toggle floating
-		hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
-		hl.dispatch(hl.dsp.submap(""))
+hyprlandRunner.bind(mainMod .. " + SHIFT + semicolon", hl.dsp.submap("layout"))
+hyprlandRunner.define_submap("layout", function()
+	hyprlandRunner.bind("g", function() -- toggle floating
+		hyprlandRunner.dispatch(hl.dsp.window.float({ action = "toggle" }))
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("f", function() -- fullscreen, mode 1 (maximised, keeps bar)
-		hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
-		hl.dispatch(hl.dsp.submap(""))
+	hyprlandRunner.bind("f", function() -- fullscreen, mode 1 (maximised, keeps bar)
+		hyprlandRunner.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("t", function() -- pseudo-tile
-		hl.dispatch(hl.dsp.window.pseudo())
-		hl.dispatch(hl.dsp.submap(""))
+	hyprlandRunner.bind("t", function() -- pseudo-tile
+		hyprlandRunner.dispatch(hl.dsp.window.pseudo())
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("m", function() -- true fullscreen, mode 0
-		hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-		hl.dispatch(hl.dsp.submap(""))
+	hyprlandRunner.bind("m", function() -- true fullscreen, mode 0
+		hyprlandRunner.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("a", function()
-		hl.dispatch(hl.dsp.group.toggle())
-		hl.dispatch(hl.dsp.submap(""))
+	hyprlandRunner.bind("a", function()
+		hyprlandRunner.dispatch(hl.dsp.group.toggle())
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("s", function()
-		hl.dispatch(hl.dsp.group.toggle())
-		hl.dispatch(hl.dsp.submap(""))
+	hyprlandRunner.bind("s", function()
+		hyprlandRunner.dispatch(hl.dsp.group.toggle())
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("d", function()
-		hl.dispatch(hl.dsp.group.toggle())
-		hl.dispatch(hl.dsp.submap(""))
+	hyprlandRunner.bind("d", function()
+		hyprlandRunner.dispatch(hl.dsp.group.toggle())
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
 	end)
-	hl.bind("Escape", hl.dsp.submap(""))
-	hl.bind("Return", hl.dsp.submap(""))
+	hyprlandRunner.bind("Escape", hl.dsp.submap(""))
+	hyprlandRunner.bind("Return", hl.dsp.submap(""))
 end)
 
 -- Arrange submap (Alt+T, then 1 = 95% corners, 2 = 50/50, Shift+2 = top/bottom, 4 = quarters)
-hl.bind(mainMod .. " + T", hl.dsp.submap("arrange"))
-hl.define_submap("arrange", function()
-	hl.bind("1", function()
-		hl.dispatch(hl.dsp.submap(""))
-		hl.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 1")
+hyprlandRunner.bind(mainMod .. " + T", hl.dsp.submap("arrange"))
+hyprlandRunner.define_submap("arrange", function()
+	hyprlandRunner.bind("1", function()
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
+		hyprlandRunner.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 1")
 	end)
-	hl.bind("2", function()
-		hl.dispatch(hl.dsp.submap(""))
-		hl.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 2")
+	hyprlandRunner.bind("2", function()
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
+		hyprlandRunner.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 2")
 	end)
-	hl.bind("SHIFT + 2", function()
-		hl.dispatch(hl.dsp.submap(""))
-		hl.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 2v")
+	hyprlandRunner.bind("SHIFT + 2", function()
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
+		hyprlandRunner.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 2v")
 	end)
-	hl.bind("4", function()
-		hl.dispatch(hl.dsp.submap(""))
-		hl.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 4")
+	hyprlandRunner.bind("4", function()
+		hyprlandRunner.dispatch(hl.dsp.submap(""))
+		hyprlandRunner.exec_cmd("~/.config/hypr/scripts/arrange-windows.sh 4")
 	end)
-	hl.bind("Escape", hl.dsp.submap(""))
-	hl.bind("Return", hl.dsp.submap(""))
+	hyprlandRunner.bind("Escape", hl.dsp.submap(""))
+	hyprlandRunner.bind("Return", hl.dsp.submap(""))
 end)
 
 -- ~~~~~~~~~~~~~~~~~~~~~
 -- AGS Mission Control - the default layer fade makes it feel laggy.
-hl.layer_rule({
+hyprlandRunner.layer_rule({
 	name = "overview no anim",
 	match = { namespace = "^overview$" },
 	no_anim = true,
@@ -567,80 +594,88 @@ hl.layer_rule({
 -- ~~~ WINDOW RULES ~~~~
 -- ~~~~~~~~~~~~~~~~~~~~~
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "float by default",
 	match = { class = ".*" },
 	float = floatingFirst,
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "Empty-class popups (e.g. Slack link/copy menus)",
 	match = { class = "^$", title = "^$", xwayland = true },
 	float = true,
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "Clipboard float rule",
 	match = { class = "clipse-clipboard" },
 	float = true,
 	size = "500 800",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "Surfshark",
 	match = { class = "Surfshark" },
 	float = true,
 	size = "800 600",
 })
 
-hl.window_rule({
-	name = "Forge",
+hyprlandRunner.window_rule({
+	name = "Forge dev",
 	match = { class = "forge-dev-linux-amd64" },
 	float = floatingFirst,
-	workspace = "10",
+	workspace = "10 silent",
 	size = "1500 800",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
+	name = "Diverge dev",
+	match = { class = "diverge-dev-linux-amd64" },
+	float = floatingFirst,
+	workspace = "10 silent",
+	size = "1500 800",
+})
+
+hyprlandRunner.window_rule({
 	name = "Kitty",
 	match = { class = "kitty" },
 	float = floatingFirst,
 	size = "1900 1000",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "DaVinci Resolve",
 	match = { class = "resolve" },
 	float = true,
 	size = "1900 1000",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "Nautilus max height",
 	match = { class = "org.gnome.Nautilus" },
 	float = true,
 	size = "950 800",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "Vivaldi ideal size",
 	match = { class = "vivaldi-stable" },
 	size = "1900 1000",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "Brave ideal size",
 	match = { class = "brave-browser" },
 	size = "1900 1000",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "DBeaver",
 	match = { class = "DBeaver" },
 	size = "1900 1000",
 })
 
-hl.window_rule({
+hyprlandRunner.window_rule({
 	name = "Obsidian",
 	match = { class = "obsidian" },
 	size = "2400 1300",
@@ -653,20 +688,20 @@ hl.window_rule({
 if isLaptop then
 	-- No monitor pinning needed on a single screen — every workspace lives
 	-- on eDP-1 by default. Workspace 1 is just the landing workspace.
-	hl.workspace_rule({ workspace = "1", monitor = "eDP-1", default = true, persistent = true })
+	hyprlandRunner.workspace_rule({ workspace = "1", monitor = "eDP-1", default = true, persistent = true })
 else
-	hl.workspace_rule({ workspace = "10", monitor = "DP-2", default = true, persistent = true })
-	hl.workspace_rule({ workspace = "5", monitor = "DP-2" })
-	hl.workspace_rule({ workspace = "6", monitor = "DP-2" })
+	hyprlandRunner.workspace_rule({ workspace = "10", monitor = "DP-2", default = true, persistent = true })
+	hyprlandRunner.workspace_rule({ workspace = "5", monitor = "DP-2" })
+	hyprlandRunner.workspace_rule({ workspace = "6", monitor = "DP-2" })
 
-	hl.workspace_rule({ workspace = "1", monitor = "DP-1", default = true, persistent = true })
-	hl.workspace_rule({ workspace = "2", monitor = "DP-1" })
-	hl.workspace_rule({ workspace = "3", monitor = "DP-1" })
-	hl.workspace_rule({ workspace = "4", monitor = "DP-1" })
+	hyprlandRunner.workspace_rule({ workspace = "1", monitor = "DP-1", default = true, persistent = true })
+	hyprlandRunner.workspace_rule({ workspace = "2", monitor = "DP-1" })
+	hyprlandRunner.workspace_rule({ workspace = "3", monitor = "DP-1" })
+	hyprlandRunner.workspace_rule({ workspace = "4", monitor = "DP-1" })
 
-	hl.workspace_rule({ workspace = "7", monitor = "HDMI-A-1" })
-	hl.workspace_rule({ workspace = "8", monitor = "HDMI-A-1" })
-	hl.workspace_rule({ workspace = "9", monitor = "HDMI-A-1", default = true, persistent = true })
+	hyprlandRunner.workspace_rule({ workspace = "7", monitor = "HDMI-A-1" })
+	hyprlandRunner.workspace_rule({ workspace = "8", monitor = "HDMI-A-1" })
+	hyprlandRunner.workspace_rule({ workspace = "9", monitor = "HDMI-A-1", default = true, persistent = true })
 end
 
 -- ~~~~~~~~~~~~~~~~~~~~~
@@ -690,7 +725,7 @@ end
 -- taking the whole config down with it.
 if hl.plugin and hl.plugin.hyprbars then
 	pcall(function()
-		hl.config({ plugin = { hyprbars = { bar_height = 20 } } })
+		hyprlandRunner.config({ plugin = { hyprbars = { bar_height = 20 } } })
 
 		local scripts = homeDir .. "/.config/hypr/scripts"
 

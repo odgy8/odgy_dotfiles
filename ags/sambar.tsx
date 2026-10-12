@@ -25,6 +25,7 @@ import System from "./components/System/System";
 import CalendarPopup from "./components/Calendar/CalendarPopup";
 import Tray from "./components/Tray/Tray";
 import NotificationPopup from "./components/Notifications/NotificationPopup";
+import playNotificationSounds from "./components/Notifications/notificationSound";
 import Footing from "./components/Footing/Footing";
 import Media from "./components/Media/Media";
 import CaptureToolbar from "./components/Capture/CaptureToolbar";
@@ -48,6 +49,8 @@ app.start({
   },
   css: style + BarCss + PopupCss + ButtonCss + FootingCss + MediaCss + CaptureCss + ControlCentreCss + OverviewCss,
   main() {
+    playNotificationSounds();
+
     // Build one Bar + set of popups per connected monitor, rather than a
     // fixed count — this file is shared between a 3-monitor desktop and a
     // single-monitor laptop, and monitors can also change at runtime (docking).
