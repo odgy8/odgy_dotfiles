@@ -13,11 +13,14 @@ export default function SinkSelector() {
     "Navi 48 HDMI/DP Audio Controller Digital Stereo (HDMI)",
     "Easy Effects Sink",
     "Starship/Matisse HD Audio Controller Analog Stereo",
+    "Navi 48 HDMI/DP Audio Controller Digital Stereo (HDMI) [Odyssey G70B]", // Not sure if it was an o or a 0 in G70B
+    "Navi 48 HDMI/DP Audio Controller Digital Stereo (HDMI) [Odyssey G7OB]",
   ];
 
   const renameMap: Record<string, string> = {
     "Majority Snowdon II": "Speaker",
-    "Arctis Pro Wireless Game": "Headset",
+    "Arctis Pro Wireless Game": "SteelSeries Headset",
+    "PRO X 2 LIGHTSPEED Analog Stereo": "Logitech Headset",
   };
 
   return (

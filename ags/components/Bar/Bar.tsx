@@ -15,6 +15,7 @@ import MediaButton from "../Media/MediaButton";
 import { DISK_CRITICAL_PERCENT, diskUsedPercent } from "./diskUsage";
 import RecordingIndicator from "../Capture/RecordingIndicator";
 import PrivacyIndicator from "../Privacy/PrivacyIndicator";
+import DivergeNow from "../Diverge/DivergeNow";
 
 interface BarProps {
   setIsVolumeOpen: Setter<boolean>;
@@ -68,6 +69,8 @@ export default function Bar({
       >
         <label label={sourceMute.as((m) => (m ? "󰍭" : "󰍬"))} />
       </button>
+
+      <DivergeNow />
 
       <button class="bar-clock-btn" onClicked={() => setIsCalendarOpen(true)}>
         <Clock />
