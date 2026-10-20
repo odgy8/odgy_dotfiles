@@ -1,5 +1,5 @@
 // Package imports
-import { Astal } from "ags/gtk4";
+import { Astal, Gdk } from "ags/gtk4";
 import { type Setter } from "ags";
 
 // Style imports
@@ -44,6 +44,9 @@ export default function Bar({
 }: BarProps) {
   const anchor = Astal.WindowAnchor;
   const exlusivity = Astal.Exclusivity;
+  const connector = (
+    Gdk.Display.get_default()?.get_monitors().get_item(monitor) as Gdk.Monitor | null
+  )?.get_connector();
 
   const LeftSection = () => (
     <box spacing={8}>
@@ -70,7 +73,7 @@ export default function Bar({
         <label label={sourceMute.as((m) => (m ? "󰍭" : "󰍬"))} />
       </button>
 
-      <DivergeNow />
+      {connector !== "HDMI-A-1" && <DivergeNow />}
 
       <button class="bar-clock-btn" onClicked={() => setIsCalendarOpen(true)}>
         <Clock />
