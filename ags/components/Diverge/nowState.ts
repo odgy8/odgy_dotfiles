@@ -16,7 +16,7 @@ interface Now {
   next: Block | null;
 }
 
-const SOCKET = GLib.build_filenamev([GLib.get_home_dir(), ".local", "share", "diverge", "api.sock"]);
+export const SOCKET = GLib.build_filenamev([GLib.get_home_dir(), ".local", "share", "diverge", "api.sock"]);
 
 const [divergeNow, setDivergeNow] = createState<Now | null>(null);
 export { divergeNow };
