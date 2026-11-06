@@ -177,7 +177,6 @@ hyprlandRunner.config({
 		groupbar = {
 			enabled = true,
 			height = 1,
-			font_size = 0,
 			gradients = true,
 			render_titles = true,
 			scrolling = true,
@@ -186,6 +185,7 @@ hyprlandRunner.config({
 				inactive = "rgba(00000000)",
 			},
 			text_color = "rgba(ffffffff)",
+			font_size = 12,
 		},
 	},
 
